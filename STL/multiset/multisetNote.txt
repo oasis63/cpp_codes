@@ -1,0 +1,6 @@
+Multisets are important in both math and computer science. They help us keep track of elements 
+in databases, and are the backbone of modern combinatorics.
+
+One example of multisets is a listing of the prime factors of a number. 
+The factors of 4 is {2,2}, and this is different than the prime factors of 2,{2}. 
+The prime factors of 90, {3,3,5,2}, are different than the prime factors of 30: {3,5,2}

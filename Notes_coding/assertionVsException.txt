@@ -1,0 +1,7 @@
+Assertions should be used to check something that should never happen, while an exception should be used to check something that might happen.
+
+For example, a function might divide by 0, so an exception should be used, but an assertion could be used to check that the harddrive suddenly disappears.
+
+An assertion would stop the program from running, but an exception would let the program continue running.
+
+Note that if(group != null) is not an assertion, that is just a conditional.

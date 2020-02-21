@@ -1,0 +1,8 @@
+ Most of the sites these days allow 10^8 operations per second, only a few sites still allow 10^7 operations. 
+
+ 10^3 		->		 O(N^2) , O(NlogN)
+ 10^5 		->		 O(NlogN)
+ 10^8 		->		 O(N)
+
+
+

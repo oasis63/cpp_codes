@@ -1,0 +1,11 @@
+The Greedy approach is a simple approach which gives the optimal solution most of the times. This is used in optimization problems like 
+	
+	# finding the minimum or maximum of something.
+
+Greedy approach is good when the problem size is large and attempts at arriving at the best solution will end up being more costly than arriving at an acceptable optimal solution. Example for this is the travelling salesman problem.
+
+This approach has one issue: Through recursion, it ends up recomputing values, thus lowering the efficiency.
+
+
+
+Dynamic Programming in simple terms is a way of optimizing your solution by reusing the results of older computation. In other words, the intermediate results are stored for quick access, instead of being recomputed.
