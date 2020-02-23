@@ -1,139 +1,56 @@
-// tree data structure
-
 #include<bits/stdc++.h>
 using namespace std;
 
-int imax=INT_MIN;
+/*
+ only squares of prime numbers have exactly three distinct positive divisors.
+ ex:- 4,9,25,169
+*/
 
-class Node{
-public:
-    int value;
-    Node* left;
-    Node* right;
+#define ll long long
+#define SIZE  1000001
+bool primes[SIZE];
 
-    Node(int v){
-        value = v;
-        left=NULL;
-        right=NULL;
+set<ll> primeSet;
+
+void setPrimes(){
+
+    for(ll i=0;i<SIZE;i++){
+        primes[i]=true;
     }
-};
 
+    primes[0]=false;
+    primes[1]=false;
 
-// DLR
-void preorder(Node* root){
-    if(root){
-        cout<<root->value<<" ";
-        preorder(root->left);
-        preorder(root->right);
-    }
-}
-
-// preorder without recursion
-void itrPreorder(Node* root){
-    stack<Node*> s;
-    s.push(root);
-
-    while(!s.empty()){
-        Node* temp = s.top();  s.pop();
-
-        cout<<temp->value<<" ";
-
-        if(temp->right)
-            s.push(temp->right);
-        if(temp->right)
-            s.push(temp->left);
-    }
-}
-
-void zigzag(Node* root){
-
-    bool righToLeft = true;
-    stack<Node*> currentLevel;
-    stack<Node*> nextLevel;
-
-    currentLevel.push(root);
-
-    while(!currentLevel.empty()){
-        Node* temp = currentLevel.top();
-        currentLevel.pop();
-
-        if(temp){
-
-            cout<<temp->value<<"  ";
-
-
-            if(righToLeft){
-                if(temp->left)
-                    nextLevel.push(temp->left);
-                if(temp->right)
-                    nextLevel.push(temp->right);
-            }else{
-                if(temp->right)
-                    nextLevel.push(temp->right);
-                if(temp->left)
-                    nextLevel.push(temp->left);
+    for(ll i=2;i<=sqrt(SIZE);i++){
+    
+       if(primes[i]){
+            for(ll j=i+i;j<SIZE;j+=i){
+                primes[j]=false;
             }
-        }
+       }
+        
+    } 
 
-        if(currentLevel.empty()){
-            righToLeft = !righToLeft;
-            swap(currentLevel,nextLevel);
-
+    for(ll i=0;i<SIZE;i++){
+        if(primes[i]){
+            primeSet.insert(i);
         }
     }
 
-    cout<<"\n"<<endl;
+} 
+
+template<class X>
+void printArr(X arr[],ll n){
+    for(ll i=0;i<n;i++){
+        cout<<i<<" "<<arr[i]<<endl;
+    }
+    cout<<endl;
 }
 
-bool hasPathSum(Node* root,int sum ){
-
-//    cout<<"executed"<<endl;
-
-    if(!root)
-        return false;
-
-    if(root->left == NULL && root->right == NULL){
-        if((sum-root->value)==0)
-            return true;
-        else
-            return false;
-    }
-
-
-    bool retLeft=false;
-    bool retRight = false;
-
-    if(root->left){
-        retLeft = hasPathSum(root->left,sum-root->value);
-    }
-
-    if(root->right){
-        retRight = hasPathSum(root->right,sum-root->value);
-    }
-
-    return retLeft || retRight;
-}
 
 int main(){
+    
+    setPrimes(); 
+     
 
-
-    Node* root=new Node(5);
-    root->left= new Node(4);
-    root->right = new Node(8);
-    root->left->left=new Node(11);
-    root->left->left->left=new Node(7);
-    root->left->left->right=new Node(2);
-    root->right->left=new Node(13);
-    root->right->right=new Node(4);
-    root->right->right->right=new Node(1);
-
-
-//    zigzag(root);
-
-
-    int sum = 22;
-
-    cout<<hasPathSum(root,sum)<<endl;
-
-    return 0;
 }
