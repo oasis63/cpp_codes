@@ -16,6 +16,9 @@ public:
     }
 };
 
+
+int diameterOfTree = INT_MIN;
+
 Node* newNode(int v){
     Node* n = new Node(v);
     return n;
@@ -53,6 +56,7 @@ void levelOrder(Node* root){
 }
 
 
+    
 int height(Node *root){
     if(!root)
         return -1;
@@ -66,17 +70,32 @@ int height(Node *root){
 
 // dimeter 
 
-int diameter(Node* root){
+void diameter(Node* root){
+    
+    if(!root)
+        return;
 
     int rHeight = height(root->right);
     int lHeight = height(root->left);
 
-    cout<<"rHeight : "<<rHeight<<endl;
-    cout<<"lHeight : "<<lHeight<<endl;
+    // cout<<"rHeight : "<<rHeight<<endl;
+    // cout<<"lHeight : "<<lHeight<<endl;
 
-    int dmtr =  rHeight + lHeight + 2;
+    int dmtr =  rHeight + lHeight + 2;     // two edges from the nodes
+    
+    diameterOfTree = max(dmtr,diameterOfTree);
+    
+    diameter(root->right);
+    diameter(root->left);
 
-    return dmtr;
+    // return dmtr;
+}
+
+int diameterOfBinaryTree(Node* root) {
+    if(!root)
+        return 0;
+    diameter(root);
+    return diameterOfTree;
 }
 
 int main(){
@@ -93,7 +112,7 @@ int main(){
 
     cout<<"Height : "<<height(root)<<endl;
 
-    cout<<"\nDiameter : " << diameter(root)<<endl;
+    cout<<"\nDiameter : " << diameterOfBinaryTree(root)<<endl;
 
 }
 

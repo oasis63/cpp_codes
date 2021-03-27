@@ -36,5 +36,7 @@ int main(){
         cin>>n>>m;
         cout<<solve(n,m)<<endl;
     }
+
     
+    return 0;
 }

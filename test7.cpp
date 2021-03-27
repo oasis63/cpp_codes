@@ -1,36 +1,24 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
 #define ll long long
 
-#define SIZE   10000001
-#define SIZE2  100000001
-
-bool checkPrime(ll n){
-    if(n<=1)
-        return false;
-    if(n==2 || n==3)
-        return true;
-
-    for(ll i=2;i<=sqrt(n);i++){
-        if(n%i==0)
-            return false;
-    }
-
-    return true;
-
-}
-
-
-
 int main(){
-    
+        
+    string path = "Benga";
+    string str1 = "Coim";
+    path += " " + str1;
 
-    for(ll i=SIZE;i<SIZE+50;i++){
-        cout<<i<<" "<<checkPrime(i)<<endl;
-    }
+    cout<<path<<endl;
 
+    int pl = path.length();
+    int s1 = str1.length();
 
-    
+    cout<<pl<<endl;
+    cout<<s1<<endl;
 
+    cout<<path.substr(0,pl-s1-1)<<"|"<<endl;
+
+    return 0;
 }

@@ -29,7 +29,7 @@ string longestCommonPrefix(vector<string> &vect){
            break;
         }
 
-        pre.push_back(vect[0][i]);
+        pre.push_back(vect[0][i]);  // add char to the prefix string 
 
     }
 

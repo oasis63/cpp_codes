@@ -1,48 +1,48 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-string part(string str,int l,int r,int n){
-    while(l>=0 && r < n && str[l] == str[r]){
-        l--;
-        r++;
-    }
-    return str.substr(l+1,r-l-1);
-}
+/*
+ only squares of prime numbers have exactly three distinct positive divisors.
+ ex:- 4,9,25,169
+*/
 
-string longestPalindrome(string str){
+#define ll unsigned int
+#define SIZE  1000001
 
-    string longest = str.substr(0,1);
 
-    int len = str.length();
+bool isPrime(ll n){
+    
+    if( n==1 )
+        return false;
 
-    for(int i=1;i<len-1;i++){
-        string s1 = part(str,i,i,len);
-        if(s1.length() > longest.length())
-            longest = s1;
-        string s2 = part(str,i,i+1,len);
-        if(s2.length() > longest.length())
-            longest = s2;
+    ll t = sqrt(n);
 
+    for(ll i=2;i<=t;i++){
+        if (n%i==0){
+            return false;
+        }
     }
 
-    return longest;
+    return true;
 }
 
 
 int main(){
+    
+    // setPrimes(); 
+     
+    // printArr(primes,SIZE);
 
-    int tc;
-    cin>>tc;
-
-    string str;
-
-    vector<int> vect;
-    vect.
-
-    while(tc--){
-        cin>>str;
-        cout<<longestPalindrome(str)<<endl;
+    // outputToFile();
+    int n;cin>>n;
+    ll a,b;
+    while(n--){
+        cin>>a>>b;
+        for(ll i=a;i<=b;i++){
+            if(isPrime(i)){
+                cout<<i<<endl;
+            }
+        }
+        cout<<endl;
     }
-
-    return 0;
 }

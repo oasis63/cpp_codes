@@ -13,6 +13,12 @@ int main(){
     mp[5] = v1;
     mp[19] = v2;
 
+    mp[22].push_back(1);
+    mp[22].push_back(1);
+    mp[22].push_back(1);
+    mp[22].push_back(1);
+    mp[22].push_back(1);
+
     for(auto it = mp.begin();it!=mp.end();it++){
         cout<<it->first<<"\n\t";
         vector<int> tp = it->second;

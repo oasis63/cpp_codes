@@ -5,9 +5,8 @@ using namespace std;
 
 // in structure all the public access is by default
 
-class Node
-{
-
+class Node{
+    
 public:
 
     int data;
@@ -42,7 +41,7 @@ Node* insert(Node* root,int val){
     else if(val < root->data){
         root->left = insert(root->left,val);
     }
-    //return root;
+    return root;
 }
 
 void inorder(Node* root){   // LDR
@@ -96,21 +95,16 @@ void preorderS(Node* root){
         S.pop();
         root = root->right;
     }
-
 }
 
 Node* find(Node* root,int data){
-
     if(!root)
         return NULL;
-
     if(root->data > data)
         return find(root->left,data);
     else if(root->data < data)
         return find(root->right,data);
-
     return root;
-
 }
 
 int main(){
@@ -125,7 +119,7 @@ int main(){
     cout<<"Inorder"<<endl;
     inorder(root);
 
-    cout<<"PreOrder"<<endl;
+    cout<<"\nPreOrder"<<endl;
     preorderS(root);
 
     cout<<"\nRoot node is : "<<root->data<<endl;

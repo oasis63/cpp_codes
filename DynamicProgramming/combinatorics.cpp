@@ -20,9 +20,13 @@ int binomialCoeff(int n, int k)
   
 
   
-int main() 
-{ 
+int main() { 
     
     cout<<binomialCoeff(8,3)<<endl;
 
+  /*  cout<<binomialCoeff(15,4)<<endl;
+
+    cout<<binomialCoeff(14,4) + binomialCoeff(14,3)<<endl;*/
+
+    return 0;
 } 

@@ -27,3 +27,15 @@ int main(){
     cout<<lcs(x,y,strlen(x),strlen(y))<<endl;   // common subsequence is " GTAB"
 }
 
+
+/*3
+6 6
+ABCDGH
+ACDGHR
+3 2
+ABC
+AC
+6 7
+AGGTAB
+GXTXAYB*/
+

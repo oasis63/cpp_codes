@@ -46,7 +46,7 @@ void merge(int a[],int beg,int mid,int end){
 void mergeSort(int a[],int beg,int end){    // T(n)
     int mid;
     if(beg<end){
-        mid = (beg+end)/2;
+        mid = beg + (end-beg)/2;              
         mergeSort(a,beg,mid);           //  T(n/2)
         mergeSort(a,mid+1,end);         // T(n/2)
         merge(a,beg,mid,end);           // O(n)
@@ -62,10 +62,12 @@ void display(int arr[],int n){
     cout<<endl;
 }
 
-int main()
-{
+int main(){
+
     int input[] = {3,0,3,2,1,0};
     int n=6;
     mergeSort(input,0,n-1);
     display(input,n);
+
+    return 0;
 }

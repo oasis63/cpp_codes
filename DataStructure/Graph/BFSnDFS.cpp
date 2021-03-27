@@ -73,7 +73,7 @@ void Graph::dfsUtil(int src,bool *visited){
 
     cout<<src<<" ";
 
-    list<int>::iterator itr ;
+    list<int>::iterator itr;
 
     for(itr=adj[src].begin();itr!=adj[src].end();itr++){
         if(!visited[*itr])

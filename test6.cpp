@@ -1,48 +1,156 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-string part(string str,int l,int r,int n){
-    while(l>=0 && r < n && str[l] == str[r]){
-        l--;
-        r++;
-    }
-    return str.substr(l+1,r-l-1);
-}
+map<string,int> cityToNum;
+map<int,string> numToCity;
+vector<string> paths;
+vector<int> pathWeight;
 
-string longestPalindrome(string str){
+string source;
+string destination;
 
-    string longest = str.substr(0,1);
-
-    int len = str.length();
-
-    for(int i=1;i<len-1;i++){
-        string s1 = part(str,i,i,len);
-        if(s1.length() > longest.length())
-            longest = s1;
-        string s2 = part(str,i,i+1,len);
-        if(s2.length() > longest.length())
-            longest = s2;
-
+class Graph{
+int vertices;
+vector<pair<int,int> > *adj;  // array of adjacency list with weight
+ void dfsUtil(int src,bool *);
+public:
+    Graph(int v){
+        vertices=v;
+        adj = new vector<pair<int,int> >[v];
     }
 
-    return longest;
+    void addEdge(int src,int dest,int weight);
+    void printGraph();
+    void dfs(int src);
+    void solve();
+    void solveUtil(int v,string &path,int &weight);
+};
+
+void Graph::addEdge(int src,int dest,int weight){
+    adj[src].push_back(make_pair(dest,weight));
+    // adj[dest].push_back(make_pair(src,weight));
 }
+
+void Graph::printGraph(){
+    for(int i=0;i<vertices;i++){
+        cout<<"Source Node is : "<<numToCity[i]<<endl;
+        for(int j=0;j<adj[i].size();j++){
+            cout<<"\tNext Node : "<<numToCity[adj[i][j].first]<<"   Weight of the path :  "<<adj[i][j].second<<endl;
+        }
+    }
+}
+
+
+void Graph::solveUtil(int v,string &path,int &weight){
+
+    cout<<"Inside SolveUtil Node is : "<<numToCity[v]<<endl;
+
+
+    // path += " " + numToCity[v];
+
+    cout<<path <<  "   " << weight<<endl;
+
+    if(numToCity[v] == destination){
+        paths.push_back(path);
+        pathWeight.push_back(weight);
+        return;
+    }
+
+    for(int j=0;j<adj[v].size();j++){
+        // cout<<"\tNext Node : "<<numToCity[adj[v][j].first]<<"   Weight of the path :  "<<adj[v][j].second<<endl;
+        weight += adj[v][j].second;
+        int t = adj[v][j].first;
+        path += " " + numToCity[t];
+        solveUtil(adj[v][j].first,path,weight);
+        weight -= adj[v][j].second;
+        int pl = path.length();
+        int s1 = numToCity[t].length();
+        path = path.substr(0,pl-s1-1);  
+    }
+}
+
+
+
+void Graph::solve(){
+
+    cout<<"Source Node is : "<<numToCity[0]<<endl;
+
+    string path = numToCity[0];
+    int weight = 0;
+
+    for(int j=0;j<adj[0].size();j++){
+        // cout<<"\tNext Node : "<<numToCity[adj[0][j].first]<<"   Weight of the path :  "<<adj[0][j].second<<endl;
+        // bool res = false;
+        weight = adj[0][j].second;
+        path = numToCity[0];
+        int v = adj[0][j].first;
+        path += " " + numToCity[v];
+        solveUtil(adj[0][j].first,path,weight);
+        int pl = path.length();
+        int s1 = numToCity[v].length();
+        path = path.substr(0,pl-s1-1);   
+    }
+
+}
+
 
 
 int main(){
 
-    int tc;
-    cin>>tc;
+    int cost[] = {10000,4000,5000,6000};
+    string city1[] = {"Bengaluru","Bengaluru","Chennai","Chennai"};
+    string city2[] = {"Coimbatore","Chennai","Coimbatore","Coimbatore"};
 
-    string str;
+    int n = 4;
+    int idx = 0;
 
-    vector<int> vect;
-    vect.
+    int src;
+    int dest;
 
-    while(tc--){
-        cin>>str;
-        cout<<longestPalindrome(str)<<endl;
+    source = "Bengaluru";
+    destination = "Coimbatore";
+
+
+    Graph g(n);
+
+
+    for(int i=0;i<n;i++){
+
+        if(cityToNum.find(city1[i]) == cityToNum.end()){
+          cityToNum.insert(make_pair(city1[i],idx));
+          src = idx;
+          numToCity.insert(make_pair(idx,city1[i]));
+          idx++;
+        }else{
+            src = cityToNum[city1[i]];
+        }
+
+        if(cityToNum.find(city2[i]) == cityToNum.end()){
+          cityToNum.insert(make_pair(city2[i],idx));
+          dest = idx;
+            numToCity.insert(make_pair(idx,city2[i]));
+          idx++;
+        }else{
+            dest = cityToNum[city2[i]];
+        }
+
+        // cout<<src<<"  "<<dest<<endl;
+
+        g.addEdge(src,dest,cost[i]);
+
     }
 
-    return 0;
+
+    g.solve();
+
+
+    cout<<paths.size()<<endl;
+    cout<<pathWeight.size()<<endl;
+
+    for(int i=0;i<paths.size();i++){
+        cout<<paths[i]<<" "<<pathWeight[i]<<endl;
+    }
+
 }
+
+
