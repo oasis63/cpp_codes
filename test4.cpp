@@ -5,28 +5,18 @@ using namespace std;
 #define ll long long
 #define ui unsigned int 
 
-bool isPrime(ui n){
-    if(n == 1)
-        return false;
-    ui s = sqrt(n);
-    for(ui i=2;i<=s;i++){
-        if(n%i == 0)
-            return false;
-    }
-    return true;
+string solve(string s){
+    int len = s.length();
 }
+
 
 int main(){
     int n;cin>>n;
-    ll a,b;
+    string s;
     while(n--){
-        cin>>a>>b;
-        for(ll i=a;i<=b;i++){
-            if(isPrime(i)){
-                cout<<i<<endl;
-            }
-        }
-        cout<<endl;
+        cin>>s;
+        cout<<solve(s)<endl;
     }
+
     return 0;
 }
