@@ -1,100 +1,93 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-void segragate012(int);
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define ll long long
+#define ui unsigned int
+#define uli unsigned long int
+#define SIZE  1000001
 
-void segragate012(int a[], int n)
-{
-    int low = 0, high = n-1, mid = 0;
-
-    while(mid <= high){
-
-        if(a[mid]==0)
-            swap(a[mid++], a[low++]);
-       
-        else if(a[mid]==1)
-             mid++;
-
-        else
-            swap(a[mid], a[high--]);
-    }
-
-    
-}
-
-int main() {
-
-    int t;
-    cin >> t;
-
-    while(t--){
-        int n;
-        cin >>n;
-        int a[n];
-        for(int i=0;i<n;i++){
-            cin >> a[i];
-        }
-
-        segragate012(a, n);
-
-        for(int i=0;i<n;i++){
-            cout << a[i]  << " ";
-        }
-
-        cout << endl;
-        
-        
-    }
-
-<<<<<<< Updated upstream
-=======
-    if(root->right){
-        retRight = hasPathSum(root->right,sum-root->value,vect,ans);
-    }
-
-    /*if(retLeft || retRight){
-        ans.push_back(vect);
-        vect.clear();
-    }*/
-
-    return retLeft || retRight;
-}
-
-int main(){
-
-
-    Node* root=new Node(5);
-    root->left= new Node(4);
-    root->right = new Node(8);
-    root->left->left=new Node(11);
-    root->left->left->left=new Node(7);
-    root->left->left->right=new Node(2);
-    root->right->left=new Node(13);
-    root->right->right=new Node(4);
-    root->right->right->right=new Node(1);
-
-
-//    zigzag(root);
-
-
-    int sum = 22;
-
-	vector<vector<int>> ans;
-
-    vector<int> vect;
-
-    cout<<hasPathSum(root,sum,vect,ans)<<endl;
-
-	for(int i=0;i<ans.size();i++){
-		for(int j =0;j<ans[i].size();j++){
-			cout<<ans[i][j]<<"  ";
+class Solution {
+public:
+	void printArr(char c,int arr[],int n){
+		cout<<c<<"---> ";
+		for(int i=0;i<n;i++){
+			cout<<arr[i]<<" ";
 		}
 		cout<<endl;
 	}
+    int lengthOfLongestSubstring(string s) {
+    	int n = s.length();
+    	if(n <= 1)
+    		return n;
+    	int mxAns = -1;
+    	map<char,int> mp;  // char , index
+    	int countArr[n];
+   		fill(countArr,countArr+n,1);
+   		// printArr(countArr,n);
 
-    cout<<"I am writting this in test branch for testing purpose. "<<endl;
+      int lasUpdatingIndex = -1;
 
-    return 0;
+    	for(int i=0;i<n;i++){
+    		if(mp[s[i]] == 0){// char is not present in the map
 
->>>>>>> Stashed changes
+    			mp[s[i]] = i+1;  // char,present index
+    			if(i>0){
+    				countArr[i]=countArr[i-1]+1;
+    				mxAns = max(mxAns,countArr[i]);
+            lasUpdatingIndex = i+1;
+    			}
+
+    		}else{
+
+    			int prevIndex = mp[s[i]];
+    			int prevValue;
+          if(prevIndex != -1)
+            prevValue = countArr[prevIndex-1];
+    			mp[s[i]] = i+1;  // setting the current index
+
+    			// update the counter value for this index
+    			if(prevIndex != -1 ){
+            for(int j=prevIndex-1;j<i;j++){
+              countArr[j] -= prevValue;
+            }
+          }
+
+          //set the values to index 0 as 0
+          /*for(int j=prevIndex;j>=0;j--){
+            countArr[j] = 0;
+          }*/
+
+
+    			countArr[i]=countArr[i-1]+1;
+    			mxAns = max(mxAns,countArr[i]);
+          lasUpdatingIndex = i+1;
+
+          // remove all the characters whose indices
+          // before  lastUpdatingIndex
+          for(pair<char,int> p : mp){
+            if(p.second < lasUpdatingIndex){
+              mp[p.first] = -1;
+            }
+          }
+
+
+    		}
+    		printArr(s[i],countArr,n);
+    	}
+
+    	return mxAns;
+    }
+};
+
+
+int main(){
+  fast;
+  Solution obj;
+  string str = "abcabc";
+  // string str = "tmmzuxt";
+  int ansLen = obj.lengthOfLongestSubstring(str);
+  cout<<"ansLen : "<<ansLen<<endl;
+
+  return 0;
 }
