@@ -3,91 +3,50 @@ using namespace std;
 
 #define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
 #define ll long long
-#define ui unsigned int
-#define uli unsigned long int
-#define SIZE  1000001
+#define uli unsigned long int 
 
-class Solution {
-public:
-	void printArr(char c,int arr[],int n){
-		cout<<c<<"---> ";
-		for(int i=0;i<n;i++){
-			cout<<arr[i]<<" ";
-		}
-		cout<<endl;
-	}
-    int lengthOfLongestSubstring(string s) {
-    	int n = s.length();
-    	if(n <= 1)
-    		return n;
-    	int mxAns = -1;
-    	map<char,int> mp;  // char , index
-    	int countArr[n];
-   		fill(countArr,countArr+n,1);
-   		// printArr(countArr,n);
+int arr[10001];
+void show(){
+   for(int i=0;i<100;i++){
+    cout<<i<<"  "<<arr[i]<<endl;
+  }
+}
+void initialize(){
+ arr[1] = 20;
+ arr[2] = 36;
+ for(int i=3;i<10001;i++){
+  if(i%2 == 0)
+    arr[i] = arr[i-1] + 10;
+  else
+    arr[i]  = arr[i-1] + 14;
+ }
+}
 
-      int lasUpdatingIndex = -1;
-
-    	for(int i=0;i<n;i++){
-    		if(mp[s[i]] == 0){// char is not present in the map
-
-    			mp[s[i]] = i+1;  // char,present index
-    			if(i>0){
-    				countArr[i]=countArr[i-1]+1;
-    				mxAns = max(mxAns,countArr[i]);
-            lasUpdatingIndex = i+1;
-    			}
-
-    		}else{
-
-    			int prevIndex = mp[s[i]];
-    			int prevValue;
-          if(prevIndex != -1)
-            prevValue = countArr[prevIndex-1];
-    			mp[s[i]] = i+1;  // setting the current index
-
-    			// update the counter value for this index
-    			if(prevIndex != -1 ){
-            for(int j=prevIndex-1;j<i;j++){
-              countArr[j] -= prevValue;
-            }
-          }
-
-          //set the values to index 0 as 0
-          /*for(int j=prevIndex;j>=0;j--){
-            countArr[j] = 0;
-          }*/
-
-
-    			countArr[i]=countArr[i-1]+1;
-    			mxAns = max(mxAns,countArr[i]);
-          lasUpdatingIndex = i+1;
-
-          // remove all the characters whose indices
-          // before  lastUpdatingIndex
-          for(pair<char,int> p : mp){
-            if(p.second < lasUpdatingIndex){
-              mp[p.first] = -1;
-            }
-          }
-
-
-    		}
-    		printArr(s[i],countArr,n);
-    	}
-
-    	return mxAns;
-    }
-};
-
+uli solve(uli n){
+  if(n==1)
+    return 20;
+  else if(n==2)
+    return 36;
+  else{
+    if(n%2 == 0)
+      return solve(n-1) + 10;
+    else
+      return solve(n-1) + 14;
+  }
+}
 
 int main(){
-  fast;
-  Solution obj;
-  string str = "abcabc";
-  // string str = "tmmzuxt";
-  int ansLen = obj.lengthOfLongestSubstring(str);
-  cout<<"ansLen : "<<ansLen<<endl;
-
+  int tc;cin>>tc;
+  // memset(arr,0,sizeof(arr));
+  // initialize();
+  // show();
+  while(tc--){
+      uli n;
+      cin>>n;
+      uli res = solve(n);
+      // cout<<arr[n]<<endl;
+      cout<<res<<endl;
+  }
   return 0;
 }
+

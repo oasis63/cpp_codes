@@ -1,32 +1,23 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ui unsigned int
-#define SIZE  1000001
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define ll long long
 
 
 int main(){
-    map<int,int> countMap;
-    int a,b,c;
-    cin>>a>>b>>c;
-    a=a+b+c;
-    int t;
-    while(a--){
-        cin>>t;
-        countMap[t]++;
-    }
-    vector<int>vect;
-    for(pair<int,int>p : countMap){
-        if(p.second >= 2){
-            // cout<<p.first<<endl;
-            vect.push_back(p.first);
-        }
-    }
-    cout<<vect.size()<<endl;
-    for(int v : vect){
-        cout<<v<<endl;
-    }
 
+
+    int mod = 1000000007;
+
+    cout<<mod<<endl;
+    
+
+    cout<<(unsigned int)pow(10,18)<<endl;
+
+    // cout<<(((pow(10,18))%mod)*((pow(10,18))%mod))%mod<<endl;
 
     return 0;
 }
+
+// 999999999999999999

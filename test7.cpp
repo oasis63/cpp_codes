@@ -5,7 +5,7 @@ using namespace std;
 #define ll long long
 
 int main(){
-        
+
     string path = "Benga";
     string str1 = "Coim";
     path += " " + str1;
