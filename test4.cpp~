@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+string fractionToDecimal(int n, int d) {
+
+    if(n==0)
+        return "0";
+
+    double f = n/(double)d;
+
+//     cout<<f<<endl;
+
+    string s = to_string(f);
+
+    //cout<<s<<endl;
+
+    // cout<<s<<endl;
+
+    string ret = "";
+    ret.push_back(s[0]);
+    int cnt = 0;
+    for(int i=1;i<s.length();i++){
+        if(s[i] == s[i-1]){
+            cnt++;
+            if(cnt>=2)
+                break;
+        }else{
+            cnt=1;
+        }
+        ret.push_back(s[i]);
+    }
+
+    int id = ret.length()-1;
+
+    while(ret[id] == '0' && id>=0){
+        ret = ret.substr(0,id);
+       // cout<<ret<<endl;
+        id--;
+    }
+
+  //  cout<<ret<<endl;
+
+    n = ret.length();
+    cnt=0;
+    for(int i=n-1;i>=0;i--){
+        if(ret[i] == '.')
+            break;
+        cnt++;
+    }
+  //  cout<<cnt<<endl;
+  //  if(cnt==1)
+    //    ret = ret.substr(0,n-2);
+
+   return ret;
+}
+
+
+int main(){
+
+
+    cout<<fractionToDecimal(1,2)<<endl;
+
+    return 0;
+}

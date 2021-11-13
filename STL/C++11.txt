@@ -1,0 +1,7 @@
+//to compile the stl .cpp files
+
+ g++ file_name.cpp -std=c++0x
+
+ g++ file_name.cpp -std=c++11
+ 
+ 
