@@ -21,14 +21,13 @@ class complex
     
 };
 
- complex operator+(complex c2)
-     { 
-      complex temp;
-      temp.a=c2.a+a;
-      temp.b=c2.b+b;
-          
-      return (temp);
-     }
+ complex operator+(complex c2){ 
+    complex temp;
+    temp.a=c2.a+a;
+    temp.b=c2.b+b;
+        
+    return (temp);
+ }
 
 
 

@@ -1,26 +1,69 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long
-
 int main(){
-    
-    int notes[] = {100,50,10,5,2,1};
 
-    int ti,a;
-    cin>>ti;
-    while(ti--){
-        cin>>a;
-        int ans = 0;
-        for(int i=0;i<6;i++){
-            ans += a/notes[i];
-            a = a%notes[i];
-            if(a==0)
-                break;
+   vector<vector<int>> obstacles{
+        {
+            5,5
+        },
+        {
+            4,2
+        },
+        {
+            2,3
         }
-        cout<<ans<<endl;
+    };
+
+    int t5 = 5;
+    int t3 = 3;
+
+//    string str = t5+''+t3;
+
+    map<pair<int,int>,bool> myPairMap;
+    myPairMap.insert(make_pair(make_pair(4,3),true));
+    cout<<"pair map : " << myPairMap[make_pair(42,3)]<<endl;
+
+    pair<int,int> p1 = {4,53};
+    cout<<"pair  " << p1.first <<"   "<< p1.second<<endl;
+
+
+    map<int,bool> numMap;
+    numMap.insert(make_pair(4,true));
+    numMap.insert(make_pair(24,true));
+    numMap.insert(make_pair(114,true));
+
+
+    cout<<"map values " << numMap[422]<<endl;
+
+
+//    cout<<str<<endl;
+
+    set<pair<int,int>> myPairSet;
+
+//    myPairSet.insert()
+
+    set<int> mySet;
+    mySet.insert(343);
+    mySet.insert(3);
+    mySet.insert(43);
+
+    set<int>::iterator myiterator = mySet.begin();
+
+    while(myiterator != mySet.end()){
+        cout<<*myiterator<<endl;
+        myiterator++;
     }
 
-    return 0;
+    auto search = mySet.find(3);
+
+    if(search != mySet.end()) {
+        cout << "Found " << *search << '\n';
+    }
+    else {
+        cout << "Not found\n";
+    }
+
+
+
 }
