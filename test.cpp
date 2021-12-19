@@ -1,69 +1,68 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define ll long long 
+
+class Solution{
+    public:
+        void arrange(vector<int> &A);
+};
+
+void printVector(vector<int> vect){
+    int n = vect.size();
+    for(int i=0;i<n;i++){
+        cout<<vect[i]<<" ";
+    }
+    cout<<endl;
+}
+
+void Solution::arrange(vector<int> &A) {
+   int n = A.size();
+
+    // using extra space 
+   vector<int> tempVect(n);
+   printVector(tempVect);
+
+   for(int i=0;i<n;i++){
+       tempVect[A[i]]=i;
+   }    
+
+    cout<<"Answer vector"<<endl;
+    printVector(tempVect);
+
+}
+
 int main(){
 
-   vector<vector<int>> obstacles{
-        {
-            5,5
-        },
-        {
-            4,2
-        },
-        {
-            2,3
-        }
-    };
+    Solution s;
 
-    int t5 = 5;
-    int t3 = 3;
-
-//    string str = t5+''+t3;
-
-    map<pair<int,int>,bool> myPairMap;
-    myPairMap.insert(make_pair(make_pair(4,3),true));
-    cout<<"pair map : " << myPairMap[make_pair(42,3)]<<endl;
-
-    pair<int,int> p1 = {4,53};
-    cout<<"pair  " << p1.first <<"   "<< p1.second<<endl;
+    // vector<int> vect{1,0};
+    vector<int> vect{0,2,4,1,3};   // 0 4 3 2 1  
+    // vector<int> vect{ 4, 0, 2, 1, 3};
 
 
-    map<int,bool> numMap;
-    numMap.insert(make_pair(4,true));
-    numMap.insert(make_pair(24,true));
-    numMap.insert(make_pair(114,true));
+    cout<<vect.size()<<endl;
+
+    string str = "fsdlfjasjf";
 
 
-    cout<<"map values " << numMap[422]<<endl;
-
-
-//    cout<<str<<endl;
-
-    set<pair<int,int>> myPairSet;
-
-//    myPairSet.insert()
-
-    set<int> mySet;
-    mySet.insert(343);
-    mySet.insert(3);
-    mySet.insert(43);
-
-    set<int>::iterator myiterator = mySet.begin();
-
-    while(myiterator != mySet.end()){
-        cout<<*myiterator<<endl;
-        myiterator++;
-    }
-
-    auto search = mySet.find(3);
-
-    if(search != mySet.end()) {
-        cout << "Found " << *search << '\n';
-    }
-    else {
-        cout << "Not found\n";
-    }
+    cout<<"string size : ";
+    cout<<str.length()<<endl;
 
 
 
+    s.arrange(vect);
+
+
+    
+
+
+    
+
+    vect.size();
+
+    // printVector(vect);    
+
+    return 0;
 }

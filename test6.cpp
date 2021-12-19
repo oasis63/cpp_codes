@@ -151,6 +151,9 @@ int main(){
         cout<<paths[i]<<" "<<pathWeight[i]<<endl;
     }
 
+
+    int n ;
+
 }
 
 
