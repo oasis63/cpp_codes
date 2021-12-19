@@ -85,32 +85,16 @@ node* sort(node* head,int B){
     // traversal(after);
 
     while(head!=NULL){
-        cout<<"value : "<<head->value<<endl;
         if(head->value <  B){
             before = insert(before,head->value);
-            cout<<"added in before"<<endl;
         }else {
-            cout<<"added in after"<<endl;
             after = insert(after,head->value);
         }
         // traversal(before);
         // traversal(after);
         head=head->next;
     }
-    cout<<"check before : ";
-    cout<<before<<endl;
-    cout<<"first after : ";
-    traversal(after);
-
-    if(before == NULL){
-        cout<<"before is null"<<endl;
-        // traversal(after);
-        if(after != NULL)
-            return after;
-        else
-            return NULL;
-    }
-
+    
     node* before_trav = before;
     while(before_trav->next != NULL){
         before_trav = before_trav ->next;
@@ -121,7 +105,6 @@ node* sort(node* head,int B){
     cout<<"after"<<endl;
     traversal(after);
     
-    
     // node* tempNode = new node(B);
     // tempNode->next = after;
     // before_trav->next=tempNode;
@@ -131,7 +114,6 @@ node* sort(node* head,int B){
     traversal(before);
     cout<<"afterddd"<<endl;
     traversal(after);
-        
 
     return before;
 }

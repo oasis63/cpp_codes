@@ -17,5 +17,8 @@ int main()
 
 	cout<<sub<<endl;
 
+	vector<int> vect;
+	
+
 	return 0;
 }
