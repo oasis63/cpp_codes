@@ -1,31 +1,48 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-void subset(int num[],int n){
-
-	int p = 1<<n;  // pow(2,n) .. no. of subsets
-
-	for(int i=0;i<p;i++){
-
-		for(int j=0;j<n;j++){
-			if((i&(1<<j)))
-				cout<<num[j]<<" ";
-		}
-		cout<<endl;
-	}
-
-}
+#define ll long long
 
 int main(){
 
-    // 3
-    // 1 1 2
+    ll n;
+    cin >> n;
 
-    int n;
-    cin>>n;
+    string s;
+    cin >> s;
 
-    int arr[n];
+    vector<vector<ll>> v(26);
 
-    subset(num,3);
+    for (ll i = 0; i < 26; i += 1){
+        v[i].resize(n, 0);
+    }
 
+    v[s[0] - 'a'][0] = 1;
+
+    for (ll i = 1; i < n; i += 1){
+        v[s[i] - 'a'][i] = 1;
+    }
+
+    for (ll i = 0; i < 26; i += 1){
+        for (ll j = 1; j < n; j += 1){
+            v[i][j] += v[i][j - 1];
+        }
+    }
+
+    ll ans = 0;
+
+    for (ll i = 0; i < n; i += 1){
+        for (ll j = i + 1; j < n; j += 1){
+            if (s[i] == s[j]){
+                for (ll k = 0; k < 26; k += 1){
+                    ans += (v[k][n - 1] - v[k][j]) * (v[k][j - 1] - v[k][i]);
+                }
+            }
+        }
+    }
+
+    cout << ans;
+
+    return 0;
 }

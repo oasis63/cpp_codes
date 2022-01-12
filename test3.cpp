@@ -1,165 +1,43 @@
-// Binary search tree
 #include<bits/stdc++.h>
 using namespace std;
 
-// singly linked list
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define ll long long
 
-class node{
-public:
-    int value;
-    node* next;
-    node(int v){
-      this->value = v;
-      next = NULL;
+int findInRange(string str,int l,int r,char b){
+    int cnt=0;
+    for(int i=l;i<=r;i++){
+        char d = str[i];
+        if(d==b)
+            cnt++;
     }
-
-};
-
-// create node
-
-node* newNode(int val){  // use it or remove it 
-    node* n;  // pointer to the class
-    n=new node(val);  // pointing to a memory block of class node
-    //n->value = val;
-    n->next = NULL;
-    return n;
+    return cnt;
 }
-
-
-node* deleteElem(node*head,int val){
-
-    node* h = head;
-    node* prev = NULL;
-
-    while(h!=NULL){
-
-        if(h->value == val){
-
-            if(prev == NULL)
-                head = h->next;
-            else
-                prev->next = h->next;
-
-            delete(h);
-            break;
-        }
-
-        prev = h;
-        h=h->next;
-    }
-
-    return head;
-}
-
-void traversal(node* head)
-{
-
-    while(head!=NULL){
-        cout<<head->value<<" ";
-        head=head->next;
-    }
-    cout<<endl;
-}
-
-node* insert(node* head,int val){
-    node* newNode = new node(val);
-     if(head == NULL){
-         head = newNode;
-    }
-    else{
-         node* headRef = head;
-         while(headRef->next){
-             headRef = headRef->next;
-         }
-         headRef->next = newNode;
-        //  head = newNode;
-    }
-    return head;
-}
-
-node* sort(node* head,int B){
-    node* before=NULL;
-    node* after=NULL;
-
-    // traversal(before);
-    // traversal(after);
-
-    while(head!=NULL){
-        cout<<"value : "<<head->value<<endl;
-        if(head->value <  B){
-            before = insert(before,head->value);
-            cout<<"added in before"<<endl;
-        }else {
-            cout<<"added in after"<<endl;
-            after = insert(after,head->value);
-        }
-        // traversal(before);
-        // traversal(after);
-        head=head->next;
-    }
-    cout<<"check before : ";
-    cout<<before<<endl;
-    cout<<"first after : ";
-    traversal(after);
-
-    if(before == NULL){
-        cout<<"before is null"<<endl;
-        // traversal(after);
-        if(after != NULL)
-            return after;
-        else
-            return NULL;
-    }
-
-    node* before_trav = before;
-    while(before_trav->next != NULL){
-        before_trav = before_trav ->next;
-    }
-
-    cout<<"before"<<endl;
-    traversal(before);
-    cout<<"after"<<endl;
-    traversal(after);
-    
-    
-    // node* tempNode = new node(B);
-    // tempNode->next = after;
-    // before_trav->next=tempNode;
-    before_trav->next=after;
-
-    cout<<"beforedd"<<endl;
-    traversal(before);
-    cout<<"afterddd"<<endl;
-    traversal(after);
-        
-
-    return before;
-}
-
-
 
 int main(){
+    
+    int n;cin>>n;
+    string str; cin>>str;
+    int cnt=0;
+    int hash[26]={0};
+    for(int i=0;i<n;i++){
+        hash[str[i]-'a']++;
+    }
 
-   node* head = NULL;
-   head = insert(head,1);
-//    head = insert(head,4);
-//    head = insert(head,3);
-//    head = insert(head,2);
-//    head = insert(head,5);
-//    head = insert(head,2);
-   
-   
-    cout<<"input data : ";
-    traversal(head);
-
-   head = sort(head,1);
-
-   //cout<<head<<endl;
-
-    cout<<"result : ";
-
-   traversal(head);
-
+    for(int i=0;i<n;i++){
+        char a = str[i];
+        if(hash[a-'a']>1){
+            for(int j=i+1;j<n-1;j++){
+                char c = str[j];
+                if(c==a){
+                    for(int k=j-1;k>i;k--){
+                        char b = str[k];
+                        cnt += findInRange(str,j+1,n-1,b);
+                    }
+                }
+            }
+        }
+    }
+    cout<<cnt<<endl;
     return 0;
 }
-

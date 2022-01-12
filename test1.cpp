@@ -27,24 +27,60 @@ int minDist(int N,int X[]){
     return result;
 }
 
+int binary(int n)
+{
+
+   int r,bin=0,j=1;
+  
+    while(n!=0)
+    {
+        r=n%2;
+        bin = bin + r*j;    
+        j*=10;
+        n=n/2;
+    }
+    
+ return bin;
+}
+
+int 
+modularExpo(int a,int n,int m)
+{
+  int i,x=1,power=a%m,bin;
+  
+  bin=binary(n);
+  
+  while(bin!=0)
+  {
+    if(bin%10==1)
+     x=(x*power)%m;
+    power=(power*power)%m;
+    bin=bin/10;
+  }
+  return x;
+} 
+
+long int modularExpo2(long int x,long int n,long int M){
+    if(n==0)
+        return 1;
+    else if(n%2 == 0)
+        return modularExpo2((x*x)%M,n/2,M);
+    else
+        return (x*modularExpo2((x*x)%M,(n-1)/2,M))%M;
+}
+
 
 int main(){
 
-   /*  int arr[] = {1,3,5};
-    int n = 3;
+    cout<<pow(2,1603)<<endl;
 
-    
-    cout<<minDist(n,arr)<<endl;
-
-    vector<int> vect; */    
-
-    int n;
-    cin>>n;
+    cout<<modularExpo(2,50,1)<<endl;
 
 
-    cout<<n<<endl;
+    cout<<modularExpo2(2,50,1)<<endl;
 
 
+    // int ans = modularExpo(num,power,mod);
 
     return 0;
 }
