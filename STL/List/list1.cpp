@@ -60,7 +60,11 @@ int main()
    /*l1.pop_front();  // deletes the front element
    l1.pop_back(); */  // deletes the back element
 
+//   l1.front();
+
+     cout<<l1.front()<<endl;
+     cout<<l1.back()<<endl;
 
 
-
+     return 0;
 }

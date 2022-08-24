@@ -2,42 +2,46 @@
 using namespace std;
 
 #define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long
+#define ll long long 
 
-int findInRange(string str,int l,int r,char b){
-    int cnt=0;
-    for(int i=l;i<=r;i++){
-        char d = str[i];
-        if(d==b)
-            cnt++;
+void printVector(vector<int> vect){
+    int n = vect.size();
+    for(int i=0;i<n;i++){
+        cout<<vect[i]<<" ";
     }
-    return cnt;
+    cout<<endl;
 }
 
-int main(){
-    
-    int n;cin>>n;
-    string str; cin>>str;
-    int cnt=0;
-    int hash[26]={0};
-    for(int i=0;i<n;i++){
-        hash[str[i]-'a']++;
-    }
+int solve(){
 
-    for(int i=0;i<n;i++){
-        char a = str[i];
-        if(hash[a-'a']>1){
-            for(int j=i+1;j<n-1;j++){
-                char c = str[j];
-                if(c==a){
-                    for(int k=j-1;k>i;k--){
-                        char b = str[k];
-                        cnt += findInRange(str,j+1,n-1,b);
-                    }
-                }
-            }
-        }
+    int divide(int dividend, int divisor) {
+    if(dividend == INT_MIN && divisor == -1) return INT_MAX;
+    long long p = abs(dividend), q = abs(divisor);
+    int sign = ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) ? -1 : 1;
+    long long ans = 0, total = 0;
+    while(true) {
+    int n = 0;
+    long long tmp = q;
+    while(tmp + total <= p) {
+    n++;
+    tmp <<= 1LL;
     }
-    cout<<cnt<<endl;
+    if(n < 1) {
+    break;
+    }
+    ans += pow(2,n-1);
+    total += tmp >> 1LL;
+    }
+    return ans * sign;
+    }
+}
+
+
+int main(){
+    int tc;
+    cin>>tc;
+    while(tc--){
+        solve();
+    }
     return 0;
 }

@@ -1,159 +1,141 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-map<string,int> cityToNum;
-map<int,string> numToCity;
-vector<string> paths;
-vector<int> pathWeight;
+// hyderated and underhyderated penalty 
 
-string source;
-string destination;
+/* 
+ // input
 
-class Graph{
-int vertices;
-vector<pair<int,int> > *adj;  // array of adjacency list with weight
- void dfsUtil(int src,bool *);
-public:
-    Graph(int v){
-        vertices=v;
-        adj = new vector<pair<int,int> >[v];
-    }
+ 3
+-1
+0
+1
+3
+0
+1
+-1
+2
+1
 
-    void addEdge(int src,int dest,int weight);
-    void printGraph();
-    void dfs(int src);
-    void solve();
-    void solveUtil(int v,string &path,int &weight);
+
+ */
+
+
+class Node{
+    public:
+        int data;
+        Node* left,*right;
+        Node(int t){
+            data = t;
+            left = right = NULL;
+        }
 };
 
-void Graph::addEdge(int src,int dest,int weight){
-    adj[src].push_back(make_pair(dest,weight));
-    // adj[dest].push_back(make_pair(src,weight));
+map<int,int> waterLevelMap; // index, water level
+
+int solveUtil(vector<int> parent, vector<int> waterLevel, int overhydratedPenalty, int underhydratedPenalty,int ind) {
+    int totalNodes = waterLevel.size();
+    
+    
+    
+    
 }
 
-void Graph::printGraph(){
-    for(int i=0;i<vertices;i++){
-        cout<<"Source Node is : "<<numToCity[i]<<endl;
-        for(int j=0;j<adj[i].size();j++){
-            cout<<"\tNext Node : "<<numToCity[adj[i][j].first]<<"   Weight of the path :  "<<adj[i][j].second<<endl;
+
+void childToParent(Node* root,list<int> &currentList,int parentValue){
+    queue<Node*> q;
+    q.push(root);
+    while(!q.empty()){
+        Node* temp = q.front();q.pop();
+        if (temp->data == parentValue){
+            list<int>::iterator il = currentList.begin();
+            bool flag = true;
+            while (il != currentList.end()){
+                // cout << *il << " ";
+                if (flag)
+                    temp->left = new Node(*il);
+                else
+                    temp->right = new Node(*il);
+                il++;
+                flag = !flag;
+            }
+            break;
         }
+        if(temp->left)
+            q.push(temp->left);
+        if(temp->right)
+            q.push(temp->right);
+
     }
+
 }
 
-
-void Graph::solveUtil(int v,string &path,int &weight){
-
-    cout<<"Inside SolveUtil Node is : "<<numToCity[v]<<endl;
-
-
-    // path += " " + numToCity[v];
-
-    cout<<path <<  "   " << weight<<endl;
-
-    if(numToCity[v] == destination){
-        paths.push_back(path);
-        pathWeight.push_back(weight);
+void constructTreeUtil(Node* root,map<int,list<int>> link,list<int> currentList,int parentValue){
+    if(currentList.size() == 0){
         return;
     }
+    // printList(currentList);
+    childToParent(root,currentList,parentValue);
+    list<int>::iterator lit = currentList.begin();
+    while(lit != currentList.end()){
+        constructTreeUtil(root,link,link[*lit],*lit);
+        lit++;
+    }
+}
 
-    for(int j=0;j<adj[v].size();j++){
-        // cout<<"\tNext Node : "<<numToCity[adj[v][j].first]<<"   Weight of the path :  "<<adj[v][j].second<<endl;
-        weight += adj[v][j].second;
-        int t = adj[v][j].first;
-        path += " " + numToCity[t];
-        solveUtil(adj[v][j].first,path,weight);
-        weight -= adj[v][j].second;
-        int pl = path.length();
-        int s1 = numToCity[t].length();
-        path = path.substr(0,pl-s1-1);  
+void constructTreeUsingParentNodes(vector<int> parent){
+    Node* treeNode;
+    map<int,list<int>> mapLink; // parent, children 
+    int n = parent.size();
+    for(int i=0;i<n;i++){
+        mapLink[parent[i]].push_back(i);
+        if(parent[i] == -1)
+            treeNode = new Node(i);
+    }
+    // printListMap(mapLink);
+    constructTreeUtil(treeNode,mapLink,mapLink[treeNode->data],treeNode->data);
+    // inorder(treeNode);
+    // return treeNode;
+    //  n  == total number of nodes in the tree
+    for(int i=0;i<n;i++){
+        // pouring wate at the index/ node i
+        
+
     }
 }
 
 
-
-void Graph::solve(){
-
-    cout<<"Source Node is : "<<numToCity[0]<<endl;
-
-    string path = numToCity[0];
-    int weight = 0;
-
-    for(int j=0;j<adj[0].size();j++){
-        // cout<<"\tNext Node : "<<numToCity[adj[0][j].first]<<"   Weight of the path :  "<<adj[0][j].second<<endl;
-        // bool res = false;
-        weight = adj[0][j].second;
-        path = numToCity[0];
-        int v = adj[0][j].first;
-        path += " " + numToCity[v];
-        solveUtil(adj[0][j].first,path,weight);
-        int pl = path.length();
-        int s1 = numToCity[v].length();
-        path = path.substr(0,pl-s1-1);   
+// Complete the minimumPouringWaterPenalty function below.
+int minimumPouringWaterPenalty(vector<int> parent, vector<int> waterLevel, int overhydratedPenalty, int underhydratedPenalty) {
+    int totalNodes = waterLevel.size();
+    int ans = INT16_MAX;
+    // Node *root = createTree(parent, totalNodes);
+    for(int i =0;i<totalNodes;i++){
+        waterLevelMap.insert(make_pair(i,waterLevel[i]));
     }
+    // for(int i=0;i<totalNodes;i++){
+    //     int penalty = solveUtil(parent,waterLevel,overhydratedPenalty,underhydratedPenalty,i);
+    //     ans = min(penalty,ans);
+    // }
 
+    // for(int i=0;i<totalNodes;i++){
+
+    // }
+
+
+    return ans;
 }
 
 
 
 int main(){
+    vector<int> parent {-1,0,1};
+    vector<int> waterLavel {0,1,-1};
+    int overhydratedPenalty = 2; 
+    int underhydratedPenalty = 1;
 
-    int cost[] = {10000,4000,5000,6000};
-    string city1[] = {"Bengaluru","Bengaluru","Chennai","Chennai"};
-    string city2[] = {"Coimbatore","Chennai","Coimbatore","Coimbatore"};
+    cout<<minimumPouringWaterPenalty(parent,waterLavel,
+        overhydratedPenalty,underhydratedPenalty)<<endl;
 
-    int n = 4;
-    int idx = 0;
-
-    int src;
-    int dest;
-
-    source = "Bengaluru";
-    destination = "Coimbatore";
-
-
-    Graph g(n);
-
-
-    for(int i=0;i<n;i++){
-
-        if(cityToNum.find(city1[i]) == cityToNum.end()){
-          cityToNum.insert(make_pair(city1[i],idx));
-          src = idx;
-          numToCity.insert(make_pair(idx,city1[i]));
-          idx++;
-        }else{
-            src = cityToNum[city1[i]];
-        }
-
-        if(cityToNum.find(city2[i]) == cityToNum.end()){
-          cityToNum.insert(make_pair(city2[i],idx));
-          dest = idx;
-            numToCity.insert(make_pair(idx,city2[i]));
-          idx++;
-        }else{
-            dest = cityToNum[city2[i]];
-        }
-
-        // cout<<src<<"  "<<dest<<endl;
-
-        g.addEdge(src,dest,cost[i]);
-
-    }
-
-
-    g.solve();
-
-
-    cout<<paths.size()<<endl;
-    cout<<pathWeight.size()<<endl;
-
-    for(int i=0;i<paths.size();i++){
-        cout<<paths[i]<<" "<<pathWeight[i]<<endl;
-    }
-
-
-    int n ;
-
+    return 0;
 }
-
-

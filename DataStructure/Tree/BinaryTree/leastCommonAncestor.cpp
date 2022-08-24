@@ -62,7 +62,7 @@ Node* lca(Node* root,int v1,int v2){
     else{
 
         int v1L = find(root->left,v1);
-        int v2R = find(root->right,v2);
+        int v2R = find(root->right,v2); 
 
         int v1R = find(root->right,v1);
         int v2L = find(root->left,v2);

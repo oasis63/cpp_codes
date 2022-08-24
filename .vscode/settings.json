@@ -63,6 +63,11 @@
         "charconv": "cpp",
         "cstdarg": "cpp",
         "valarray": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "format": "cpp",
+        "future": "cpp",
+        "xlocmes": "cpp",
+        "xhash": "cpp",
+        "unordered_map": "cpp"
     }
 }

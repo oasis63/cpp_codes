@@ -1,59 +1,78 @@
-#include<bits/stdc++.h>
+// C++ implementation to Divide two
+// integers without using multiplication,
+// division and mod operator
+#include <bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long 
+// Function to divide a by b and
+// return floor value of the result
+long long divide2(long long dividend, long long int divisor){
 
-class Solution{
-    public:
-        string solve(string A);
-};
+    // Calculate sign of divisor i.e.,
+    // sign will be negative only if
+    // either one of them is negative
+    // otherwise it will be positive
+    long long sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
 
-bool largestPossible(string s,int len){
-    int i = 1;
-    while(i<len){
-        if(s[i] != s[0])
-            return true;
-        i++;
+    // Update both divisor and
+    // dividend positive
+    dividend = abs(dividend);
+    divisor = abs(divisor);
+
+    // Initialize the quotient
+    long long quotient = 0;
+    while (dividend >= divisor) {
+        dividend -= divisor;
+        ++quotient;
     }
-    return false;
+
+    // Return the value of quotient with the appropriate
+    // sign.
+    return quotient * sign;
 }
 
-string Solution::solve(string A) {
-    int len = A.length();
-    if(len == 1 || !largestPossible(A,len))
-        return "-1";
-    char second = A[1];
-    int max_ = 1;
-    bool found = false;
-    for(int i=2;i<len;i++){
-        if (!found && A[i] > max_){
-            max_ = i;
-            found = true;
-        }else if(found && A[i] > second && A[i] < A[max_]){
-            max_ = i;
-        }
+
+long long divide(int d2, int div2)
+{
+
+     long long dividend = long(d2);
+     long long divisor = long(div2);
+
+    // Calculate sign of divisor i.e.,
+    // sign will be negative only if
+    // either one of them is negative
+    // otherwise it will be positive
+    long long sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
+
+    // Update both divisor and
+    // dividend positive
+   
+    dividend = abs(dividend);
+    divisor = abs(divisor);
+
+    cout<<dividend<<endl;
+    cout<<divisor<<endl;
+
+    // Initialize the quotient
+    long long quotient = 0;
+    while (dividend >= divisor) {
+        dividend -= divisor;
+        ++quotient;
     }
-    swap(A[1],A[max_]);
-    string sub1 = A.substr(0,2);
-    string sub2 = A.substr(2);
-    sort(sub2.begin(),sub2.end());
-    if(found)
-        return sub1+sub2;
-    else 
-        return "-1";
+
+    // Return the value of quotient with the appropriate
+    // sign.
+    return quotient * sign;
 }
 
-int main(){
+// Driver code
+int main()
+{
+    int a = -2147483648, b = -1;
+    cout << divide(a, b) << "\n";
 
-    Solution s;
-
-    // cout<<s.solve("99fadsfsd999")<<endl;
-    // cout<<s.solve("99")<<endl;
-
-    // cout<<s.solve("9892")<<endl;
-    cout<<s.solve("218765")<<endl;
-
+    a = 43, b = -8;
+    cout << divide(a, b);
 
     return 0;
 }

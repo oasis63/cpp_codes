@@ -1,48 +1,21 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
 
+#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
 #define ll long long
 
 int main(){
+    
+    int i = 0;
+    int sum = 0;
 
-    ll n;
-    cin >> n;
-
-    string s;
-    cin >> s;
-
-    vector<vector<ll>> v(26);
-
-    for (ll i = 0; i < 26; i += 1){
-        v[i].resize(n, 0);
+    while(i < 100){
+        sum = sum + i;
+        sum = i + sum;
+        i += 1;
     }
 
-    v[s[0] - 'a'][0] = 1;
-
-    for (ll i = 1; i < n; i += 1){
-        v[s[i] - 'a'][i] = 1;
-    }
-
-    for (ll i = 0; i < 26; i += 1){
-        for (ll j = 1; j < n; j += 1){
-            v[i][j] += v[i][j - 1];
-        }
-    }
-
-    ll ans = 0;
-
-    for (ll i = 0; i < n; i += 1){
-        for (ll j = i + 1; j < n; j += 1){
-            if (s[i] == s[j]){
-                for (ll k = 0; k < 26; k += 1){
-                    ans += (v[k][n - 1] - v[k][j]) * (v[k][j - 1] - v[k][i]);
-                }
-            }
-        }
-    }
-
-    cout << ans;
+    cout<<sum<<endl;
 
     return 0;
 }
