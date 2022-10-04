@@ -1,47 +1,30 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+ 
+int main () {
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long 
+   string str ("software");
+   regex str_expr ("[a-z");
+    
+   smatch sm;
+   regex_match (str,sm,str_expr);
+   
+   cout << "the matches are: "<<endl;
+   for (unsigned i=0; i<sm.size(); ++i) {
+      cout<<sm[i]<<endl;
+   }
+ 
+   cout << endl;
 
-void printVector(vector<int> vect){
-    int n = vect.size();
-    for(int i=0;i<n;i++){
-        cout<<vect[i]<<" ";
-    }
-    cout<<endl;
-}
+   string data = "boost libraryAFDLFLJ is simple.";
 
-int solve(){
+   // for_each(data.begin(),data.end(),[](char &c){
+   //    c=tolower(c);
+   // });
 
-    int divide(int dividend, int divisor) {
-    if(dividend == INT_MIN && divisor == -1) return INT_MAX;
-    long long p = abs(dividend), q = abs(divisor);
-    int sign = ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) ? -1 : 1;
-    long long ans = 0, total = 0;
-    while(true) {
-    int n = 0;
-    long long tmp = q;
-    while(tmp + total <= p) {
-    n++;
-    tmp <<= 1LL;
-    }
-    if(n < 1) {
-    break;
-    }
-    ans += pow(2,n-1);
-    total += tmp >> 1LL;
-    }
-    return ans * sign;
-    }
-}
+   cout<<data<<endl;
 
-
-int main(){
-    int tc;
-    cin>>tc;
-    while(tc--){
-        solve();
-    }
-    return 0;
+   cout<<tolower('A')<<endl;
+ 
+   return 0;
 }

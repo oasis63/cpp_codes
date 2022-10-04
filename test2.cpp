@@ -1,78 +1,44 @@
-// C++ implementation to Divide two
-// integers without using multiplication,
-// division and mod operator
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-// Function to divide a by b and
-// return floor value of the result
-long long divide2(long long dividend, long long int divisor){
-
-    // Calculate sign of divisor i.e.,
-    // sign will be negative only if
-    // either one of them is negative
-    // otherwise it will be positive
-    long long sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
-
-    // Update both divisor and
-    // dividend positive
-    dividend = abs(dividend);
-    divisor = abs(divisor);
-
-    // Initialize the quotient
-    long long quotient = 0;
-    while (dividend >= divisor) {
-        dividend -= divisor;
-        ++quotient;
+class Solution {
+private:
+    bool check(string s){
+        string rev = s;
+        reverse(rev.begin(),rev.end());
+        if(rev==s)
+            return true;
+        else
+            return false;
     }
 
-    // Return the value of quotient with the appropriate
-    // sign.
-    return quotient * sign;
-}
+public:
+    bool isPalindrome(string s) {
+        cout<<"input string s : "<<s<<endl;
+        int len = s.length();
+        if( len == 0 || len == 1 ) return true;
+        // remove spaces 
 
+        transform(s.begin(),s.end(),s.begin(),::tolower);
 
-long long divide(int d2, int div2)
-{
+        regex r(" ");
 
-     long long dividend = long(d2);
-     long long divisor = long(div2);
+        cout<<regex_replace(s,r,"")<<endl;
+        
 
-    // Calculate sign of divisor i.e.,
-    // sign will be negative only if
-    // either one of them is negative
-    // otherwise it will be positive
-    long long sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
-
-    // Update both divisor and
-    // dividend positive
-   
-    dividend = abs(dividend);
-    divisor = abs(divisor);
-
-    cout<<dividend<<endl;
-    cout<<divisor<<endl;
-
-    // Initialize the quotient
-    long long quotient = 0;
-    while (dividend >= divisor) {
-        dividend -= divisor;
-        ++quotient;
+        return check(s);
     }
+};
 
-    // Return the value of quotient with the appropriate
-    // sign.
-    return quotient * sign;
-}
+int main(){
+    Solution s;
 
-// Driver code
-int main()
-{
-    int a = -2147483648, b = -1;
-    cout << divide(a, b) << "\n";
-
-    a = 43, b = -8;
-    cout << divide(a, b);
+    string str = "wow";
+    while(true){
+        cout<<s.isPalindrome(str)<<endl;
+        // cin>>str;
+        getline(cin, str);
+    }
 
     return 0;
 }

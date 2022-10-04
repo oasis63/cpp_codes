@@ -32,7 +32,6 @@ vector<vector<int>> solve(int n) {
     return vect;
 }
 
-
 int main(){
     
     vector<vector<int>>vect =solve(5);

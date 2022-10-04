@@ -13,6 +13,9 @@ int main(){
       
       cout<<isPowerOfThree(27)<<endl;
       cout<<isPowerOfThree(12)<<endl;
+      cout<<isPowerOfThree(0)<<endl;
+      cout<<isPowerOfThree(1)<<endl;
+      cout<<isPowerOfThree(2)<<endl;
 
       return 0;
 }
