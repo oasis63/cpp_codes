@@ -1,31 +1,85 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-void subset(int num[],int n){
+class Utility {
+   public:
+    static int binarySearch(vector<int> vect, int key) {
+        int n = vect.size();
+        int beg = 0, end = n - 1, mid;
+        while (beg <= end) {
+            mid = (beg + end) / 2;
 
-	int p = 1<<n;  // pow(2,n) .. no. of subsets
+            if (vect[mid] == key) {
+                return mid;
+            }
+            // check if the left half is sorted
+            if (vect[beg] <= vect[mid]) {
+                if (vect[beg] <= key < vect[mid]) {
+                    beg = mid - 1;
+                } else {
+                    beg = mid + 1;
+                }
+            } else {
+                if (vect[mid] < key <= vect[end]) {
+                    end = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
 
-	for(int i=0;i<p;i++){
+class Solution {
+   public:
+    int binarySearch(vector<int> vect, int key) {
+        int n = vect.size();
+        int beg = 0, end = n - 1, mid;
+        while (beg <= end) {
+            mid = (beg + end) / 2;
 
-		for(int j=0;j<n;j++){
-			if((i&(1<<j)))
-				cout<<num[j]<<" ";
-		}
-		cout<<endl;
-	}
+            if (vect[mid] == key) {
+                return mid;
+            }
+            // check if the left half is sorted
+            if (vect[beg] <= vect[mid]) {
+                if (vect[beg] <= key && key < vect[mid]) {
+                    end = mid - 1;
+                } else {
+                    beg = mid + 1;
+                }
+            } else {
+                if (vect[mid] < key && key <= vect[end]) {
+                    beg = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
 
-}
+    int search(vector<int>& nums, int target) {
+        // int len = nums.size();
+        // for (int i = 0; i < len; i++) {
+        //     if (nums[i] == target) return i;
+        // }
+        // return -1;
 
-int main(){
+        return binarySearch(nums, target);
+    }
+};
 
-    // 3
-    // 1 1 2
+int main() {
+    cout << "main  " << endl;
 
-    int n;
-    cin>>n;
+    Solution s;
 
-    int arr[n];
+    int target = 0;
+    vector<int> nums = {4, 5, 6, 7, 0, 1, 2};
 
-    subset(num,3);
+    cout << s.search(nums, target) << endl;
 
+    return 0;
 }
