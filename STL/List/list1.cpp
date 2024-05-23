@@ -1,70 +1,57 @@
-//Array template has fixed size
-#include <iostream>
+// Array template has fixed size
 #include <algorithm>
+#include <iostream>
 #include <list>
 using namespace std;
 
-int main()
-{
-   list <int> l1 {1,2,0,9,3,2,4};
+int main() {
+    list<int> l1{1, 2, 0, 9, 3, 2, 4};
 
-/* int n;
-   cout<<"\nEnter the number of elements \n";
-   cin>>n; */
+    /* int n;
+       cout<<"\nEnter the number of elements \n";
+       cin>>n; */
 
-   list <int>:: iterator il = l1.begin();
+    list<int>::iterator il = l1.begin();
 
-   while(il != l1.end())
-   {
-        cout<<*il<<" ";
+    while (il != l1.end()) {
+        cout << *il << " ";
 
-        il ++;
-   }
+        il++;
+    }
 
-   cout<<"\nSize = "<<l1.size()<<endl;
+    cout << "\nSize = " << l1.size() << endl;
 
-   l1.push_back(99);
-   l1.push_front(-1);
+    l1.push_back(99);
+    l1.push_front(-1);
 
-   l1.reverse();
+    l1.reverse();
 
-   cout<<endl;
+    cout << endl;
 
-   il = l1.begin();
+    il = l1.begin();
 
-   while(il != l1.end())
-   {
-        cout<<*il<<" ";
-        il ++;
-   }
+    while (il != l1.end()) {
+        cout << *il << " ";
+        il++;
+    }
 
-   cout<<endl;
+    cout << endl;
 
+    // l1.remove(0); // removes the particular value passed to it
 
-   //l1.remove(0); // removes the particular value passed to it
+    // l1.clear();  //clears the list
 
-   //l1.clear();  //clears the list
+    l1.sort(); // sorts the list
 
-   l1.sort();       //sorts the list
+    il = l1.begin();
 
-   il = l1.begin();
+    while (il != l1.end()) {
+        cout << *il << " ";
+        il++;
+    }
 
-   while(il != l1.end())
-   {
-        cout<<*il<<" ";
-        il ++;
-   }
+    cout << endl;
 
-   cout<<endl;
-
-   /*l1.pop_front();  // deletes the front element
-   l1.pop_back(); */  // deletes the back element
-
-//   l1.front();
-
-     cout<<l1.front()<<endl;
-     cout<<l1.back()<<endl;
-
-
-     return 0;
+    /*l1.pop_front();  // deletes the front element
+    l1.pop_back(); */  // deletes the back element
 }

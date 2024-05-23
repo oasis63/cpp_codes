@@ -1,86 +1,40 @@
-#include<bits/stdc++.h>
-#include<vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-int minDist(int N,int X[]){
-    
-    int result = -404;
-
-    int sum = 0;    
-
-    for(int i=0;i<N;i++){
-        sum += X[i];
+void showpq(priority_queue<vector<int>> gq) {
+    // priority_queue<pair<int, int>> g = gq;
+    while (!gq.empty()) {
+        vector<int> p = gq.top();
+        for (int i = 0; i < p.size(); i++) {
+            cout << p[i] << "  ";
+        }
+        cout << endl;
+        gq.pop();
     }
-
-    int avg = sum/N;
-
-    cout<<avg<<endl;
-    cout<<N<<endl;
-
-
-    result = 0;
-
-    for(int i=0;i<N;i++){
-        result += abs(avg - X[i]);
-    } 
-
-    return result;
+    cout << '\n';
 }
 
-int binary(int n)
-{
+// bool compare(pair<int, int> p1, pair<int, int> p2) {
+//     return p1.second > p2.second;
+// }
 
-   int r,bin=0,j=1;
-  
-    while(n!=0)
-    {
-        r=n%2;
-        bin = bin + r*j;    
-        j*=10;
-        n=n/2;
-    }
-    
- return bin;
-}
+int main() {
+    priority_queue<vector<int>> pq;
 
-int 
-modularExpo(int a,int n,int m)
-{
-  int i,x=1,power=a%m,bin;
-  
-  bin=binary(n);
-  
-  while(bin!=0)
-  {
-    if(bin%10==1)
-     x=(x*power)%m;
-    power=(power*power)%m;
-    bin=bin/10;
-  }
-  return x;
-} 
+    // pq.push(make_pair(10, 2));
+    pq.push({10, 2});
+    // pq.push(make_pair(30, 1));
+    pq.push({30, 1});
+    pq.push({20, 4});
+    pq.push({5, 2});
+    pq.push({1, 1});
 
-long int modularExpo2(long int x,long int n,long int M){
-    if(n==0)
-        return 1;
-    else if(n%2 == 0)
-        return modularExpo2((x*x)%M,n/2,M);
-    else
-        return (x*modularExpo2((x*x)%M,(n-1)/2,M))%M;
-}
+    showpq(pq);
+    cout << "pq.size() : " << pq.size() << endl;
 
+    pq.pop({10, 2});
 
-int main(){
-
-    cout<<pow(2,1603)<<endl;
-
-    cout<<modularExpo(2,50,1)<<endl;
-
-
-    cout<<modularExpo2(2,50,1)<<endl;
-
-
-    // int ans = modularExpo(num,power,mod);
+    showpq(pq);
 
     return 0;
 }

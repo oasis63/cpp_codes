@@ -1,34 +1,72 @@
-#include<bits/stdc++.h>
+//{ Driver Code Starts
+// Initial template for C++
+
+#include <bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long 
+// } Driver Code Ends
+// User function template for C++
 
-string sanitizeStr(string s){
-    string str = "";
-    int n = s.length();
-    char c;
-    for(int i=0;i<n;i++){
-        c = tolower(s[i]);
-        if((c>='a' && c<='z') || (c>='0' && c<='9')){
-            str.push_back(c);
+class Solution {
+  public:
+    int maxInRange(int *arr, int start, int end) {
+        int maxVal = INT_MIN;
+        for (int i = start; i <= end; i++) {
+            maxVal = max(maxVal, arr[i]);
         }
+        return maxVal;
     }
-    return str;
-}
 
-int main(){
-    
-    // string str = "abc 3fdfasd,refd red";
-    string str = ".";
-    string s1 = sanitizeStr(str);
-    string rev(s1);
-    reverse(rev.begin(),rev.end());
+    // Function to find maximum of each subarray of size k.
+    vector<int> max_of_subarrays(int *arr, int n, int k) {
+        // your code here
+        vector<int> ans;
 
-    cout<<s1 <<"  "<< rev << endl;
+        // find maximum of first k  length subarray
+        int currMax = INT_MIN;
+        for (int i = 0; i < k; i++) {
+            currMax = max(currMax, arr[i]);
+        }
+        ans.push_back(currMax);
 
-    if(s1 == rev) cout<<true<<endl;
-    else cout<<false<<endl;
+        int windowMax = currMax;
+        for (int i = k; i < n; i++) {
+
+            int prevElem = arr[i - k];
+            int newElem = arr[i];
+            // cout << "p : " << prevElem << "  n : " << newElem << endl;
+
+            if (windowMax != prevElem) {
+                windowMax = max(windowMax, newElem);
+            } else {
+                // find the max in the new range
+                int maxVal = maxInRange(arr, i - k, i);
+                windowMax = maxVal;
+            }
+
+            ans.push_back(windowMax);
+        }
+
+        return ans;
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+
+    int n = 2; // 9;
+    int k = 1; // 3;
+
+    // int arr[n] = {1, 2, 3, 1, 4, 5, 2, 3, 6};
+    int arr[n] = {1, -1};
+
+    Solution ob;
+    vector<int> res = ob.max_of_subarrays(arr, n, k);
+    for (int i = 0; i < res.size(); i++)
+        cout << res[i] << " ";
+    cout << endl;
 
     return 0;
 }
+// } Driver Code Ends

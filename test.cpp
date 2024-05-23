@@ -1,23 +1,44 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long 
+class Solution {
+  public:
+    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        int len = nums.size();
+        vector<int> vect;
 
-int main(){
+        bool visitedLast = false;
 
-    regex str_expr("[a-z0-9]"); // initialize the regex 
+        priority_queue<int> pq;
 
-    string str = "abc 3fdfasd,refd red";
+        for (int i = 0; i < len; i++) {
 
-    smatch sm;
-    regex_match (str,sm,str_expr);
+            pq.push(nums[i]);
 
-    cout << "the matches are: ";
-    for (unsigned i=0; i<sm.size(); ++i) {
-        cout << "[" << sm[i] << "] ";
+            cout << nums[i] << endl;
+
+            if (pq.size() == k) {
+                vect.push_back(pq.top());
+                pq.pop();
+            }
+        }
+        return vect;
     }
+};
 
+int main() {
 
+    Solution s;
+
+    vector<int> nums{1, 3, -1, -3, 5, 3, 6, 7};
+    int k = 3;
+
+    vector<int> ans = s.maxSlidingWindow(nums, k);
+
+    cout << endl;
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
     return 0;
 }
