@@ -3,26 +3,27 @@ using namespace std;
 
 class Solution {
   public:
-    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
-        int len = nums.size();
-        vector<int> vect;
+    vector<int> plusOne(vector<int> &digits) {
+        int len = digits.size();
 
-        bool visitedLast = false;
+        int i = len - 1;
+        int sum = 0;
+        int carry = 1;
 
-        priority_queue<int> pq;
+        do {
 
-        for (int i = 0; i < len; i++) {
+            sum = digits[i] + carry;
+            carry = sum / 10;
+            digits[i] = sum % 10;
 
-            pq.push(nums[i]);
+            i--;
 
-            cout << nums[i] << endl;
+        } while (carry == 1 && i >= 0);
 
-            if (pq.size() == k) {
-                vect.push_back(pq.top());
-                pq.pop();
-            }
-        }
-        return vect;
+        if (carry == 1)
+            digits.emplace(digits.begin(), 1);
+
+        return digits;
     }
 };
 
@@ -30,15 +31,15 @@ int main() {
 
     Solution s;
 
-    vector<int> nums{1, 3, -1, -3, 5, 3, 6, 7};
-    int k = 3;
+    // vector<int> nums{1, 3, 5, 6};
+    vector<int> nums{9};
 
-    vector<int> ans = s.maxSlidingWindow(nums, k);
+    vector<int> ans = s.plusOne(nums);
 
-    cout << endl;
     for (int i = 0; i < ans.size(); i++) {
         cout << ans[i] << " ";
     }
     cout << endl;
+
     return 0;
 }
