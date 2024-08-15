@@ -2,32 +2,42 @@
 using namespace std;
 
 class Solution {
-    int mapValue[50] = {0};
+    void removeAlphanumeric(string &str) {
+        // Remove alphanumeric characters using remove_if and erase
+        str.erase(remove_if(str.begin(), str.end(),
+                            [](char c) { return !isalnum(c); }),
+                  str.end());
+
+        // Convert uppercase to lowercase
+        transform(str.begin(), str.end(), str.begin(),
+                  [](unsigned char c) { return tolower(c); });
+    }
 
   public:
-    int climbStairs(int n) {
-        mapValue[0] = 1;
-        mapValue[1] = 1;
-        mapValue[2] = 2;
-        for (int i = 3; i <= n; i++) {
-            mapValue[i] = mapValue[i - 2] + mapValue[i - 1];
+    bool isPalindrome(string s) {
+
+        removeAlphanumeric(s);
+
+        cout << "s : " << s << endl;
+
+        int i = 0;
+        int j = s.length() - 1;
+        while (i < j) {
+            if (s[i] != s[j])
+                return false;
+            i++;
+            j--;
         }
-        return mapValue[n];
+        return true;
     }
 };
 
 int main() {
 
     Solution obj;
-    int x = 1;
-    // while (x < 10) {
-    //     cout << obj.climbStairs(x) << endl;
-    //     cout << "sleeping for 1 second" << endl;
-    //     sleep(1);
-    //     x++;
-    // }
 
-    cout << obj.climbStairs(44) << endl;
+    string str = "A man, a plan, a canals: Panama";
+    cout << obj.isPalindrome(str) << endl;
 
     return 0;
 }

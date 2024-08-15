@@ -1,65 +1,42 @@
-#include "UTILS/helper.h"
 #include <bits/stdc++.h>
-
 using namespace std;
 
 class Solution {
   public:
-    vector<vector<int>> generate(int numRows) {
-        // vector<vector<int>> v1(5, vector<int>(3, 0));
-        vector<vector<int>> v1(numRows);
-        v1[0].push_back(1);
-        for (int i = 1; i < numRows; i++) {
-            v1[i].push_back(1); // first value
-            for (int j = 1; j < i; j++) {
-                v1[i].push_back(v1[i - 1][j] + v1[i - 1][j - 1]);
+    int divisorSubstrings(int num, int k) {
+        string ns = to_string(num);
+        int len = ns.length();
+        int ans = 0;
+        cout << " ns : " << ns << endl;
+        for (int i = 0; i < len - k + 1; i++) {
+            string sub = ns.substr(i, k);
+            int temp = stoi(sub);
+            cout << "sub " << sub << " temp : " << temp << endl;
+            if (sub[0] != 0 && temp != 0 && num % temp == 0) {
+                cout << " rem : " << num % temp << endl;
+                ans++;
             }
-            v1[i].push_back(1); //  last eleemnt
         }
-        return v1;
-    }
-
-    vector<int> getRow(int rowIndex) {
-
-        // vector<vector<int>> v1(rowIndex+1);
-
-        vector<int> prev;
-        vector<int> curr;
-
-        prev.push_back(1);
-        // curr.push_back(1);
-
-        // v1[0].push_back(1);
-
-        for (int i = 1; i <= rowIndex; i++) {
-            curr.push_back(1); // first value
-            for (int j = 1; j < i; j++) {
-                curr.push_back(prev[j] + prev[j - 1]);
-            }
-            curr.push_back(1); //  last elemnt
-
-            cout << "Prev : ";
-            printVector(prev);
-            cout << "Curr : ";
-            printVector(curr);
-
-            // copy(curr.begin(), curr.end(), prev.begin());
-            // copyVector(curr, prev);
-            prev = curr;
-            curr = {};
-        }
-        return prev;
+        return ans;
     }
 };
 
 int main() {
 
-    Solution s;
-    vector<vector<int>> vect = s.generate(4);
-    print2DVector(vect);
+    set<int> st;
+    int c[3] = {};
+    for (int i = 0; i < 10; i++) {
+        st.insert(i);
+        c[i]++;
+    }
 
-    vector<int> res = s.getRow(3);
-    printVector(res);
+    for (auto n : st) {
+        cout << "n : " << n << endl;
+    }
+
+    for (auto n : c) {
+        cout << "n : " << n << endl;
+    }
 
     return 0;
 }
