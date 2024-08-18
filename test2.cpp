@@ -1,43 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-    void removeAlphanumeric(string &str) {
-        // Remove alphanumeric characters using remove_if and erase
-        str.erase(remove_if(str.begin(), str.end(),
-                            [](char c) { return !isalnum(c); }),
-                  str.end());
-
-        // Convert uppercase to lowercase
-        transform(str.begin(), str.end(), str.begin(),
-                  [](unsigned char c) { return tolower(c); });
-    }
-
+class Util {
   public:
-    bool isPalindrome(string s) {
-
-        removeAlphanumeric(s);
-
-        cout << "s : " << s << endl;
-
-        int i = 0;
-        int j = s.length() - 1;
-        while (i < j) {
-            if (s[i] != s[j])
-                return false;
-            i++;
-            j--;
+    template <typename T> void printSet(const set<T> &s) {
+        for (const auto &element : s) {
+            cout << element;
         }
-        return true;
+        cout << endl;
+    }
+    template <typename T> void printVector(const vector<T> &v) {
+        for (const auto &element : v) {
+            cout << element;
+        }
+        cout << endl;
     }
 };
-
+class Solution {
+  public:
+    int solve(vector<int> &nums) {
+        Util util;
+        int n = nums.size();
+        int ans = 0;
+        return ans;
+    }
+};
 int main() {
-
-    Solution obj;
-
-    string str = "A man, a plan, a canals: Panama";
-    cout << obj.isPalindrome(str) << endl;
-
+    Solution sol;
+    vector<int> nums{
+        1,
+        3,
+        1,
+    };
+    cout << sol.solve(nums) << endl;
     return 0;
 }
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
