@@ -5,65 +5,52 @@ class Util {
   public:
     template <typename T> void printSet(const set<T> &s) {
         for (const auto &element : s) {
-            cout << element;
+            cout << element << " ";
         }
         cout << endl;
     }
     template <typename T> void printVector(const vector<T> &v) {
         for (const auto &element : v) {
-            cout << element;
+            cout << element << " ";
         }
         cout << endl;
     }
 };
+
 class Solution {
-
-  private:
-    vector<int> uglyNumbers;
-    vector<bool> mp;
-
-    bool isUgly(int n) {
-        if (n <= 0)
-            return false;
-        while (n % 2 == 0)
-            n /= 2;
-        while (n % 3 == 0)
-            n /= 3;
-        while (n % 5 == 0)
-            n /= 5;
-        return n == 1;
-    }
-
   public:
-    Solution() { mp.assign(1691, false); }
-
-    void findUglyNumbers(int n) {
-        int curr = 0;
-        int curr_num = 1;
-        while (curr != n) {
-            if (isUgly(curr_num)) {
-                uglyNumbers.push_back(curr_num);
-                curr++;
-            }
-            curr_num++;
+    int solve(int n) {
+        int count = 0;
+        while (n) {
+            n = n & (n - 1);
+            count++;
         }
+        return count;
     }
-
-    int nthUglyNumber(int n) {
-
-        Util util;
-        util.printVector(mp);
-
-        findUglyNumbers(n);
-        return uglyNumbers[n - 1];
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1, 0);
+        for (int i = 0; i <= (n + 1); i++) {
+            ans[i] = solve(i);
+        }
+        return ans;
     }
 };
 
 int main() {
     Solution sol;
+    Util util;
 
-    int n = 1000;
+    int n = 5;
 
-    cout << sol.nthUglyNumber(n) << endl;
+    vector<int> ans = sol.countBits(n);
+
+    util.printVector(ans);
+
     return 0;
 }
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();

@@ -23,20 +23,27 @@ class Solution {
 
 int main() {
 
-    set<int> st;
-    int c[3] = {};
-    for (int i = 0; i < 10; i++) {
-        st.insert(i);
-        c[i]++;
-    }
+    // set<int> st;
+    // int c[3] = {};
+    // for (int i = 0; i < 10; i++) {
+    //     st.insert(i);
+    //     c[i]++;
+    // }
 
-    for (auto n : st) {
-        cout << "n : " << n << endl;
-    }
+    // for (auto n : st) {
+    //     cout << "n : " << n << endl;
+    // }
 
-    for (auto n : c) {
-        cout << "n : " << n << endl;
-    }
+    // for (auto n : c) {
+    //     cout << "n : " << n << endl;
+    // }
+
+    int n = 10;
+    cout << n << endl;
+
+    string str = to_string(n) + "";
+
+    cout << str << endl;
 
     return 0;
 }
