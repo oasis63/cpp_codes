@@ -99,7 +99,7 @@ class Solution {
 int main() {
     Util util;
     Solution sol;
-    string num1 = "123456789", num2 = "987654321"; // res :   121932631112635269
+    string num1 = "123456789", num2 = "987654321";
     string res = sol.multiply(num1, num2);
     cout << "ans : " << res << endl;
     return 0;

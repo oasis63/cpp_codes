@@ -19,35 +19,42 @@ class Util {
 
 class Solution {
   public:
-    int solve(int n) {
-        int count = 0;
-        while (n) {
-            n = n & (n - 1);
-            count++;
-        }
-        return count;
-    }
-    vector<int> countBits(int n) {
-        vector<int> ans(n + 1, 0);
-        for (int i = 0; i <= (n + 1); i++) {
-            ans[i] = solve(i);
-        }
+    int solve(vector<int> &nums) {
+        Util util;
+        int n = nums.size();
+        int ans = 0;
         return ans;
     }
 };
 
 int main() {
-    Solution sol;
     Util util;
+    Solution sol;
+    // vector<vector<int>> nums{{1, 4}, {0, 4}};
+    vector<vector<int>> nums{{1, 4}, {2, 3}}; // [[1,4],[2,3]]
 
-    int n = 5;
+    sort(nums.begin(), nums.end(),
+         [](const vector<int> &a, const vector<int> &b) {
+             // Compare based on the first element
+             if (a[0] != b[0]) {
+                 return a[0] < b[0];
+             } else {
+                 // If the first elements are equal, compare based on the
+                 // second element
+                 return a[1] < b[1];
+             }
+         });
 
-    vector<int> ans = sol.countBits(n);
-
-    util.printVector(ans);
+    for (int i = 0; i < nums.size(); i++) {
+        for (int j = 0; j < nums[i].size(); j++) {
+            cout << nums[i][j] << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
+
 auto init = []() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);

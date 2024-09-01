@@ -1,9 +1,9 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main(){
+int main() {
 
-   // filestream variable file
+    // filestream variable file
     fstream file;
     string word, t, q, filename;
     int n;
@@ -12,8 +12,7 @@ int main(){
 
     file.open(filename);
 
-
-    while (file >> n){
+    while (file >> n) {
         cout << n << endl;
     }
 

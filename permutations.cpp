@@ -31,6 +31,7 @@ class Solution {
         }
 
         for (int i = 0; i < n; i++) {
+            // skip the duplicates
             if (find(res.begin(), res.end(), nums[i]) != res.end())
                 continue;
             res.push_back(nums[i]);
@@ -53,7 +54,6 @@ int main() {
     vvi result = sol.permute(nums);
 
     cout << "All Permutations for the given array elements " << endl;
-
     for (int i = 0; i < result.size(); i++) {
         for (int j = 0; j < result[i].size(); j++) {
             cout << result[i][j] << " ";
