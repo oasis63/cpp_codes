@@ -23,23 +23,50 @@ class Util {
 
 class Solution {
   public:
-    int solve(vector<int> &nums) {
-        Util util;
-        int n = nums.size();
-        int ans = 0;
-        return ans;
+    vector<string> split(const string &str, char delimiter) {
+        vector<string> tokens;
+        stringstream ss(str);
+        string token;
+
+        while (getline(ss, token, delimiter)) {
+            tokens.push_back(token);
+        }
+
+        return tokens;
+    }
+
+    string simplifyPath(string path) {
+        vector<string> result = split(path, '/');
+        int n = result.size();
+        stack<string> stk;
+
+        for (string st : result) {
+            if (st == "..") {
+                if (!stk.empty())
+                    stk.pop();
+            } else {
+                if (st != "" && st != ".")
+                    stk.push(st);
+            }
+        }
+        string ans = "";
+        while (!stk.empty()) {
+            ans = "/" + stk.top() + ans;
+            stk.pop();
+        }
+        return ans == "" ? "/" : ans;
     }
 };
 
 int main() {
     Util util;
     Solution sol;
-    vector<int> nums{
-        1,
-        3,
-        1,
-    };
-    cout << sol.solve(nums) << endl;
+    // string path = "/home/user/Documents/../Pictures";
+    // string path = "/home//foo/";
+    // string path = "/../";
+    // string path = "/.../a/../b/c/../d/./";
+    string path = "/home/";
+    cout << sol.simplifyPath(path) << endl;
 
     return 0;
 }

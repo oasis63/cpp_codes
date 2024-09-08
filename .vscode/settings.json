@@ -63,6 +63,7 @@
         "charconv": "cpp",
         "cstdarg": "cpp",
         "valarray": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "variant": "cpp"
     }
 }
