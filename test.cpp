@@ -1,79 +1,77 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-#define uli unsigned long int
-
-class Util {
+class UnionFind {
   public:
-    template <typename T> void printSet(const set<T> &s) {
-        for (const auto &element : s) {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
-    template <typename T> void printVector(const vector<T> &v) {
-        for (const auto &element : v) {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
+    // Constructor to initialize the Union-Find structure with 'n' elements
+    UnionFind(int n) {
+        parent.resize(n);
+        rank.resize(n, 0); // Rank is initially zero for all elements
 
-    template <typename T> void print2DVector(const vector<vector<T>> &vec) {
-        for (const auto &row : vec) {
-            for (const auto &element : row) {
-                cout << element << " ";
-            }
-            cout << endl;
+        // Each element is its own parent initially (self loop)
+        for (int i = 0; i < n; ++i) {
+            parent[i] = i;
         }
     }
-};
 
-Util util;
-class Solution {
-  public:
-    int longestSubarray(vector<int> &nums) {
-        int n = nums.size();
+    // Find the root of the set containing element 'x' (with path compression)
+    int find(int x) {
+        if (parent[x] != x) {
+            // Path compression: make the parent of 'x' point directly to the
+            // root
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
 
-        auto maxIt = max_element(nums.begin(), nums.end());
-        int maxIndex = distance(nums.begin(), maxIt);
+    // Union the sets containing elements 'x' and 'y' (with union by rank)
+    void unionSets(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
 
-        int resLen = 0;
-        int bitAnd = 1;
-        int ans = 1;
-
-        for (int i = maxIndex; i < n; i++) {
-            cout << "nums[i] " << nums[i] << "  ";
-            int tempAnd = bitAnd & nums[i];
-
-            cout << "tempAnd : " << tempAnd << endl;
-
-            if (tempAnd >= bitAnd) {
-                resLen++;
-                ans = max(ans, resLen);
+        if (rootX != rootY) {
+            // Union by rank: attach smaller tree under the root of the larger
+            // tree
+            if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX; // Attach rootY's tree under rootX
+            } else if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY; // Attach rootX's tree under rootY
             } else {
-                resLen = 1;
-                bitAnd = nums[i];
+                parent[rootY] = rootX; // Attach rootY under rootX and increment
+                                       // rootX's rank
+                rank[rootX]++;
             }
         }
-        return ans;
     }
+
+    // Check if two elements 'x' and 'y' belong to the same set
+    bool connected(int x, int y) { return find(x) == find(y); }
+
+  private:
+    std::vector<int>
+        parent;            // Parent vector to store the parent of each element
+    std::vector<int> rank; // Rank vector to keep track of the tree height
 };
-Solution sol;
 
 int main() {
+    // Create a Union-Find structure with 7 elements (0 to 6)
+    UnionFind uf(7);
 
-    vector<int> nums{1, 2, 3, 3, 2, 2};
-    int res = sol.longestSubarray(nums);
-    cout << "res : " << res << endl;
+    // Perform some union operations
+    uf.unionSets(0, 1);
+    uf.unionSets(1, 2);
+    uf.unionSets(3, 4);
+    uf.unionSets(4, 5);
+    uf.unionSets(6, 5);
+
+    // Check if two elements are in the same set
+    std::cout << "Are 0 and 2 in the same set? "
+              << (uf.connected(0, 2) ? "Yes" : "No") << std::endl;
+    std::cout << "Are 3 and 6 in the same set? "
+              << (uf.connected(3, 6) ? "Yes" : "No") << std::endl;
+
+    // Perform a find operation (with path compression)
+    std::cout << "Root of 6: " << uf.find(6) << std::endl;
 
     return 0;
 }
-
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();

@@ -2,6 +2,11 @@
 #include <vector>
 
 class UnionFind {
+  private:
+    // Parent vector to store the parent of each element
+    vector<int> parent;
+    vector<int> rank; // Rank vector to keep track of the tree height
+
   public:
     // Constructor to initialize the Union-Find structure with 'n' elements
     UnionFind(int n) {
@@ -46,11 +51,6 @@ class UnionFind {
 
     // Check if two elements 'x' and 'y' belong to the same set
     bool connected(int x, int y) { return find(x) == find(y); }
-
-  private:
-    std::vector<int>
-        parent;            // Parent vector to store the parent of each element
-    std::vector<int> rank; // Rank vector to keep track of the tree height
 };
 
 int main() {
@@ -65,13 +65,13 @@ int main() {
     uf.unionSets(6, 5);
 
     // Check if two elements are in the same set
-    std::cout << "Are 0 and 2 in the same set? "
-              << (uf.connected(0, 2) ? "Yes" : "No") << std::endl;
-    std::cout << "Are 3 and 6 in the same set? "
-              << (uf.connected(3, 6) ? "Yes" : "No") << std::endl;
+    cout << "Are 0 and 2 in the same set? "
+              << (uf.connected(0, 2) ? "Yes" : "No") << endl;
+    cout << "Are 3 and 6 in the same set? "
+              << (uf.connected(3, 6) ? "Yes" : "No") << endl;
 
     // Perform a find operation (with path compression)
-    std::cout << "Root of 6: " << uf.find(6) << std::endl;
+    cout << "Root of 6: " << uf.find(6) << endl;
 
     return 0;
 }
