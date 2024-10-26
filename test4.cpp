@@ -1,108 +1,97 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution1 {
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
+#define uli unsigned long int
+
+class Util {
   public:
-    void dfs(vector<int> &ans, vector<bool> &visited, vector<int> adj[],
-             int curr) {
-        visited[curr] = true;
+    template <typename T> void printSet(const set<T> &s) {
+        for (const auto &element : s) {
+            cout << element << " ";
+        }
+        cout << endl;
+    }
+    template <typename T> void printVector(const vector<T> &v) {
+        for (const auto &element : v) {
+            cout << element << " ";
+        }
+        cout << endl;
+    }
 
-        // ans.push_back(curr);
-
-        cout << curr << " ";
-
-        for (int elem : adj[curr]) {
-            if (!visited[elem])
-                dfs(ans, visited, adj, elem);
+    template <typename T> void print2DVector(const vector<vector<T>> &vec) {
+        for (const auto &row : vec) {
+            for (const auto &element : row) {
+                cout << element << " ";
+            }
+            cout << endl;
         }
     }
-    // Function to return a list containing the DFS traversal of the graph.
-    void dfsOfGraph(int V, vector<int> adj[]) {
-        // Code here
-        vector<int> ans;
-        vector<bool> visited(V, false);
-        dfs(ans, visited, adj, 0);
-    }
 };
+
+Util util;
 
 class Solution {
   public:
-    // Function to find a Mother Vertex in the Graph.
+    vector<int> monotonicIncreasing(vector<int> nums) {
+        vector<int> result;
+        stack<int> st;
+        int n = nums.size();
 
-    void dfs(int src, vector<int> adj[], vector<bool> &visited,
-             int &countNodes) {
-
-        visited[src] = true;
-        // cout << src << " ";
-        countNodes++;
-
-        for (int elem : adj[src]) {
-            if (!visited[elem])
-                dfs(elem, adj, visited, countNodes);
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && st.top() > nums[i]) {
+                st.pop();
+            }
+            st.push(nums[i]);
         }
+
+        while (!st.empty()) {
+            result.insert(result.begin(), st.top());
+            st.pop();
+        }
+
+        return result;
     }
 
-    int findMotherVertex(int V, vector<int> adj[]) {
-        // Code here
-
-        int ans = -1;
-
-        for (int i = 0; i < V; i++) {
-            int countNodes = 0;
-            vector<bool> visited(V, false);
-            dfs(i, adj, visited, countNodes);
-            visited.clear();
-            cout << " V  : " << V << " i : " << i
-                 << " countNodes : " << countNodes << endl;
-
-            if (countNodes == V) {
-                cout << " return i : " << i << endl;
-                ans = i;
-            }
+    int nextGreater(vector<int> &vect, int j, int val) {
+        for (; j < vect.size(); j++) {
+            if (vect[j] > val)
+                return vect[j];
         }
-
-        return ans;
+        return -1;
+    }
+    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2) {
+        vector<int> res;
+        for (int el : nums1) {
+            int ind = find(nums2.begin(), nums2.end(), el) - nums2.begin();
+            res.push_back(nextGreater(nums2, ind, el));
+        }
+        return res;
     }
 };
 
+Solution sol;
+
 int main() {
 
-    Solution sol;
-    // int v = 5;
-    // vector<int> adj[v] = {{2, 3, 1}, {0}, {0, 4}, {0}, {2}};
+    vector<int> nums1 = {4, 1, 2};
+    vector<int> nums2 = {1, 3, 4, 2};
 
-    // 6 12
-    // 4 2
-    // 1 4
-    // 0 3
-    // 2 3
-    // 5 4
-    // 1 5
-    // 3 0
-    // 5 3
-    // 4 3
-    // 2 0
-    // 4 1
-    // 5 2
+    vector<int> res = sol.nextGreaterElement(nums1, nums2);
 
-    int v = 6;
-    vector<int> adj[v] = {
-        {4, 2}, {1, 4}, {0, 3}, {2, 3}, {5, 4}, {1, 5},
-        {3, 0}, {5, 3}, {4, 3}, {2, 0}, {4, 1}, {5, 2},
-    };
-
-    cout << "Solution " << endl;
-
-    int ans = sol.findMotherVertex(v, adj);
-
-    cout << "\nans : " << ans << endl;
-
-    // cout << "Solution1 " << endl;
-    // Solution1 sol1;
-
-    // sol1.dfsOfGraph(v, adj);
-
-    // cout << endl;
+    cout << endl;
+    for (int el : res) {
+        cout << res << " ";
+    }
+    cout << endl;
 
     return 0;
 }
+
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();

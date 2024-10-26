@@ -48,8 +48,14 @@ Solution sol;
 int main() {
 
     vector<int> nums{1, 3, 1};
-    int res = sol.solve(nums);
-    cout << "res : " << res << endl;
+    // int res = sol.solve(nums);
+    // cout << "res : " << res << endl;
+
+    int val = *max_element(nums.begin() + 0, nums.end());
+
+    cout << "val : " << val << endl;
+
+    cout << "Hello" << endl;
 
     return 0;
 }

@@ -32,85 +32,32 @@ class Util {
 
 Util util;
 
-void printHeap(
-    // priority_queue<string, vector<string>, greater<string>> myMinHeap) {
-    priority_queue<string> myMinHeap) {
-    // Print and remove elements from the min-heap
-    cout << "Min-Heap elements: ";
-    while (!myMinHeap.empty()) {
-        cout << myMinHeap.top() << " ";
-        myMinHeap.pop();
-    }
-    cout << std::endl;
-}
-
 class Solution {
   public:
-    int findKthNumber(int n, int k) {
+    int solve(vector<int> &nums) {
 
-        vector<string> nums;
+        int n = nums.size();
+        int ans = 0;
 
-        for (int i = 1; i <= n; i++) {
-            nums.push_back(to_string(i));
-        }
-
-        int kthAns = 1;
-
-        // sort(nums.begin(), nums.end());
-        util.printVector(nums);
-        // kthAns = stoi(nums[k - 1]);
-
-        // priority_queue<string, vector<string>, greater<string>> myMinHeap;
-        priority_queue<string> myMaxHeap; // maxHeap
-
-        for (int i = 0; i < k && i < n; i++) {
-            myMaxHeap.push(nums[i]);
-        }
-
-        int v_size = nums.size();
-
-        for (int i = k; i < v_size; i++) {
-            string top1 = myMaxHeap.top();
-            bool comparet = nums[i] < top1;
-            cout << "nums[i] " << nums[i] << "  top : " << top1
-                 << " isLessThan " << comparet << endl;
-            if (nums[i] < myMaxHeap.top()) {
-                myMaxHeap.pop();
-                myMaxHeap.push(nums[i]);
-            }
-        }
-
-        printHeap(myMaxHeap);
-
-        kthAns = stoi(myMaxHeap.top());
-
-        return kthAns;
-    }
-
-    // more efficient solution
-    int findKthNumber2(int n, int k) {
-        priority_queue<int, vector<int>, greater<int>> myMinHeap;
-
-        for (int i = 1; i <= n; i++) {
-            if (myMinHeap.size() < k) {
-                myMinHeap.push(i);
-            } else if (i < myMinHeap.top()) {
-                myMinHeap.pop();
-                myMinHeap.push(i);
-            }
-        }
-
-        return myMinHeap.top();
+        return ans;
     }
 };
+
 Solution sol;
 
 int main() {
 
-    int n = 13, k = 2;
-    int res = sol.findKthNumber(n, k);
+    vector<int> nums{1, 3, 1};
+    // int res = sol.solve(nums);
+    // cout << "res : " << res << endl;
+
+    int res = find(nums.begin(), nums.end(), 10) - nums.begin();
 
     cout << "res : " << res << endl;
+
+    // int index = res - nums.begin();
+
+    // cout << "index : " << index << endl;
 
     return 0;
 }

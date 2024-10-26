@@ -79,3 +79,44 @@ class Solution {
         return 1 + left + right;
     }
 };
+
+// third approach .. this is the fastest in leetcode
+
+int a[50001];
+int init = [] {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    ofstream out("user.out");
+    for (string s; getline(cin, s);) {
+        if (s.length() == 2) {
+            out << "[]\n";
+            continue;
+        }
+        int n = 0;
+        for (int _i = 1, _n = s.length(); _i < _n; ++_i) {
+            bool _neg = false;
+            if (s[_i] == '-')
+                ++_i, _neg = true;
+            int v = s[_i++] & 15;
+            while ((s[_i] & 15) < 10)
+                v = v * 10 + (s[_i++] & 15);
+            if (_neg)
+                v = -v;
+            a[n++] = v;
+        }
+        sort(a, a + n);
+        out << '[' << a[0];
+        for (int i = 1; i < n; ++i)
+            out << ',' << a[i];
+        out << "]\n";
+    }
+    out.flush();
+    exit(0);
+    return 0;
+}();
+const static auto initialize = [] {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return nullptr;
+}();

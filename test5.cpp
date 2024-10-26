@@ -19,54 +19,62 @@ class Util {
         }
         cout << endl;
     }
+
+    template <typename T> void print2DVector(const vector<vector<T>> &vec) {
+        for (const auto &row : vec) {
+            for (const auto &element : row) {
+                cout << element << " ";
+            }
+            cout << endl;
+        }
+    }
 };
+
+Util util;
 
 class Solution {
   public:
-    vector<string> split(const string &str, char delimiter) {
-        vector<string> tokens;
-        stringstream ss(str);
-        string token;
+    int solve(vector<int> &nums) {
 
-        while (getline(ss, token, delimiter)) {
-            tokens.push_back(token);
-        }
+        int n = nums.size();
+        int ans = 0;
 
-        return tokens;
-    }
-
-    string simplifyPath(string path) {
-        vector<string> result = split(path, '/');
-        int n = result.size();
-        stack<string> stk;
-
-        for (string st : result) {
-            if (st == "..") {
-                if (!stk.empty())
-                    stk.pop();
-            } else {
-                if (st != "" && st != ".")
-                    stk.push(st);
-            }
-        }
-        string ans = "";
-        while (!stk.empty()) {
-            ans = "/" + stk.top() + ans;
-            stk.pop();
-        }
-        return ans == "" ? "/" : ans;
+        return ans;
     }
 };
 
+Solution sol;
+
+bool canFormByRepeating(string &str, string &pattern) {
+
+    if (str.length() % pattern.length() != 0) {
+        return false;
+    }
+
+    string repeatedPattern = "";
+    int repeatCount = str.length() / pattern.length();
+
+    for (int i = 0; i < repeatCount; ++i) {
+        repeatedPattern += pattern;
+    }
+    return repeatedPattern == str;
+}
+
 int main() {
-    Util util;
-    Solution sol;
-    // string path = "/home/user/Documents/../Pictures";
-    // string path = "/home//foo/";
-    // string path = "/../";
-    // string path = "/.../a/../b/c/../d/./";
-    string path = "/home/";
-    cout << sol.simplifyPath(path) << endl;
+    // vector<int> nums{1, 3, 1};
+    // int res = sol.solve(nums);
+    // cout << "res : " << res << endl;
+
+    string str1 = "ABCABC";
+    string str2 = "ABC";
+
+    int n1 = str1.length();
+    int n2 = str2.length();
+
+    // string new_str = string(n2, str2[0]) * (n1 / n2);
+    bool new_str = canFormByRepeating(str1, str2);
+
+    cout << "new_str : " << new_str << endl;
 
     return 0;
 }
