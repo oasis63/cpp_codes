@@ -44,6 +44,8 @@ class Solution {
 Solution sol;
 
 int main() {
+    freopen("inputs.txt","r",stdin);
+    freopen("oututs.txt","w",stdout);
     vector<int> nums{1, 3, 1};
     int res = sol.solve(nums);
     cout << "res : " << res << endl;
