@@ -5,10 +5,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-#define uli unsigned long int
-
 #define int            long long int
 #define F              first
 #define S              second
@@ -31,18 +27,17 @@ using namespace std;
 #define print(a)       for(auto x : a) cout << x << " "; cout << endl
 #define print1(a)      for(auto x : a) cout << x.F << " " << x.S << endl
 #define print2(a,x,y)  for(int i = x; i < y; i++) cout<< a[i]<< " "; cout << endl
-#define print2DVector(vec) { for (const auto &row : vec) { for (const auto &element : row) cout << element << " "; cout << endl; } }
 
 inline int power(int a, int b)
 {
-    int x = 1;
-    while (b)
-    {
-        if (b & 1) x *= a;
-        a *= a;
-        b >>= 1;
-    }
-    return x;
+	int x = 1;
+	while (b)
+	{
+		if (b & 1) x *= a;
+		a *= a;
+		b >>= 1;
+	}
+	return x;
 }
 
 template <typename Arg1>
@@ -50,40 +45,34 @@ void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl
 template <typename Arg1, typename... Args>
 void __f (const char* names, Arg1&& arg1, Args&&... args)
 {
-    const char* comma = strchr (names + 1, ',');
-    cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
+	const char* comma = strchr (names + 1, ',');
+	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
 }
 
-class Solution {
-  public:
-    int solve(vector<int> &nums) {
-        int n = nums.size();
-        int ans = 0;
-        
-        return ans;
-    }
-};
+const int N = 200005;
 
-Solution sol;
-
-int32_t main() {
-
-    #ifndef ONLINE_JUDGE
-        freopen("inputs.txt",  "r",  stdin);
-        freopen("outputs.txt", "w", stdout);
-    #endif
-
-    vector<int> nums{1, 3, 1};
-    int res = sol.solve(nums);
-
-    bug(res);
-    
-    return 0;
+void solve() {
+	int n, m;
+	cin >> n >> m;
+	bug(n, m);
 }
 
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();
+int32_t main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt",  "r",  stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	clock_t z = clock();
+
+	int t = 1;
+	// cin >> t;
+	while (t--) solve();
+
+	cerr << "Run Time : " << ((double)(clock() - z) / CLOCKS_PER_SEC);
+
+	return 0;
+}

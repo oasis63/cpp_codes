@@ -1,57 +1,92 @@
+/*
+    ॐ नमः शिवाय | 
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
-// longest common substring
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
+#define uli unsigned long int
 
-int longestCommonSubstring(string str1, string str2, int n, int m) {
+#define int            long long int
+#define F              first
+#define S              second
+#define pb             push_back
+#define si             set <int>
+#define vi             vector <int>
+#define pii            pair <int, int>
+#define vpi            vector <pii>
+#define vpp            vector <pair<int, pii>>
+#define mii            map <int, int>
+#define mpi            map <pii, int>
+#define spi            set <pii>
+#define endl           "\n"
+#define sz(x)          ((int) x.size())
+#define all(p)         p.begin(), p.end()
+#define double         long double
+#define que_max        priority_queue <int>
+#define que_min        priority_queue <int, vi, greater<int>>
+#define bug(...)       __f (#__VA_ARGS__, __VA_ARGS__)
+#define print(a)       for(auto x : a) cout << x << " "; cout << endl
+#define print1(a)      for(auto x : a) cout << x.F << " " << x.S << endl
+#define print2(a,x,y)  for(int i = x; i < y; i++) cout<< a[i]<< " "; cout << endl
+#define print2DVector(vec) { for (const auto &row : vec) { for (const auto &element : row) cout << element << " "; cout << endl; } }
 
-    int result = 0;
-
-    int dp[n + 1][m + 1];
-    for (int i = 0; i <= n; i++) {
-        for (int j = 0; j <= m; j++) {
-            if (i == 0 || j == 0) {
-                dp[i][j] = 0;
-            } else if (str1[i - 1] == str2[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1] + 1;
-                result = max(result, dp[i][j]);
-            } else {
-                dp[i][j] = 0;
-            }
-        }
-    }
-    ACDGHR
-    return result;
+inline int power(int a, int b)
+{
+	int x = 1;
+	while (b)
+	{
+		if (b & 1) x *= a;
+		a *= a;
+		b >>= 1;
+	}
+	return x;
 }
 
-int main() {
+template <typename Arg1>
+void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
+template <typename Arg1, typename... Args>
+void __f (const char* names, Arg1&& arg1, Args&&... args)
+{
+	const char* comma = strchr (names + 1, ',');
+	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
+}
 
-    int tc;
-    cin >> tc;
 
-    while (tc--) {
-        int n, m;
-        cin >> n >> m;
-        string str1, str2;
-        cin >> str1;
-        cin >> str2;
-        cout << longestCommonSubstring(str1, str2, n, m) << endl;
+
+class Solution {
+  public:
+    int solve(vector<int> &nums) {
+        int n = nums.size();
+        int ans = 0;
+        
+        return ans;
     }
+};
+
+Solution sol;
+
+int32_t main() {
+
+    #ifndef ONLINE_JUDGE
+        freopen("inputs.txt",  "r",  stdin);
+        freopen("outputs.txt", "w", stdout);
+    #endif
+
+    vector<int> nums{1, 3, 1};
+    int res = sol.solve(nums);
+
+
+    bug(res);
+    
     return 0;
 }
 
-/*
-
-
-2
-6 6
-ABCDGH
-ACDGHR
-3 2
-ABC
-AC
-
-
-
-
-*/
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();

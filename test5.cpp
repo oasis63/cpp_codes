@@ -1,9 +1,24 @@
+/*
+    ॐ नमः शिवाय | 
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
 #define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 #define ll long long
 #define uli unsigned long int
+#define bug(...)       __f (#__VA_ARGS__, __VA_ARGS__)
+
+template <typename Arg1>
+void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
+template <typename Arg1, typename... Args>
+void __f (const char* names, Arg1&& arg1, Args&&... args)
+{
+	const char* comma = strchr (names + 1, ',');
+	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
+}
+
 
 class Util {
   public:
@@ -33,11 +48,50 @@ Util util;
 
 class Solution {
   public:
-    int solve(vector<int> &nums) {
-        int n = nums.size();
-        int ans = 0;
-        
+    string addStrings(string num1, string num2) {
+        int len1 = num1.length();
+        int len2 = num2.length();
+
+        int carry = 0;
+
+        int i = len1-1 , j = len2-1;
+
+        string ans = "";
+        int n1, n2, sum;
+
+        while( i >=0 && j >= 0){
+            n1 = num1[i]-'0';
+            n2 = num2[j] -'0';
+            sum = n1 + n2 + carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans = to_string(sum) + ans;
+            i--;
+            j--;
+        }
+
+        while( i >=0 ){
+            n1 = num1[i]-'0';
+            sum = n1 + carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans = to_string(sum) + ans;
+            i--;
+        }
+
+        while( j >=0 ){
+            n2 = num2[j] -'0';
+            sum = n2 + carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans = to_string(sum) + ans;
+            j--;
+        }
+
+        if( carry )   ans = to_string(carry) + ans;
+
         return ans;
+
     }
 };
 
@@ -46,9 +100,9 @@ Solution sol;
 int main() {
     freopen("inputs.txt","r",stdin);
     freopen("oututs.txt","w",stdout);
-    vector<int> nums{1, 3, 1};
-    int res = sol.solve(nums);
-    cout << "res : " << res << endl;
+
+    string res = sol.solve(num1 ,num2);
+    bug(res);
     return 0;
 }
 
