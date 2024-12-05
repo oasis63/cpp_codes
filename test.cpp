@@ -6,10 +6,10 @@
 using namespace std;
 
 #define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
+#define ll long long int
 #define uli unsigned long int
 
-#define int            long long int
+// #define int            long long int
 #define F              first
 #define S              second
 #define pb             push_back
@@ -24,7 +24,7 @@ using namespace std;
 #define endl           "\n"
 #define sz(x)          ((int) x.size())
 #define all(p)         p.begin(), p.end()
-#define double         long double
+// #define double         long double
 #define que_max        priority_queue <int>
 #define que_min        priority_queue <int, vi, greater<int>>
 #define bug(...)       __f (#__VA_ARGS__, __VA_ARGS__)
@@ -48,20 +48,81 @@ inline int power(int a, int b)
 template <typename Arg1>
 void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
 template <typename Arg1, typename... Args>
-void __f (const char* names, Arg1&& arg1, Args&&... args)
-{
+void __f (const char* names, Arg1&& arg1, Args&&... args){
     const char* comma = strchr (names + 1, ',');
     cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
 }
 
-class Solution {
-  public:
-    int solve(vector<int> &nums) {
-        int n = nums.size();
-        int ans = 0;
-        
-        return ans;
-    }
+
+class Solution{
+    public:
+        int firstUniqChar(string s) {
+            cout<<" s : " << s << endl;
+            
+            int n = s.length();
+            unordered_map<char,int> freq;
+            
+            for( char c : s){
+                freq[c]++;
+            }
+            
+            for(int i = 0;i<n;i++){
+                if( freq[s[i]] == 1) return i;
+            }
+            
+            return -1;    
+        }
+
+        int findKthLargest(vector<int> nums, int k) {
+            sort(nums.rbegin(), nums.rend());
+            int n = nums.size();
+            if( k < n ) return nums[k-1];
+
+            return -1;
+        }
+
+        // nums = [1, 2, 3, 4, 5]
+
+        int solve(vector<int> nums) {
+            // min-heap
+            priority_queue<int, vector<int>, greater<int>> minHeap;
+            int n = nums.size();
+            int totalCost = 0;
+
+            for(int num : nums){
+                minHeap.push(num);
+            }
+
+            while(!minHeap.empty()){
+                int firstElem = minHeap.top(); minHeap.pop();
+                int sum = firstElem;
+                if(minHeap.size() > 0 ){
+                    int secondElem = minHeap.top(); minHeap.pop();
+                    sum += secondElem;
+                }
+                minHeap.push(sum);
+                totalCost += sum;
+
+                if( minHeap.size() == 1){
+                    break;
+                }
+            }
+            
+            return totalCost;
+        }
+
+        int distributeCandies(vector<int> candies) {
+            int n = candies.size();
+            int temp = n/2;
+            set<int> s;
+            for(int a : candies){
+                s.insert(a);
+            }
+            
+            int ss = s.size();
+            
+            return ss <= temp ? ss : temp;
+        }
 };
 
 Solution sol;
@@ -73,11 +134,13 @@ int32_t main() {
         freopen("outputs.txt", "w", stdout);
     #endif
 
-    vector<int> nums{1, 3, 1};
-    int res = sol.solve(nums);
+
+    vector<int> nums {1,1,2,2,3,4};
+
+    int res = sol.distributeCandies(nums);
 
     bug(res);
-    
+
     return 0;
 }
 
