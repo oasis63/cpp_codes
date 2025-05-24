@@ -1,6 +1,6 @@
 // A Stack based C++ program to find next
 // greater element for all array elements.
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 /* prints element and NGE pair for all
@@ -13,7 +13,7 @@ void printNGE(int arr[], int n)
     s.push(arr[0]);
 
     // iterate for rest of the elements
-    for (int i=1; i<n; i++)
+    for (int i = 1; i < n; i++)
     {
         int next = arr[i];
 
@@ -34,12 +34,12 @@ void printNGE(int arr[], int n)
                 cout << element << " --> " << next
                      << endl;
                 if (s.empty() == true)
-                   break;
+                    break;
                 element = s.top();
                 s.pop();
             }
 
-            /* If element is greater than next,
+            /* If element is greater than nex t,
                then push the element back */
             if (element > next)
                 s.push(element);
@@ -64,7 +64,7 @@ void printNGE(int arr[], int n)
 int main()
 {
     int arr[] = {11, 13, 21, 3};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    int n = sizeof(arr) / sizeof(arr[0]);
     printNGE(arr, n);
     return 0;
 }

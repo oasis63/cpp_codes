@@ -1,68 +1,38 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-#define uli unsigned long int
-
-class Util {
-  public:
-    template <typename T> void printSet(const set<T> &s) {
-        for (const auto &element : s) {
-            cout << element << " ";
-        }
-        cout << endl;
+void showpq(priority_queue <int> gq)
+{
+    priority_queue <int> g = gq;
+    while (!g.empty())
+    {
+        cout << '\t' << g.top();
+        g.pop();
     }
-    template <typename T> void printVector(const vector<T> &v) {
-        for (const auto &element : v) {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
+    cout << '\n';
+}
 
-    template <typename T> void print2DVector(const vector<vector<T>> &vec) {
-        for (const auto &row : vec) {
-            for (const auto &element : row) {
-                cout << element << " ";
-            }
-            cout << endl;
-        }
-    }
-};
+int main ()
+{
+    priority_queue <int> gquiz;
+    gquiz.push(10);
+    gquiz.push(30);
+    gquiz.push(20);
+    gquiz.push(5);
+    gquiz.push(1);
 
-Util util;
+    cout << "The priority queue gquiz is : ";
+    showpq(gquiz);
 
-class Solution {
-  public:
-    int solve(vector<int> &nums) {
+    cout << "\ngquiz.size() : " << gquiz.size();
+    cout << "\ngquiz.top() : " << gquiz.top();
 
-        int n = nums.size();
-        int ans = 0;
 
-        return ans;
-    }
-};
-
-Solution sol;
-
-int main() {
-
-    vector<int> nums{1, 3, 1};
-    // int res = sol.solve(nums);
-    // cout << "res : " << res << endl;
-
-    int val = *max_element(nums.begin() + 0, nums.end());
-
-    cout << "val : " << val << endl;
-
-    cout << "Hello" << endl;
+    cout << "\ngquiz.pop() : ";
+    gquiz.pop();
+    showpq(gquiz);
 
     return 0;
 }
-
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();

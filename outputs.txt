@@ -1,1 +1,29 @@
-res : 3
+str : ABCD
+row : 1
+ step : 0
+A B C D 
+res : ABCD
+
+str : PAYPALISHIRING
+row : 4
+ step : 2
+P - - I - - N - - - - - - - - - A - L S - I G - - - - - - - - - Y A - H R - - - - - - - - - - - P - - I - - - - - - - - - - - - 
+res : PINALSIGYAHRPI
+
+str : PAHNAPLSIIGYIR
+row : 3
+ step : 1
+P - A - I - I - - - - - A N P S I Y R - - - - - H - L - G - - - - - - - 
+res : PAIIANPSIYRHLG
+
+str : A
+row : 1
+
+res : A
+
+str : PAYPALISHIRING
+row : 5
+ step : 2
+P - - S - - - - - - - - - - - - - - - - A - - H - - - - - - - - - - - - - - - - Y - I I - G - - - - - - - - - - - - - - P L - R N - - - - - - - - - - - - - - - A - - I - - - - - - - - - - - - - - - - 
+res : PSAHYIIGPLRNAI
+
