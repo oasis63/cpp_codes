@@ -14,7 +14,7 @@ void showpq(priority_queue <int> gq)
     cout << '\n';
 }
 
-int main ()
+int m189269ain ()
 {
     priority_queue <int> gquiz;
     gquiz.push(10);
