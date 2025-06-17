@@ -1,77 +1,57 @@
-//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-  public:
-    vector<int> primes{2, 3};
-    bool isPrime(int n) {
-        for (int i = 2; i <= sqrt(n); i++) {
-            if (n % i == 0)
-                return false;
+
+void solve(vector<vector<int>> &ans, vector<int> &vect, vector<int> A , int  ind, int n, int k){
+    if( ind > n ){ 
+        return;
+    }
+    if(vect.size() == k ){
+        if(find(ans.begin(), ans.end(), vect) == ans.end())
+            ans.push_back(vect);
+        return;
+    }
+    for(int i=ind;i<n;i++){
+        vect.push_back(A[i]);
+        solve(ans, vect, A , i+1, n, k );
+        vect.pop_back();
+    }
+}
+
+vector<vector<int> > combine(int n, int B) {
+    
+    vector<int> A;
+    for(int i = 1;i<=n;i++){
+        A.push_back(i);
+    }
+
+    vector<vector<int>> ans;
+    vector<int> vect;
+    
+    solve(ans, vect, A , 0, n, B);
+    
+    return ans;
+}
+
+
+
+int main(){
+
+    // vector<string> A = {"ab", "cd"};
+
+   int A = 4;
+   int b = 2;
+
+    vector<vector<int>> ans = combine(A,b);
+
+    // cout << endl;
+    for (auto t : ans){
+        // cout<<"size : " << t.size() <<endl;
+        for (auto i : t){
+            cout << i << "  ";
         }
-        return true;
-    }
-    void precompute() {
-        for (int i = 4; i < 10001; i++) {
-            if (isPrime(i))
-                primes.push_back(i);
-        }
+        cout << endl;
     }
 
-    void dfsUtil(vector<vector<int>> &g, int src, vector<bool> &visited,
-                 int &maxConnect, int currCount) {
-
-        cout << " src : " << src << "  ";
-        visited[src] = true;
-
-        // cout << src << "  ";
-
-        // currCount++;
-        // maxConnect = max(maxConnect, currCount);
-        for (int elem : g[src - 1]) {
-            if (!visited[elem - 1])
-                dfsUtil(g, elem, visited, maxConnect, currCount);
-        }
-    }
-
-    int dfs(vector<vector<int>> &g, int n, int m) {
-        int maxConnect = 0;
-
-        // for (int i = 0; i < n; i++) {
-        vector<bool> visited(n + m, false);
-        dfsUtil(g, 0, visited, maxConnect, 0);
-        // }
-        return maxConnect;
-    }
-
-    int helpSanta(int n, int m, vector<vector<int>> &g) {
-        // Code here
-        int maxConnection = dfs(g, n, m);
-        cout << "maxConnection : " << maxConnection << endl;
-        return primes[maxConnection - 1];
-    }
-};
-
-//{ Driver Code Starts.
-
-int main() {
-    int t = 2;
-    Solution ob;
-    // ob.precompute();
-    // while (t--) {
-    int n, e, u, v;
-    cin >> n >> e;
-    vector<vector<int>> g;
-
-    for (int i = 0; i < e; i++) {
-        cin >> u >> v;
-        cout << " u " << u << " v : " << v << endl;
-        // g.push_back({u, v});
-        // 			g[u].push_back(v);
-        // 			g[v].push_back(u);
-    }
-    int ans = ob.helpSanta(n, e, g);
-    cout << "\n ans : " << ans << endl;
-    // }
+    return 0;
 }

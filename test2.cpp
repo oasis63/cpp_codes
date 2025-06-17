@@ -13,7 +13,7 @@ void solve(vector<vector<int>> &ans, vector<int> &vect, vector<int> A , int  ind
     for(int i=ind;i<n;i++){
         curr_sum += A[i];
         vect.push_back(A[i]);
-        solve(ans, vect, A , i, n, sum ,  curr_sum);
+        solve(ans, vect, A , i+1, n, sum ,  curr_sum);
         vect.pop_back();
         curr_sum -= A[i];
 
@@ -37,8 +37,8 @@ int main(){
 
     // vector<string> A = {"ab", "cd"};
 
-    vector<int> A = {8, 10, 6, 11, 1, 16, 8, 2 , 3,5, 6 };
-    int b = 40;
+    vector<int> A = {10,1,2,7,6,1,5 };
+    int b = 8;
 
     vector<vector<int>> ans = combinationSum(A,b);
 
