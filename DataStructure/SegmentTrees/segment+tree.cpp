@@ -73,22 +73,22 @@ struct segmenttree {
 	}
 
 	void build(vector<int> &v) {
-		build(0, n - 1, 0, v);
+		buildUtil(0, n - 1, 0, v);
 	}
 
 	int query(int l, int r) {
-		return query(0, n - 1, l, r, 0);
+		return queryUtil(0, n - 1, l, r, 0);
 	}
 
 	void update(int x, int y) {
-		update(0, n - 1, 0, x, y);
+		updateUtil(0, n - 1, 0, x, y);
 	}
 };
 
 int main()
 {
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
+	// freopen("input.txt", "r", stdin);
+	// freopen("output.txt", "w", stdout);
 
 	vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};
 	// cout << v.size();
