@@ -1,23 +1,16 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-// since we are taking binary tree
-// because of this we are using mid :
-// diving the root(node) with two parts [ left tree , right tree]
-
-// summation
-struct SegmentTree {
-  int n;
+class SegmentTree {
+public:
   vector<int> st;
-
-  void init(int _n) {
+  int n;
+  SegmentTree(int _n) {
     this->n = _n;
-    st.resize(4 * n, 0);
+    st.resize(4 * _n, 0);
   }
 
   void buildUtil(int start, int ending, int node, vector<int> &v) {
-    // leaf node base case
     if (start == ending) {
       st[node] = v[start];
       return;
@@ -25,14 +18,17 @@ struct SegmentTree {
 
     int mid = (start + ending) / 2;
 
-    // left subtree is (start,mid)
+    // left subtree
     buildUtil(start, mid, 2 * node + 1, v);
 
-    // right subtree is (mid+1,ending)
+    // right subtree
+
     buildUtil(mid + 1, ending, 2 * node + 2, v);
 
-    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
   }
+
+  void build(vector<int> &v) { buildUtil(0, n - 1, 0, v); }
 
   int queryUtil(int start, int ending, int l, int r, int node) {
     // non overlapping case
@@ -45,7 +41,8 @@ struct SegmentTree {
       return st[node];
     }
 
-    // partial case
+    //  partial case
+
     int mid = (start + ending) / 2;
 
     int q1 = queryUtil(start, mid, l, r, 2 * node + 1);
@@ -54,47 +51,45 @@ struct SegmentTree {
     return q1 + q2;
   }
 
+  int query(int l, int r) { return queryUtil(0, n - 1, l, r, 0); }
+
   void updateUtil(int start, int ending, int node, int index, int value) {
-    // base case
     if (start == ending) {
       st[node] = value;
       return;
     }
 
     int mid = (start + ending) / 2;
+
+    // left
     if (index <= mid) {
-      // left subtree
       updateUtil(start, mid, 2 * node + 1, index, value);
     } else {
-      // right
       updateUtil(mid + 1, ending, 2 * node + 2, index, value);
     }
 
-    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
 
     return;
   }
 
-  void build(vector<int> &v) { buildUtil(0, n - 1, 0, v); }
-
-  int query(int l, int r) { return queryUtil(0, n - 1, l, r, 0); }
-
   void update(int x, int y) { updateUtil(0, n - 1, 0, x, y); }
 };
 
-
-
-
 int main() {
-  // freopen("input.txt", "r", stdin);
-  // freopen("output.txt", "w", stdout);
+
+  cout << "Segment Tree" << endl;
 
   vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};
   // cout << v.size();
 
-  SegmentTree tree;
+  SegmentTree tree(v.size());
 
-  tree.init(v.size());
+  cout << "tree size : " << tree.n << endl;
+
+  cout << "st size : " << tree.st.size() << endl;
+
+  // tree.init(v.size());
 
   tree.build(v);
 

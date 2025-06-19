@@ -112,11 +112,6 @@ vector<int>solve(int n, vector<int>a, vector<vector<int>> queries){
 }
 
 
-vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
-        
-}
-
-
 int main(){
 
     int n = 5;

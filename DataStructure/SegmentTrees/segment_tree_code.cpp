@@ -2,8 +2,18 @@
 
 using namespace std;
 
+
+
+// since we are taking binary tree 
+// because of this we are using mid :
+// diving the root(node) with two parts [ left tree , right tree]
+
+//  start, ending --> indices for the given vector 
+
+// node --> index of the segment tree array 
+
 // summation
-struct segmenttree {
+struct SegmentTree {
 	int n;
 	vector<int> st;
 
@@ -93,7 +103,7 @@ int main()
 	vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};
 	// cout << v.size();
 
-	segmenttree tree;
+	SegmentTree tree;
 
 	tree.init(v.size());
 
