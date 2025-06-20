@@ -1,79 +1,85 @@
-/*
-    ॐ नमः शिवाय | 
-*/
-
 #include <bits/stdc++.h>
+
+#include <chrono>
 using namespace std;
+using namespace chrono;
 
-#define int            long long int
-#define F              first
-#define S              second
-#define pb             push_back
-#define si             set <int>
-#define vi             vector <int>
-#define pii            pair <int, int>
-#define vpi            vector <pii>
-#define vpp            vector <pair<int, pii>>
-#define mii            map <int, int>
-#define mpi            map <pii, int>
-#define spi            set <pii>
-#define endl           "\n"
-#define sz(x)          ((int) x.size())
-#define all(p)         p.begin(), p.end()
-#define double         long double
-#define que_max        priority_queue <int>
-#define que_min        priority_queue <int, vi, greater<int>>
-#define bug(...)       __f (#__VA_ARGS__, __VA_ARGS__)
-#define print(a)       for(auto x : a) cout << x << " "; cout << endl
-#define print1(a)      for(auto x : a) cout << x.F << " " << x.S << endl
-#define print2(a,x,y)  for(int i = x; i < y; i++) cout<< a[i]<< " "; cout << endl
+int dp[100005] = {0};
 
-inline int power(int a, int b)
-{
-	int x = 1;
-	while (b)
-	{
-		if (b & 1) x *= a;
-		a *= a;
-		b >>= 1;
-	}
-	return x;
+int hits = 0;
+
+// top down approach
+// recursion + memoization
+
+int solve(int n) {
+//   cout << " n : " << n << endl;
+  if (n == 0)
+    return dp[n] = 0;
+  else if (n == 1)
+    return dp[n] = INT_MAX;
+  else if (n == 2 || n == 3)
+    return dp[n] = 1;
+
+  if (dp[n] != 0) {
+    hits++;
+    return dp[n];
+  }
+
+  int s3 = solve(n % 3);
+  int s2 = solve(n % 2);
+  int result = INT_MAX;
+
+  if (s3 != INT_MAX && s2 != INT_MAX) {
+    result = min(n / 2 + s2, n / 3 + s3);
+  } else {
+    if (s2 != INT_MAX) {
+      result = n / 2 + s2;
+    } else if (s3 != INT_MAX) {
+      result = n / 3 + s3;
+    } else {
+      result = INT_MAX;
+    }
+  }
+  return dp[n] = result;
+  // return result;
 }
 
-template <typename Arg1>
-void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
-template <typename Arg1, typename... Args>
-void __f (const char* names, Arg1&& arg1, Args&&... args)
-{
-	const char* comma = strchr (names + 1, ',');
-	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
+int main() {
+  auto start = high_resolution_clock::now();
+
+  int n = 11;
+
+  for (int i = 0; i < n; i++) {
+    cout << " i : " << i << " --->  " << solve(i) << endl;
+  }
+
+  // cout << solve(5) << endl;
+
+  //   cout << "\n -------------final dp -----------" << endl;
+
+  //   for (int i = 0; i < 20; i++) {
+  //     cout << " i : " << i << " -------> " << dp[i] << endl;
+  //   }
+
+  auto end = high_resolution_clock::now();
+
+  auto duration = duration_cast<microseconds>(end - start);
+  auto milli_duration = duration_cast<milliseconds>(end - start);
+
+  cout << " hits : " << hits << endl;
+
+  cout << "Execution time: " << duration.count() << " microseconds" << "  ---  "
+       << milli_duration.count() << " milliseconds" << endl;
+
+  return 0;
 }
 
-const int N = 200005;
+/*
 
-void solve() {
-	int n, m;
-	cin >> n >> m;
-	bug(n, m);
-}
+Execution time: 311031 microseconds
+Execution time: 332011 microseconds
 
-int32_t main()
-{
-	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-#ifndef ONLINE_JUDGE
-	freopen("inputs.txt",  "r",  stdin);
-	freopen("outputs.txt", "w", stdout);
-#endif
 
-	clock_t z = clock();
 
-	int t = 1;
-	cin >> t;
-	while (t--) solve();
-
-	cout << "Run Time : " << ((double)(clock() - z) / CLOCKS_PER_SEC)<<endl;
-	cerr << "Run Time : " << ((double)(clock() - z) / CLOCKS_PER_SEC);
-
-	return 0;
-}
+*/

@@ -1,114 +1,60 @@
-/*
-    ॐ नमः शिवाय | 
-*/
-
 #include <bits/stdc++.h>
+
+#include <chrono>
 using namespace std;
+using namespace chrono;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-#define uli unsigned long int
-#define bug(...)       __f (#__VA_ARGS__, __VA_ARGS__)
+int dp[100001] = {-1};
 
-template <typename Arg1>
-void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
-template <typename Arg1, typename... Args>
-void __f (const char* names, Arg1&& arg1, Args&&... args)
-{
-	const char* comma = strchr (names + 1, ',');
-	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
+// top down approach
+
+int solve(int n) {
+  if (n == 0)
+    return 0;
+  else if (n == 1)
+    return INT_MAX;
+  else if (n == 2 || n == 3)
+    return 1;
+  // return min(n / 2 + solve(n % 2), n / 3 + solve(n % 3));
+
+  if (dp[n] != -1) {
+    cout << " used the memoized value " << endl;
+    return dp[n];
+  }
+
+  int s3 = solve(n % 3);
+  int s2 = solve(n % 2);
+
+  if (s3 != INT_MAX && s2 != INT_MAX) {
+    // cout<< " s22 : " << s2 << "  s33 : " << s3 << endl;
+    return dp[n] = min(n / 2 + s2, n / 3 + s3);
+  } else {
+    if (s2 == INT_MAX) {
+      return dp[n] = n / 3 + s3;
+    }
+    // cout<<" s2 : " << s2 << endl;
+    return dp[n] = n / 2 + s2;
+  }
 }
-
-
-class Util {
-  public:
-    template <typename T> void printSet(const set<T> &s) {
-        for (const auto &element : s) {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
-    template <typename T> void printVector(const vector<T> &v) {
-        for (const auto &element : v) {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
-    template <typename T> void print2DVector(const vector<vector<T>> &vec) {
-        for (const auto &row : vec) {
-            for (const auto &element : row) {
-                cout << element << " ";
-            }
-            cout << endl;
-        }
-    }
-};
-
-Util util;
-
-class Solution {
-  public:
-    string addStrings(string num1, string num2) {
-        int len1 = num1.length();
-        int len2 = num2.length();
-
-        int carry = 0;
-
-        int i = len1-1 , j = len2-1;
-
-        string ans = "";
-        int n1, n2, sum;
-
-        while( i >=0 && j >= 0){
-            n1 = num1[i]-'0';
-            n2 = num2[j] -'0';
-            sum = n1 + n2 + carry;
-            carry = sum/10;
-            sum = sum%10;
-            ans = to_string(sum) + ans;
-            i--;
-            j--;
-        }
-
-        while( i >=0 ){
-            n1 = num1[i]-'0';
-            sum = n1 + carry;
-            carry = sum/10;
-            sum = sum%10;
-            ans = to_string(sum) + ans;
-            i--;
-        }
-
-        while( j >=0 ){
-            n2 = num2[j] -'0';
-            sum = n2 + carry;
-            carry = sum/10;
-            sum = sum%10;
-            ans = to_string(sum) + ans;
-            j--;
-        }
-
-        if( carry )   ans = to_string(carry) + ans;
-
-        return ans;
-
-    }
-};
-
-Solution sol;
 
 int main() {
-    freopen("inputs.txt","r",stdin);
-    freopen("oututs.txt","w",stdout);
+  int n = 11;
 
-    string res = sol.solve(num1 ,num2);
-    bug(res);
-    return 0;
+  auto start = high_resolution_clock::now();
+
+  for (int i = 0; i < n; i++) {
+    cout << " i : " << i << " --->  " << solve(i) << endl;
+  }
+
+  auto end = high_resolution_clock::now();
+
+  //   auto duration = duration_cast<milliseconds>(end - start);
+
+  auto duration = duration_cast<microseconds>(end - start);
+
+  cout << "Execution time: " << duration.count() << " microseconds" << endl;
+
+  // cout << solve(5) << endl;
+
+  return 0;
 }
-
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();

@@ -5,108 +5,48 @@ using namespace std;
 // since we are taking binary tree
 // because of this we are using mid :
 // diving the root(node) with two parts [ left tree , right tree]
+vector<vector<int>> reconstructQueue(vector<vector<int>> &people) {
+  sort(people.begin(), people.end(), [](auto &a, auto &b) {
+    if (a[0] == b[0]) return a[1] < b[1];
+    return a[0] > b[0];
+  });
 
-// summation
-struct SegmentTree {
-  int n;
-  vector<int> st;
-
-  void init(int _n) {
-    this->n = _n;
-    st.resize(4 * n, 0);
+  vector<vector<int>> result;
+  for (vector<int> person : people) {
+    result.insert(result.begin() + person[1], person);
   }
 
-  void buildUtil(int start, int ending, int node, vector<int> &v) {
-    // leaf node base case
-    if (start == ending) {
-      st[node] = v[start];
-      return;
-    }
-
-    int mid = (start + ending) / 2;
-
-    // left subtree is (start,mid)
-    buildUtil(start, mid, 2 * node + 1, v);
-
-    // right subtree is (mid+1,ending)
-    buildUtil(mid + 1, ending, 2 * node + 2, v);
-
-    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
-  }
-
-  int queryUtil(int start, int ending, int l, int r, int node) {
-    // non overlapping case
-    if (start > r || ending < l) {
-      return 0;
-    }
-
-    // complete overlap
-    if (start >= l && ending <= r) {
-      return st[node];
-    }
-
-    // partial case
-    int mid = (start + ending) / 2;
-
-    int q1 = queryUtil(start, mid, l, r, 2 * node + 1);
-    int q2 = queryUtil(mid + 1, ending, l, r, 2 * node + 2);
-
-    return q1 + q2;
-  }
-
-  void updateUtil(int start, int ending, int node, int index, int value) {
-    // base case
-    if (start == ending) {
-      st[node] = value;
-      return;
-    }
-
-    int mid = (start + ending) / 2;
-    if (index <= mid) {
-      // left subtree
-      updateUtil(start, mid, 2 * node + 1, index, value);
-    } else {
-      // right
-      updateUtil(mid + 1, ending, 2 * node + 2, index, value);
-    }
-
-    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
-
-    return;
-  }
-
-  void build(vector<int> &v) { buildUtil(0, n - 1, 0, v); }
-
-  int query(int l, int r) { return queryUtil(0, n - 1, l, r, 0); }
-
-  void update(int x, int y) { updateUtil(0, n - 1, 0, x, y); }
-};
-
-
-
+  return result;
+}
 
 int main() {
-  // freopen("input.txt", "r", stdin);
-  // freopen("output.txt", "w", stdout);
+  vector<vector<int>> people = {{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
 
-  vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};
-  // cout << v.size();
+  vector<vector<int>> ans = reconstructQueue(people);
 
-  SegmentTree tree;
+  cout << "\nFinal Queue" << endl;
+  for (vector<int> v : ans) {
+    cout << v[0] << " " << v[1] << endl;
+  }
 
-  tree.init(v.size());
+  //   vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};
+  //   // cout << v.size();
 
-  tree.build(v);
+  //   SegmentTree tree;
 
-  cout << tree.query(0, 4) << '\n';
+  //   tree.init(v.size());
 
-  tree.update(4, 10);
+  //   tree.build(v);
 
-  cout << tree.query(2, 6) << '\n';
+  //   cout << tree.query(0, 4) << '\n';
 
-  tree.update(2, 20);
+  //   tree.update(4, 10);
 
-  cout << tree.query(0, 4) << '\n';
+  //   cout << tree.query(2, 6) << '\n';
+
+  //   tree.update(2, 20);
+
+  //   cout << tree.query(0, 4) << '\n';
 
   return 0;
 }
