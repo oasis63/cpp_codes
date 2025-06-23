@@ -25,35 +25,27 @@ int solve(vector<int> &coins, vector<int> &dp, int amount) {
 
   // now calculate the recursive
 
-  int ways = INT_MAX;
+  int minCoins = INT_MAX;
 
   for (int coin : coins) {
     int subproblem = solve(coins, dp, amount - coin);
     if (subproblem != INT_MAX) {
-      ways = min(ways, subproblem + 1);
+      minCoins = min(minCoins, subproblem + 1);
     }
   }
 
-  return dp[amount] = ways;
+  return dp[amount] = minCoins;
 }
 
 int coinChange(vector<int> &coins, int amount) {
   vector<int> dp(amount + 1, -1);
-  int result = solve(coins, dp, amount);
 
-  // cout << "Updated DP " << endl;
-  // for (int d : dp) {
-  //   cout << d << " ";
-  // }
-  // cout << endl;
-
-  return result;
+  return solve(coins, dp, amount);
 }
 
 int main() {
-  // vector<int> coins = {5, 1, 2};
   vector<int> coins = {1, 2, 5};
-  int amount = 3;
+  int amount = 11;
   cout << "Minimum coins required: " << coinChange(coins, amount) << endl;
 
   return 0;

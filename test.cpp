@@ -1,155 +1,106 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
 
-// summation
-struct SegmentTree {
-	int n;
-	vector<int> st;
+class Solution {
+ public:
+  const int MOD = 1e9 + 7;
+  string one_string = "";
+  string zero_string = "";
 
-	void init(int _n) {
-		this->n = _n;
-		st.resize(4 * n, 0);
+  vector<int> dp;
+
+  string generator(char type, int n) {
+    string st = "";
+    for (int i = 0; i < n; i++) {
+      st.push_back(type);
+    }
+    return st;
+  }
+
+  int buildGoodStrings(int low, int high, int zero, int one, string st) {
+    int st_len = st.length();
+
+    if (st_len > high) return 0;
+
+	if(dp[st_len] != -1){
+		cout<<" hit at st_len : " << st_len << endl;
+		return dp[st_len];
 	}
 
-	void buildUtil(int start, int ending, int node, vector<int> &v) {
-		// leaf node base case
-		if (start == ending) {
-			st[node] = v[start];
-			return;
-		}
+    if (st_len >= low && st_len <= high) {
+      return dp[st_len] = 1 + buildGoodStrings(low, high, zero, one, st + zero_string) +
+             buildGoodStrings(low, high, zero, one, st + one_string);
+    }
 
-		int mid = (start + ending) / 2;
+    return dp[st_len] = buildGoodStrings(low, high, zero, one, st + zero_string) +
+           buildGoodStrings(low, high, zero, one, st + one_string);
+  }
 
-		// left subtree is (start,mid)
-		buildUtil(start, mid, 2 * node + 1, v);
+  int countGoodStrings(int low, int high, int zero, int one) {
+    int ans = 0;
 
-		// right subtree is (mid+1,ending)
-		buildUtil(mid + 1, ending, 2 * node + 2, v);
+	dp.resize(100001,-1);
 
-		st[node] = st[node * 2 + 1] + st[node * 2 + 2];
-	}
+    string st = "";
 
-	int queryUtil(int start, int ending, int l, int r, int node) {
-		// non overlapping case
-		if (start > r || ending < l) {
-			return 0;
-		}
+    zero_string = generator('0', zero);
+    one_string = generator('1', one);
 
-		// complete overlap
-		if (start >= l && ending <= r) {
-			return st[node];
-		}
+    int res = buildGoodStrings(low, high, zero, one, st);
 
-		// partial case
-		int mid = (start + ending) / 2;
+    cout << " res : " << res << endl;
 
-		int q1 = queryUtil(start, mid, l, r, 2 * node + 1);
-		int q2 = queryUtil(mid + 1, ending, l, r, 2 * node + 2);
-
-		return q1 + q2;
-	}
-
-	void updateUtil(int start, int ending, int node, int index, int value) {
-		// base case
-		if (start == ending) {
-			st[node] = value;
-			return;
-		}
-
-		int mid = (start + ending) / 2;
-		if (index <= mid) {
-			// left subtree
-			updateUtil(start, mid, 2 * node + 1, index, value);
-		}
-		else {
-			// right
-			updateUtil(mid + 1, ending, 2 * node + 2, index, value);
-		}
-
-		st[node] = st[node * 2 + 1] + st[node * 2 + 2];
-
-		return;
-	}
-
-	void build(vector<int> &v) {
-		buildUtil(0, n - 1, 0, v);
-	}
-
-	int query(int l, int r) {
-		return queryUtil(0, n - 1, l, r, 0);
-	}
-
-	void update(int x, int y) {
-		updateUtil(0, n - 1, 0, x, y);
-	}
+    return res % MOD;
+  }
 };
 
-vector<int>solve(int n, vector<int>a, vector<vector<int>> queries){
-    
-    SegmentTree tree;
-    
-    int sz = a.size();
-
-    tree.init(sz);
-    
-    tree.build(a);
-    
-    cout<<"build segment tree" <<endl;
-    for(int i : tree.st){
-        cout<< i<<  "   ";
-    }
-    cout<<endl;
-    
-    vector<int> ans;
-    
-    for(vector<int> q : queries){
-        ans.push_back(tree.query(q[0],q[1]));
-    }
-    
-    
-    return ans;
+void generateFibs(vector<int> &vect) {
+  int n = vect.size();
+  for (int i = 2; i < n; i++) {
+    vect[i] = vect[i - 1] + vect[i - 2];
+  }
 }
 
+int main() {
+  //   vector<int> fibs = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
 
-vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
-        
-}
+    // int low = 3;
+    // int high = 3;
+    // int zero = 1;
+    // int one = 1;
 
+  //  int x = low = high;
 
-int main(){
+  Solution sol;
 
-    int n = 5;
-    // vector<int> nums  = {3, 2, 4, 5, 1, 1, 5, 3};
-    vector<int> nums  = {1,2,3,4,5,6};
+//   int low = 2, high = 3, zero = 1, one = 2;
 
-    cout<<"input array :" << endl;
-    for(int i : nums){
-        cout<<i<<"  ";
-    }
-    cout<<endl;
+  int low = 200, high = 200, zero = 10, one = 1;
 
-    // vector<vector<int>> queries = {
-    //     {2, 4},
-    //     // {5, 6},
-    //     // {1, 8},
-    //     // {3, 3}
-    // };
+  int n = 20;
 
+  vector<int> fibs(n, 0);
+  fibs[0] = 1;
+  fibs[1] = 2;
+  generateFibs(fibs);
 
-     vector<vector<int>> queries = {
-        {2, 4},
-        {4,5},
-        {1, 3},
-        {2,5}
-    };
+  cout << sol.countGoodStrings(low, high, zero, one) << endl;
 
-    vector<int> ans = solve(n, nums, queries);
+  //   for (int i = 1; i < n; i++) {
+  //     int low = i, high = i, zero = 5, one = 4;
 
-    for(int j=0;j<ans.size();j++){
-        cout<<queries[j][0] << "   " << queries[j][1]  << " ---> " << ans[j]<<endl;
-    }
-    
+  //     int range = high - low;
+  //     int group = one + zero;
 
-    return 0;
+  //     int res = sol.countGoodStrings(low, high, zero, one);
+  //     cout << "low " << low << " high : " << high << " zero : " << zero
+  //          << " one : " << one << " group_size : " << group << " res : " <<
+  //          res
+  //          << "  fibs[" << i << "] : " << fibs[i - 1] << endl;
+  //   }
+
+  return 0;
 }

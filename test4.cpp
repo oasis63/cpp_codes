@@ -1,85 +1,71 @@
 #include <bits/stdc++.h>
-
-#include <chrono>
 using namespace std;
-using namespace chrono;
 
-int dp[100005] = {0};
-
-int hits = 0;
-
-// top down approach
-// recursion + memoization
-
-int solve(int n) {
-//   cout << " n : " << n << endl;
-  if (n == 0)
-    return dp[n] = 0;
-  else if (n == 1)
-    return dp[n] = INT_MAX;
-  else if (n == 2 || n == 3)
-    return dp[n] = 1;
-
-  if (dp[n] != 0) {
-    hits++;
-    return dp[n];
+class Solution {
+ public:
+  void printVect(vector<int> &vect) {
+    for (int i : vect) {
+      cout << i << " ";
+    }
+    cout << endl;
   }
 
-  int s3 = solve(n % 3);
-  int s2 = solve(n % 2);
-  int result = INT_MAX;
+  void solve(int total, int &curr, int count, int &ans, vector<int> &ps,
+             int ind) {
+    if (ind >= ps.size()) {
+      return;
+    }
+    if (curr == total) {
+      ans = min(count, ans);
+    }
 
-  if (s3 != INT_MAX && s2 != INT_MAX) {
-    result = min(n / 2 + s2, n / 3 + s3);
-  } else {
-    if (s2 != INT_MAX) {
-      result = n / 2 + s2;
-    } else if (s3 != INT_MAX) {
-      result = n / 3 + s3;
-    } else {
-      result = INT_MAX;
+    for (int i = ind; i < ps.size(); i++) {
+      if (curr + ps[i] > total) continue;
+
+      // add the element
+      curr += ps[i];
+      // backtrack
+      solve(total, curr, count + 1, ans, ps, i);
+      // remove the elem
+
+      curr -= ps[i];
     }
   }
-  return dp[n] = result;
-  // return result;
-}
+
+  int numSquares(int n) {
+    // generate all the perfect squares to the given number
+    vector<int> ps;
+    int num = 1;
+    while (true) {
+      int tp = num * num;
+      if (tp > n) break;
+      ps.push_back(tp);
+      num++;
+    }
+
+    // put it in decreasing order
+    sort(ps.rbegin(), ps.rend());
+    printVect(ps);
+
+    int curr = 0;
+    int count = 0;
+    int ans = INT_MAX;
+
+    solve(n, curr, count, ans, ps, 0);
+
+    cout << " ans : " << ans << endl;
+
+    return 0;
+  }
+};
 
 int main() {
-  auto start = high_resolution_clock::now();
+  Solution sol;
 
-  int n = 11;
+  int n = 13;  //13,  12 , 292 
+  int res = sol.numSquares(n);
 
-  for (int i = 0; i < n; i++) {
-    cout << " i : " << i << " --->  " << solve(i) << endl;
-  }
-
-  // cout << solve(5) << endl;
-
-  //   cout << "\n -------------final dp -----------" << endl;
-
-  //   for (int i = 0; i < 20; i++) {
-  //     cout << " i : " << i << " -------> " << dp[i] << endl;
-  //   }
-
-  auto end = high_resolution_clock::now();
-
-  auto duration = duration_cast<microseconds>(end - start);
-  auto milli_duration = duration_cast<milliseconds>(end - start);
-
-  cout << " hits : " << hits << endl;
-
-  cout << "Execution time: " << duration.count() << " microseconds" << "  ---  "
-       << milli_duration.count() << " milliseconds" << endl;
+  cout << " res : " << res << endl;
 
   return 0;
 }
-
-/*
-
-Execution time: 311031 microseconds
-Execution time: 332011 microseconds
-
-
-
-
-*/

@@ -23,22 +23,24 @@ class Solution {
       return dp[n];
     }
 
-    int s3 = solve(n - 3);
-    int s2 = solve(n - 2);
-    int result = INT_MAX;
+    return dp[n] = 1 + min(solve(n - 3), solve(n - 2));
 
-    if (s3 != INT_MAX && s2 != INT_MAX) {
-      result = 1 + min(s2, s3);
-    } else {
-      if (s2 != INT_MAX) {
-        result = 1 + s2;
-      } else if (s3 != INT_MAX) {
-        result = 1 + s3;
-      } else {
-        result = INT_MAX;
-      }
-    }
-    return dp[n] = result;
+    // int s3 = solve(n - 3);
+    // int s2 = solve(n - 2);
+    // int result = INT_MAX;
+
+    // if (s3 != INT_MAX && s2 != INT_MAX) {
+    //   result = 1 + min(s2, s3);
+    // } else {
+    //   if (s2 != INT_MAX) {
+    //     result = 1 + s2;
+    //   } else if (s3 != INT_MAX) {
+    //     result = 1 + s3;
+    //   } else {
+    //     result = INT_MAX;
+    //   }
+    // }
+    // return dp[n] = result;
   }
 
   //   int minimumRounds(vector<int>& tasks) {
