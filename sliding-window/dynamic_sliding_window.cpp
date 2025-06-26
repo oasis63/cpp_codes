@@ -26,7 +26,7 @@ class Data {
 };
 
 int main() {
-    vector<int> vect = {3, 1, 1, 1, 5, 1, 2, 1};
+  vector<int> vect = {3, 1, 1, 1, 5, 1, 2, 1};
   int target = 3;
 
   int n = vect.size();

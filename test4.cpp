@@ -1,71 +1,37 @@
+/*
+     ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् |
+     उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात् ||
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
- public:
-  void printVect(vector<int> &vect) {
-    for (int i : vect) {
-      cout << i << " ";
-    }
-    cout << endl;
-  }
+#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
+template <typename Arg1>
+void __f(const char* name, Arg1&& arg1) {
+  cout << name << " : " << arg1 << endl;
+}
+template <typename Arg1, typename... Args>
+void __f(const char* names, Arg1&& arg1, Args&&... args) {
+  const char* comma = strchr(names + 1, ',');
+  cout.write(names, comma - names) << " : " << arg1 << " | ";
+  __f(comma + 1, args...);
+}
 
-  void solve(int total, int &curr, int count, int &ans, vector<int> &ps,
-             int ind) {
-    if (ind >= ps.size()) {
-      return;
-    }
-    if (curr == total) {
-      ans = min(count, ans);
-    }
+int32_t main() {
+  int a = 43;
+  char c = 'a';
+  string str1 = "string111";
 
-    for (int i = ind; i < ps.size(); i++) {
-      if (curr + ps[i] > total) continue;
+  bug(a, c, str1);
 
-      // add the element
-      curr += ps[i];
-      // backtrack
-      solve(total, curr, count + 1, ans, ps, i);
-      // remove the elem
+  clock_t z = clock();
 
-      curr -= ps[i];
-    }
-  }
+  int t = 1;
+  // cin >> t;
+  // while (t--) solve();
 
-  int numSquares(int n) {
-    // generate all the perfect squares to the given number
-    vector<int> ps;
-    int num = 1;
-    while (true) {
-      int tp = num * num;
-      if (tp > n) break;
-      ps.push_back(tp);
-      num++;
-    }
-
-    // put it in decreasing order
-    sort(ps.rbegin(), ps.rend());
-    printVect(ps);
-
-    int curr = 0;
-    int count = 0;
-    int ans = INT_MAX;
-
-    solve(n, curr, count, ans, ps, 0);
-
-    cout << " ans : " << ans << endl;
-
-    return 0;
-  }
-};
-
-int main() {
-  Solution sol;
-
-  int n = 13;  //13,  12 , 292 
-  int res = sol.numSquares(n);
-
-  cout << " res : " << res << endl;
+  cerr << "Run Time : " << ((double)(clock() - z) / CLOCKS_PER_SEC);
 
   return 0;
 }
