@@ -1,4 +1,0 @@
-Weights : Values 
-3 30
-4 50
-5 60

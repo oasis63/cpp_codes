@@ -4,14 +4,52 @@
 
 using namespace std;
 
-class Solution {
- public:
-  int solve(vector<int> &vect) {
-    int ans = 0;
+// class Solution {
+//  public:
+//  top-down approach
 
-    return ans;
+const int N = 100001;
+
+int memo[N][100001];
+
+int topDown(int n, int w, vector<pair<int, int>> &items, int index) {
+  // bug(w, index);
+
+  if (index >= n) return 0;
+
+  if (memo[index][w] != -1) {
+    return memo[index][w];
   }
-};
+
+  // do not take the item
+  int ans = topDown(n, w, items, index + 1);
+
+  // take the item
+  if ((w - items[index].first) >= 0) {
+    ans = max(ans, items[index].second +
+                       topDown(n, w - items[index].first, items, index + 1));
+  }
+
+  return memo[index][w] = ans;
+}
+
+int solve(int n, int w, vector<pair<int, int>> &items) {
+  // dp solution
+  // vector<vector<long>> dp(1000, vector<long>(100001, -1));
+  memset(memo, -1, sizeof(memo));
+
+  int total = topDown(n, w, items, 0);
+
+  // for (vector<long> v : dp) {
+  //   for (long t : v) {
+  //     cout << t << " ";
+  //   }
+  //   cout << endl;
+  // }
+
+  return total;
+}
+// };
 
 int main() {
   ios_base::sync_with_stdio(0);
@@ -21,7 +59,7 @@ int main() {
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
 
-  Solution sol;
+  // Solution sol;
   int n, w;
   cin >> n >> w;
   cin.ignore();
@@ -34,11 +72,9 @@ int main() {
     items.push_back({t1, t2});
   }
 
-  cout << "Weights : " << "Values " << endl;
+  long res = solve(n, w, items);
 
-  for (pair<int, int> pr : items) {
-    cout << pr.first << " " << pr.second << endl;
-  }
+  cout << res << endl;
 
   return 0;
 }
