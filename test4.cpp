@@ -1,37 +1,22 @@
-/*
-     ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् |
-     उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात् ||
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
-template <typename Arg1>
-void __f(const char* name, Arg1&& arg1) {
-  cout << name << " : " << arg1 << endl;
-}
-template <typename Arg1, typename... Args>
-void __f(const char* names, Arg1&& arg1, Args&&... args) {
-  const char* comma = strchr(names + 1, ',');
-  cout.write(names, comma - names) << " : " << arg1 << " | ";
-  __f(comma + 1, args...);
-}
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
 
-int32_t main() {
-  int a = 43;
-  char c = 'a';
-  string str1 = "string111";
+int main() {
+  bitset<3> bs(3);
+  bitset<3> bs1(5);
 
-  bug(a, c, str1);
+  cout << bs << endl;
 
-  clock_t z = clock();
+  cout << bs.test(0) << endl;
+  cout << bs.test(1) << endl;
+  cout << bs.test(2) << endl;
 
-  int t = 1;
-  // cin >> t;
-  // while (t--) solve();
+  cout << (bs & bs1) << endl;
 
-  cerr << "Run Time : " << ((double)(clock() - z) / CLOCKS_PER_SEC);
+  cout << bs.count() << endl;
 
   return 0;
 }

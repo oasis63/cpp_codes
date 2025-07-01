@@ -1,60 +1,73 @@
-/*
-"ॐ नमः पार्वती पतये, हर हर महादेव।" 🔱🙏
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-/*
-Coin change problem using dp
-and this is similar to minimum jumps to reach to the end
-*/
+#define printVect(a)                 \
+  for (auto x : a) cout << x << " "; \
+  cout << endl
+#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
 
-// using top down approach ( recursion + memoization )
-
-int solve(vector<int> &coins, vector<int> &dp, int amount) {
-  // 0 ways to gather amount 0
-  if (amount == 0) {
-    return 0;
-  }
-
-  if (amount < 0) return INT_MAX;
-
-  // memoized value
-  if (dp[amount] != -1) return dp[amount];
-
-  // now calculate the recursive
-
-  int ways = INT_MAX;
-
-  for (int coin : coins) {
-    int subproblem = solve(coins, dp, amount - coin);
-    if (subproblem != INT_MAX) {
-      ways = min(ways, subproblem + 1);
-    }
-  }
-
-  return dp[amount] = ways;
+template <typename Arg1>
+void __f(const char* name, Arg1&& arg1) {
+  cout << name << " : " << arg1 << endl;
+}
+template <typename Arg1, typename... Args>
+void __f(const char* names, Arg1&& arg1, Args&&... args) {
+  const char* comma = strchr(names + 1, ',');
+  cout.write(names, comma - names) << " : " << arg1 << " | ";
+  __f(comma + 1, args...);
 }
 
-int coinChange(vector<int> &coins, int amount) {
-  vector<int> dp(amount + 1, -1);
-  int result = solve(coins, dp, amount);
-
-  // cout << "Updated DP " << endl;
-  // for (int d : dp) {
-  //   cout << d << " ";
-  // }
-  // cout << endl;
-
+vector<int> parseVector(string s) {
+  vector<int> result;
+  string num = "";
+  for (char c : s) {
+    if (isdigit(c) || c == '-') {
+      num += c;
+    } else if (!num.empty()) {
+      result.push_back(stoi(num));
+      num = "";
+    }
+  }
+  if (!num.empty()) result.push_back(stoi(num));
   return result;
 }
 
+class Solution {
+ public:
+  int maximumLength(vector<int>& nums, int k) {
+    // seq[i] != seq[i+1]
+    // at most k indices
+    int ans = 0;
+
+    return ans;
+  }
+};
+
 int main() {
-  // vector<int> coins = {5, 1, 2};
-  vector<int> coins = {1, 2, 5};
-  int amount = 3;
-  cout << "Minimum coins required: " << coinChange(coins, amount) << endl;
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
+
+  Solution sol;
+
+  string csvLine;
+  getline(cin, csvLine);
+  vector<int> prices = parseVector(csvLine);
+
+  int k;
+  cin >> k;
+
+  for (int price : prices) {
+    cout << price << "  ";
+  }
+  cout << " K :  " << k << endl;
+
+  Solution sol;
+  int res = sol.maximumLength(prices, k);
+  cout << "Result : " << res << endl;
 
   return 0;
 }

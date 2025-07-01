@@ -1,7 +1,6 @@
 class Solution {
  public:
-
-//  top down approach
+  //  top down approach
   int min_jumps(vector<int>& nums, int n, vector<int>& dp, int index) {
     // already at the end of the aray
     if (index == n - 1) return 0;

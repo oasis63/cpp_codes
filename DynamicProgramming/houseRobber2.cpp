@@ -27,16 +27,10 @@ class Solution {
     if (n == 1) return nums[0];
     if (n == 2) return max(nums[0], nums[1]);
 
-    vector<int> dp(n, 0);
+    int res1 = helper(n, 0, n - 2, nums);
+    int res2 = helper(n, 1, n - 1, nums);
 
-    // bottom-up approach
-    dp[0] = nums[0];
-    dp[1] = max(dp[0], nums[1]);
-
-    for (int i = 2; i < n; i++) {
-      dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
-    }
-    return dp[n - 1];
+    return max(res1, res2);
   }
 };
 

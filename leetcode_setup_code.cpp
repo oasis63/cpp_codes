@@ -35,6 +35,7 @@ class Solution {
     }
 
     sort(profits.rbegin(), profits.rend());
+
     return profits[0] + profits[1];
   }
 };
@@ -44,25 +45,33 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
+#ifndef ONLINE_JUDGE
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
+#endif
 
   Solution sol;
+
   vector<int> prices = {3, 3, 5, 0, 0, 3, 1, 4};
+
   int res = sol.maxProfit(prices);
+
   cout << "MaxProfit : " << res << endl;
 
-  // Sample input for extended problem solving
-  // int n, k;
-  // cin >> n >> k;
-  // vector<int> vect(n, 0);
-  // for (int i = 0; i < n; i++) {
-  //   cin >> vect[i];
-  // }
-  // vector<int> dp(n, INT_MAX);
-  // dp[0] = 0;
-  // int res = sol.solve(n, k, vect, dp, n - 1);
-  // cout << res << endl;
+  //   int n, k;
+  //   cin >> n >> k;
+  //   vector<int> vect(n, 0);
+  //   for (int i = 0; i < n; i++) {
+  //     cin >> vect[i];
+  //   }
+
+  // cost of reaching ith index
+  //   vector<int> dp(n, INT_MAX);
+  //   dp[0] = 0;
+
+  //   int res = sol.solve(n, k, vect, dp, n - 1);
+
+  //   cout << res << endl;
 
   return 0;
 }

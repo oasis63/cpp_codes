@@ -24,22 +24,45 @@ int main() {
   priority_queue<int> mxHeap;                              // mxHeap
   priority_queue<int, vector<int>, greater<int>> minHeap;  // minHeap
 
-  // vector<int> vect = {1, 2, 3, 4, 5};
-  vector<int> vect = {1, 2, 3};
+  vector<int> vect = {1, 2, 3, 4, 5};
+  // vector<int> vect = {1, 2, 3};
   int n = vect.size();
-
-  bool flag = true;
 
   cout << "n : " << n << endl;
 
   for (int i = 0; i < n; i++) {
     int v = vect[i];
 
-    if (flag) {
+    cout << "------Inserting value ------: " << v << endl;
+    if (mxHeap.empty() || v <= mxHeap.top()) {
       mxHeap.push(v);
     } else {
       minHeap.push(v);
     }
+
+    cout << "MaxHeap --> ";
+    printPq(mxHeap);
+
+    cout << "MinHeap --> ";
+    printPq2(minHeap);
+
+    // balance the tree .. left - right subtree <= 1
+
+    if (mxHeap.size() > minHeap.size() + 1) {
+      minHeap.push(mxHeap.top());
+      mxHeap.pop();
+    } else if (minHeap.size() > mxHeap.size()) {
+      mxHeap.push(minHeap.top());
+      minHeap.pop();
+    }
+
+    cout << "After Rebalancing both the trees " << endl;
+
+    cout << "MaxHeap --> ";
+    printPq(mxHeap);
+
+    cout << "MinHeap --> ";
+    printPq2(minHeap);
 
     // find the median
 
@@ -57,17 +80,6 @@ int main() {
       cout << "i : " << i << " size : " << (i + 1) << " median : " << median
            << endl;
     }
-
-    // mxHeap.push(v);
-    // minHeap.push(v);
-
-    // cout << "MaxHeap --> ";
-    // printPq(mxHeap);
-
-    // cout << "MinHeap --> ";
-    // printPq2(minHeap);
-
-    flag = !flag;
   }
 
   return 0;
