@@ -8,7 +8,7 @@ class Solution {
  public:
   int solve(vector<int> &vect) {
     int ans = 0;
-    
+
     return ans;
   }
 };
