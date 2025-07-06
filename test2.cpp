@@ -1,90 +1,38 @@
-#include <iostream>
-#include <queue>
-#include <unordered_map>
+#include <bits/stdc++.h>
+
+#include "UTILS/helper.h"
 
 using namespace std;
 
-struct Element {
-    int num;  // Number
-    int freq; // Frequency
+class Solution {
+ public:
+  int solve(vector<int> &vect) {
+    int ans = 0;
 
-    // Custom comparison for priority queue (higher frequency first)
-    bool opeoperatorrator < (const Element &other) const {
-        return freq < other.freq;
-    }
+    return ans;
+  }
 };
 
-int minOperations(int A[], int N, int K) {
-    unordered_map<int, int> freq_map; // Hash table for frequency counting
-
-    // Count frequencies
-    for (int i = 0; i < N; i++) {
-        freq_map[A[i]]++;
-    }
-
-    // Create a priority queue with custom comparison for descending order of
-    // frequency
-    priority_queue<Element> pq;
-    for (auto it = freq_map.begin(); it != freq_map.end(); ++it) {
-        pq.push({it->first, it->second});
-    }
-
-    int min_operations = 0;
-    while (!pq.empty()) {
-        // Get the element with the highest frequency (front of pq)
-        Element top_element = pq.top();
-        pq.pop();
-
-        // Skip if the element is already K
-        if (top_element.num == K) {
-            continue;
-        }
-
-        // Calculate the difference in frequencies
-        int diff = top_element.freq - freq_map[K];
-        if (diff <= 0) {
-            break; // No more operations needed if current freq is less than or
-                   // equal to K's freq
-        }
-
-        // Update frequencies and pq
-        freq_map[top_element.num] -= diff;
-        freq_map[K] += diff;
-        pq.push({top_element.num,
-                 freq_map[top_element.num]}); // Update element in pq with new
-                                              // frequency
-        min_operations += diff;
-    }
-
-    return min_operations;
-}
-
 int main() {
-    int T;
-    cin >> T;
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-    while (T--) {
-        int N, K;
-        cin >> N >> K;
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
 
-        int A[N];
-        for (int i = 0; i < N; i++) {
-            cin >> A[i];
-        }
+  Solution sol;
 
-        int min_ops = minOperations(A, N, K);
-        cout << min_ops << endl;
-    }
+  string line;
+  getline(cin, line);
 
-    return 0;
+  vector<int> nums = parseIntVector(line);
+
+  printVect(nums);
+
+  int ans = sol.solve(nums);
+
+  cout << "ans : " << ans << endl;
+
+  return 0;
 }
-
-/*
-
-2
-3 1
-1 1 3
-4 1
-1 1 3 3
-
-*/`

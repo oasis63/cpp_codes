@@ -1,40 +1,86 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void showpq(priority_queue<vector<int>> gq) {
-    // priority_queue<pair<int, int>> g = gq;
-    while (!gq.empty()) {
-        vector<int> p = gq.top();
-        for (int i = 0; i < p.size(); i++) {
-            cout << p[i] << "  ";
-        }
-        cout << endl;
-        gq.pop();
-    }
-    cout << '\n';
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
+
+void printPq(priority_queue<int> pq) {
+  while (!pq.empty()) {
+    cout << pq.top() << " ";
+    pq.pop();
+  }
+  cout << endl;
 }
 
-// bool compare(pair<int, int> p1, pair<int, int> p2) {
-//     return p1.second > p2.second;
-// }
+void printPq2(priority_queue<int, vector<int>, greater<int>> pq) {
+  while (!pq.empty()) {
+    cout << pq.top() << " ";
+    pq.pop();
+  }
+  cout << endl;
+}
 
 int main() {
-    priority_queue<vector<int>> pq;
+  priority_queue<int> mxHeap;                              // mxHeap
+  priority_queue<int, vector<int>, greater<int>> minHeap;  // minHeap
 
-    // pq.push(make_pair(10, 2));
-    pq.push({10, 2});
-    // pq.push(make_pair(30, 1));
-    pq.push({30, 1});
-    pq.push({20, 4});
-    pq.push({5, 2});
-    pq.push({1, 1});
+  vector<int> vect = {1, 2, 3, 4, 5};
+  // vector<int> vect = {1, 2, 3};
+  int n = vect.size();
 
-    showpq(pq);
-    cout << "pq.size() : " << pq.size() << endl;
+  cout << "n : " << n << endl;
 
-    pq.pop({10, 2});
+  for (int i = 0; i < n; i++) {
+    int v = vect[i];
 
-    showpq(pq);
+    cout << "------Inserting value ------: " << v << endl;
+    if (mxHeap.empty() || v <= mxHeap.top()) {
+      mxHeap.push(v);
+    } else {
+      minHeap.push(v);
+    }
 
-    return 0;
+    cout << "MaxHeap --> ";
+    printPq(mxHeap);
+
+    cout << "MinHeap --> ";
+    printPq2(minHeap);
+
+    // balance the tree .. left - right subtree <= 1
+
+    if (mxHeap.size() > minHeap.size() + 1) {
+      minHeap.push(mxHeap.top());
+      mxHeap.pop();
+    } else if (minHeap.size() > mxHeap.size()) {
+      mxHeap.push(minHeap.top());
+      minHeap.pop();
+    }
+
+    cout << "After Rebalancing both the trees " << endl;
+
+    cout << "MaxHeap --> ";
+    printPq(mxHeap);
+
+    cout << "MinHeap --> ";
+    printPq2(minHeap);
+
+    // find the median
+
+    double median = 0.0;
+
+    // even number of elements
+    if ((i + 1) % 2 == 0) {
+      median = (minHeap.top() + mxHeap.top()) / 2.0;
+      cout << "Even ";
+      cout << "i : " << i << " size : " << (i + 1) << " median : " << median
+           << endl;
+    } else {  // odd number of elements
+      median = (double)mxHeap.top() * 1.0;
+      cout << "Odd ";
+      cout << "i : " << i << " size : " << (i + 1) << " median : " << median
+           << endl;
+    }
+  }
+
+  return 0;
 }

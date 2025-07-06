@@ -1,40 +1,68 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-#define ll long long 
+#define printVect(a)                 \
+  for (auto x : a) cout << x << " "; \
+  cout << endl
+#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
 
-pair<bool,unsigned long long> check(unsigned long long n){
-    pair<bool,unsigned long long> result = make_pair(false,0);
-    double sq = sqrt(n);
-    unsigned long long steps = (unsigned long long)sq;
-    cout<<"sq : "<<sq<<endl;
-    cout<<"steps : "<<steps<<endl;
-    if(sq == steps){
-        result.first = true;
-        result.second = steps;
-    }
-    return result;
+template <typename Arg1>
+void __f(const char* name, Arg1&& arg1) {
+  cout << name << " : " << arg1 << endl;
+}
+template <typename Arg1, typename... Args>
+void __f(const char* names, Arg1&& arg1, Args&&... args) {
+  const char* comma = strchr(names + 1, ',');
+  cout.write(names, comma - names) << " : " << arg1 << " | ";
+  __f(comma + 1, args...);
 }
 
-string solve(unsigned long long num){
-    pair<bool,unsigned long long> ret = check(num*8 + 1);
-    ret.second = ( ret.second - 1 )/2;
-    string result = "Better Luck Next Time";
-    if(ret.first){
-        result ="Go On Bob "+ret.second;
-    }
-    return result;
-}
+class Solution {
+ public:
+  int maxProfit(vector<int>& prices) {
+    // brute force
+    vector<int> profits;
+    int n = prices.size();
 
-int main(){
-
-    int tc; 
-    cin>>tc;
-    while(tc--){
-        unsigned long long num; // = 10000000000000000;
-        cin>>num;
-        cout<<solve(num)<<endl;
+    for (int i = 0; i < n; i++) {
+      int mx_pro = 0;
+      for (int j = i + 1; j < n; j++) {
+        if (prices[j] > prices[i]) {
+          mx_pro = max(mx_pro, prices[j] - prices[i]);
+        }
+      }
+      profits.push_back(mx_pro);
     }
-    return 0;
+
+    sort(profits.rbegin(), profits.rend());
+    return profits[0] + profits[1];
+  }
+};
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
+
+  Solution sol;
+  vector<int> prices = {3, 3, 5, 0, 0, 3, 1, 4};
+  int res = sol.maxProfit(prices);
+  cout << "MaxProfit : " << res << endl;
+
+  // Sample input for extended problem solving
+  // int n, k;
+  // cin >> n >> k;
+  // vector<int> vect(n, 0);
+  // for (int i = 0; i < n; i++) {
+  //   cin >> vect[i];
+  // }
+  // vector<int> dp(n, INT_MAX);
+  // dp[0] = 0;
+  // int res = sol.solve(n, k, vect, dp, n - 1);
+  // cout << res << endl;
+
+  return 0;
 }
