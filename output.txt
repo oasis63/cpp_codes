@@ -1,0 +1,11 @@
+1 2 3 4 
+--------------------
+
+Mat after updating first row and first column fees : 
+1 3 138 143 
+--------------------
+
+Mat after updating all the values fees : 
+1 3 138 143 
+--------------------
+ans : 143

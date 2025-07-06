@@ -3,40 +3,13 @@
 #include "UTILS/helper.h"
 
 using namespace std;
+
 class Solution {
  public:
-  int helper(int n, int start, int end, vector<int>& nums) {
-    vector<int> dp(n, 0);
+  int solve(vector<int> &vect) {
+    int ans = 0;
 
-    // bottom-up approach
-    dp[start] = nums[start];
-    dp[start + 1] = max(dp[start], nums[start + 1]);
-
-    for (int i = start + 2; i <= end; i++) {
-      dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
-    }
-
-    bug(start, end);
-    printVect(dp);
-
-    return dp[end];
-  }
-  int rob(vector<int>& nums) {
-    int n = nums.size();
-
-    if (n == 1) return nums[0];
-    if (n == 2) return max(nums[0], nums[1]);
-
-    vector<int> dp(n, 0);
-
-    // bottom-up approach
-    dp[0] = nums[0];
-    dp[1] = max(dp[0], nums[1]);
-
-    for (int i = 2; i < n; i++) {
-      dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
-    }
-    return dp[n - 1];
+    return ans;
   }
 };
 
@@ -50,23 +23,16 @@ int main() {
 
   Solution sol;
 
-  int tc;
-  cin >> tc;
-  cin.ignore();
+  string line;
+  getline(cin, line);
 
-  while (tc--) {
-    string line;
-    getline(cin, line);
+  vector<int> nums = parseIntVector(line);
 
-    vector<int> nums = parseIntVector(line);
+  printVect(nums);
 
-    cout << "Input : ";
-    printVect(nums);
+  int ans = sol.solve(nums);
 
-    int ans = sol.rob(nums);
-
-    cout << "ans : " << ans << "\n\n";
-  }
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

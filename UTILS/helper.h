@@ -70,26 +70,33 @@ vector<string> parseStringVector(const string& s) {
 }
 
 // Function declarations
-void copyVector(const vector<int>& source, vector<int>& destination) {
+template <typename T>
+void copyVector(const vector<T>& source, vector<T>& destination) {
   destination = source;
 }
 
-void clearVector(vector<int>& vec) { vec.clear(); }
+template <typename T>
+void clearVector(vector<T>& vec) {
+  vec.clear();
+}
 
-void printVector(vector<int>& vec) {
-  for (int i = 0; i < vec.size(); i++) {
-    cout << vec[i] << " ";
+template <typename T>
+void printVector(const vector<T>& vec) {
+  for (const T& item : vec) {
+    cout << item << " ";
   }
   cout << endl;
 }
 
-void print2DVector(vector<vector<int>>& vect) {
-  for (int i = 0; i < vect.size(); i++) {
-    for (int j = 0; j < vect[i].size(); j++) {
-      cout << vect[i][j] << " ";
+template <typename T>
+void print2DVector(const vector<vector<T>>& matrix) {
+  for (const auto& row : matrix) {
+    for (const T& item : row) {
+      cout << item << " ";
     }
     cout << endl;
   }
+  cout << "--------------------" << endl;
 }
 
 #endif  // HELPER_H

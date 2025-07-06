@@ -30,9 +30,14 @@ class Solution {
     for (int j = 1; j < n; j++) {
       int cost = mat[0][j - 1];
       // wait time , as we are moving to mat[i][j] cell at even seconds
-      if (seconds % 2 == 0) {
+
+      if (j != 1) {
         cost += waitCost[0][j - 1];
       }
+
+      // if (seconds % 2 == 0) {
+      //   cost += waitCost[0][j - 1];
+      // }
 
       mat[0][j] += cost;
       seconds++;
@@ -45,9 +50,14 @@ class Solution {
     for (int i = 1; i < m; i++) {
       int cost = mat[i - 1][0];
       // wait time , as we are moving to mat[i][j] cell at even seconds
-      if (seconds % 2 == 0) {
+
+      if (i != 1) {
         cost += waitCost[i - 1][0];
       }
+
+      // if (seconds % 2 == 0) {
+      //   cost += waitCost[i - 1][0];
+      // }
 
       mat[i][0] += cost;
       seconds++;
@@ -113,8 +123,8 @@ int main() {
     waitCost.push_back(nums);
   }
 
-  cout << "WaitCost " << endl;
-  print2DVector(waitCost);
+  // cout << "WaitCost " << endl;
+  // print2DVector(waitCost);
 
   long long ans = sol.minCost(m, n, waitCost);
 

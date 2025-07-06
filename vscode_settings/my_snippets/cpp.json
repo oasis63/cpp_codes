@@ -366,7 +366,7 @@
       "  string line;",
       "  getline(cin, line);",
       "",
-      "  vector<string> nums = parseIntVector(line);",
+      "  vector<int> nums = parseIntVector(line);",
       "",
       "  printVect(nums);",
       "",
