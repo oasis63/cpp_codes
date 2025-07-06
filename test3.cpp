@@ -4,82 +4,113 @@
 
 using namespace std;
 
-// House Robber III
-
-class Data {
+class NextNode {
  public:
-  int first;
-  int second;
-  int third;
+  int node_value;
+  int start_time;
+  int end_time;
 };
-
-class TreeNode {
- public:
-  int val;
-  TreeNode* left;
-  TreeNode* right;
-
-  TreeNode(int key) {
-    val = key;
-    left = NULL;
-    right = NULL;
-  }
-};
-
-// LRD
-void preorder(TreeNode* root) {
-  if (root) {
-    cout << root->val << " ";
-    preorder(root->left);
-    preorder(root->right);
-  }
-}
-
-// LDR
-void inorder(TreeNode* root) {
-  if (root) {
-    inorder(root->left);
-    cout << root->val << " ";
-    inorder(root->right);
-  }
-}
 
 class Solution {
  public:
-  Data solve(TreeNode* root) {
-    // base cases
-    if (!root) return {0, 0, 0};
-
-    // leave node
-    if (!root->left && !root->right) {
-      return {root->val, 0, 0};
+  void printMap(map<int, vector<NextNode>>& mp) {
+    for (pair<int, vector<NextNode>> pr : mp) {
+      cout << pr.first << "--->";
+      for (NextNode nn : pr.second) {
+        cout << nn.node_value << "   " << nn.start_time << "   " << nn.end_time << endl;
+      }
+      cout << "----------------------------------------" << endl;
     }
-
-    Data sub_left = solve(root->left);
-    Data sub_right = solve(root->right);
-
-    int first_element = root->val + max(sub_left.second + sub_right.second,
-                                        sub_left.third + sub_right.third);
-    int second_element = sub_left.first + sub_right.first;
-    // int third_element = sub_left.second + sub_right.second;
-    int third_element =
-        max({sub_left.first, sub_left.second, sub_left.third}) +
-        max({sub_right.first, sub_right.second, sub_right.third});
-
-    return {first_element, second_element, third_element};
   }
 
-  int rob(TreeNode* root) {
-    // int res = 0;
+  int reachTime(int curr_node, int time, int n,
+                map<int, vector<NextNode>>& mp, vector<int>& dp) {
+    // final case
+    if (curr_node == n - 1) {
+      return dp[curr_node] = time;
+    }
 
-    Data result = solve(root);
+    // return memoized value at the curr_node
+    // like already visited node
+    // if (dp[curr_node] != INT_MAX) {
+    //   cout << "hiiiit" << endl;
+    //   return dp[curr_node];
+    // }
 
-    return max({result.first, result.second, result.third});
+    int result = INT_MAX;
 
-    // cout << "first_element : " << result.first << endl;
-    // cout << "second_element : " << result.second << endl;
+    vector<NextNode> vn = mp[curr_node];
 
-    // return res;
+    for (NextNode nn : vn) {
+      // we are trying to reach node_value from curr_node
+
+      int node_value = nn.node_value;
+      int edge_start_time = nn.start_time;
+      int edge_end_time = nn.end_time;
+
+      if (time <= edge_end_time) {
+        int start_time = edge_start_time;
+        if (time > edge_start_time) {
+          start_time = time;
+        }
+
+        // bug(curr_node, node_value, start_time, dp[node_value]);
+
+        int res = dp[node_value];
+
+        if ((start_time + 1) < dp[node_value]) {
+          // cout << "going inside" << endl;
+          res = reachTime(node_value, start_time + 1, n, mp, dp);
+        }
+
+        result = min(result, res);
+      }
+    }
+    // bug(curr_node, result);
+    return dp[curr_node] = result;
+  }
+
+  int minTime(int n, vector<vector<int>>& edges) {
+    if (n == 1)
+      return 0;
+
+    map<int, vector<NextNode>> mp;
+
+    // dp is the reaching time
+    vector<int> dp(n, INT_MAX);
+    dp[0] = 0;  // time to reach node 0 , is 0
+
+    for (vector<int> edge : edges) {
+      int start_node = edge[0];
+      int end_node = edge[1];
+      int edge_start_time = edge[2];
+      int edge_end_time = edge[3];
+
+      mp[start_node].push_back(
+          {end_node, edge_start_time, edge_end_time});
+    }
+
+    if (mp.count(0) == 0)
+      return -1;
+
+    for (auto& [key, vec] : mp) {
+      sort(vec.begin(), vec.end(), [](const NextNode& a, const NextNode& b) {
+        return a.start_time < b.start_time;
+      });
+    }
+
+    // cout << "\nPrinting Map size: " << mp.size() << endl;
+    // printMap(mp);
+    // cout << "\n-----------------------------" << endl;
+
+    int ans = reachTime(0, 0, n, mp, dp);
+
+    ans = dp[n - 1];
+
+    // cout << "\nPrinting DP" << endl;
+    // printVect(dp);
+
+    return ans == INT_MAX ? -1 : ans;
   }
 };
 
@@ -93,40 +124,25 @@ int main() {
 
   Solution sol;
 
-  // 7
-  TreeNode* root = NULL;
-  root = new TreeNode(3);
-  root->left = new TreeNode(2);
-  root->right = new TreeNode(3);
-  root->right->right = new TreeNode(1);
-  root->left->right = new TreeNode(3);
+  // int n = 3;
+  // vector<vector<int>> edges = {{0, 1, 0, 1}, {1, 2, 2, 5}};
 
-  // 9
-  // TreeNode* root = NULL;
-  // root = new TreeNode(3);
-  // root->left = new TreeNode(4);
-  // root->right = new TreeNode(5);
-  // root->right->right = new TreeNode(1);
-  // root->left->right = new TreeNode(3);
-  // root->left->left = new TreeNode(1);
+  int n;
 
-  // 7
-  // TreeNode* root = NULL;
-  // root = new TreeNode(4);
-  // root->left = new TreeNode(1);
-  // root->left->left = new TreeNode(2);
-  // root->left->left->left = new TreeNode(3);
+  cin >> n;
+  cin.ignore();
 
-  // 7
-  // TreeNode* root = NULL;
-  // root = new TreeNode(2);
-  // root->left = new TreeNode(1);
-  // root->left->right = new TreeNode(4);
-  // root->right = new TreeNode(3);
+  string line;
+  getline(cin, line);
+  cin.ignore();
 
-  int res = sol.rob(root);
+  vector<vector<int>> edges = parse2dVectorInput(line);
 
-  cout << "\nresult : " << res << endl;
+  // print2DVector(edges);
+
+  int ans = sol.minTime(n, edges);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

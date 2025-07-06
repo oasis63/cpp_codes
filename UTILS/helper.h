@@ -99,4 +99,30 @@ void print2DVector(const vector<vector<T>>& matrix) {
   cout << "--------------------" << endl;
 }
 
+// read and parse the edges
+
+vector<vector<int>> parse2dVectorInput(string s) {
+  vector<vector<int>> edges;
+  vector<int> current;
+  string num = "";
+
+  for (char c : s) {
+    if (isdigit(c) || c == '-') {
+      num += c;
+    } else if (!num.empty()) {
+      current.push_back(stoi(num));
+      num = "";
+    }
+
+    if (c == ']') {
+      if (!current.empty()) {
+        edges.push_back(current);
+        current.clear();
+      }
+    }
+  }
+
+  return edges;
+}
+
 #endif  // HELPER_H
