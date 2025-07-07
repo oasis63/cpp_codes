@@ -6,72 +6,10 @@ using namespace std;
 
 class Solution {
  public:
-  // Dijkstra Algorithm
-  int minTime(int n, vector<vector<int>>& edges) {
-    if (n == 1)
-      return 0;
+  int solve(vector<int> &vect) {
+    int ans = 0;
 
-    map<int, vector<tuple<int, int, int>>> mp;
-    for (vector<int> edge : edges) {
-      int start_node = edge[0];
-      int end_node = edge[1];
-      int edge_start_time = edge[2];
-      int edge_end_time = edge[3];
-
-      mp[start_node].push_back(
-          {end_node, edge_start_time, edge_end_time});
-    }
-
-    if (mp.count(0) == 0)
-      return -1;
-
-    // dp is the reaching time
-    vector<int> dp(n, INT_MAX);
-    dp[0] = 0;  // time to reach node 0 , is 0
-
-    // keeping less time in the top
-    priority_queue<pair<int, int>, vector<pair<int, int>>,
-                   greater<pair<int, int>>>
-        minHeap;
-
-    // reach_time, node_value
-    minHeap.push({0, 0});
-
-    while (!minHeap.empty()) {
-      auto [time, curr_node] = minHeap.top();
-      minHeap.pop();
-
-      vector<tuple<int, int, int>> vn = mp[curr_node];
-
-      for (auto& nn : vn) {
-        // we are trying to reach node_value from curr_node
-
-        int node_value, edge_start_time, edge_end_time;
-
-        tie(node_value, edge_start_time, edge_end_time) = nn;
-
-        if (time <= edge_end_time) {
-          int start_time = edge_start_time;
-          if (time > edge_start_time) {
-            start_time = time;
-          }
-
-          if ((start_time + 1) < dp[node_value]) {
-            dp[node_value] = start_time + 1;
-            minHeap.push({dp[node_value], node_value});
-          }
-        }
-      }
-
-      // for (auto& [weight, v] : adj[u]) {
-      //   if (dist[v] > currDist + weight) {
-      //     dist[v] = currDist + weight;
-      //     minHeap.push({dist[v], v});
-      //   }
-      // }
-    }
-    int ans = dp[n - 1];
-    return ans == INT_MAX ? -1 : ans;
+    return ans;
   }
 };
 
@@ -85,25 +23,32 @@ int main() {
 
   Solution sol;
 
-  // int n = 3;
-  // vector<vector<int>> edges = {{0, 1, 0, 1}, {1, 2, 2, 5}};
+  int base = -2;
 
-  int n;
+  int n = 10;
 
-  cin >> n;
-  cin.ignore();
+  for (int i = 0; i < n; i++) {
+    int rem = i % base;
+    int qut = i / base;
+    bug(i, rem, qut);
+  }
 
-  string line;
-  getline(cin, line);
-  cin.ignore();
+  for (int i = -9; i < 0; i++) {
+    int rem = i % base;
+    int qut = i / base;
+    bug(i, rem, qut);
+  }
 
-  vector<vector<int>> edges = parse2dVectorInput(line);
+  // string line;
+  // getline(cin, line);
 
-  // print2DVector(edges);
+  // vector<int> nums = parseIntVector(line);
 
-  int ans = sol.minTime(n, edges);
+  // printVect(nums);
 
-  cout << "ans : " << ans << endl;
+  // int ans = sol.solve(nums);
+
+  // cout << "ans : " << ans << endl;
 
   return 0;
 }
