@@ -4,50 +4,84 @@
 
 using namespace std;
 
-// bitmask
+class Solution {
+ public:
+  int maxEvents(vector<vector<int>> &events) {
+    int mxEvents = 0;
 
-string decToBinBitMask(int n) {
-  if (n == 0) return "0";
+    // day used
+    unordered_map<int, bool> mp;
 
-  string bin = "";
+    // // sort the events in increasing order of end_times
 
-  unsigned int mask = 1 << 31;
+    // sort(events.begin(), events.end(), [](const auto &a, const auto &b) {
+    //   return a[1] < b[1];
+    // });
 
-  bitset<32> bs(mask);
+    // sort the events in increasing order of start_time
 
-  bug(bs);
-  int len = bs.size();
-  bug(len);
+    sort(events.begin(), events.end(), [](const auto &a, const auto &b) {
+      if (a[0] == b[0]) {
+        return a[1] < b[1];
+      }
 
-  bool started = false;
+      return a[0] < b[0];
+    });
 
-  for (int i = 31; i >= 0; i--) {
-    int and_res = (n & mask);
+    print2DVector(events);
 
-    if ((n & mask) != 0) {
-      bin += "1";
-      started = true;
-    } else if (started) {
-      bin += "0";
+    // min heap
+
+    // priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
+
+    priority_queue<pair<int, int>> mxHeap;
+
+    for (auto &event : events) {
+      if (mxHeap.size() == 0) {
+        mxHeap.push({event[1], event[0]});
+        mp[event[0]] = true;
+        // { end_time, start_time}
+      } else {
+        auto tp = mxHeap.top();
+
+        int tp_end_time = tp.first;
+
+        if (tp_end_time >= event[0] && tp_end_time <= event[1]) {
+          // mxHeap.push({event[1], event[0]});
+
+          // choose a day in the start and end_time range
+          for (int i = tp_end_time; i <= event[1]; i++) {
+            // day i has not be taken yet
+            if (mp.count(i) == 0) {
+              mp[i] = true;
+              mxHeap.push({event[1], event[0]});
+
+              break;
+            }
+          }
+
+        } else if (tp_end_time < event[0]) {
+          mp[event[0]] = true;  // marking as the starting day as d
+          // as we should not use this day again in the future
+          mxHeap.push({event[1], event[0]});
+        }
+      }
     }
-    mask >>= 1;
+
+    cout << "map : " << endl;
+    printMap(mp);
+
+    mxEvents = mxHeap.size();
+
+    while (!mxHeap.empty()) {
+      auto tp = mxHeap.top();
+      mxHeap.pop();
+      cout << tp.first << "  " << tp.second << endl;
+    }
+
+    return mxEvents;
   }
-
-  return bin;
-}
-
-string decToBin(int n) {
-  string bin = "";
-
-  while (n) {
-    int rem = n % 2;
-    n = n / 2;
-
-    bin = to_string(rem) + bin;
-  }
-
-  return bin;
-}
+};
 
 int main() {
   ios_base::sync_with_stdio(0);
@@ -57,13 +91,19 @@ int main() {
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
 
-  int n;
-  cin >> n;
+  Solution sol;
 
-  string bin = decToBin(n);
-  string bitWiseBin = decToBinBitMask(n);
+  string line;
+  getline(cin, line);
 
-  bug(bin, bitWiseBin);
+  vector<vector<int>> events = parse2dVectorInput(line);
+
+  print2DVector(events);
+  cout << "Input ends here-----------" << endl;
+
+  int ans = sol.maxEvents(events);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

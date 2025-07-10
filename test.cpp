@@ -6,8 +6,31 @@ using namespace std;
 
 class Solution {
  public:
-  int solve(vector<int> &vect) {
+  int maximalSquare(vector<vector<char>>& matrix) {
     int ans = 0;
+
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    vvi dp(n, vi(m, 0));
+
+    int mx_size = min(n, m);
+
+    // for (int side = 1; side <= mx_size; side++) {
+    //   for (int i = 0; i <= (i + side - 1) && i < n; i++) {
+    //     for (int j = 0; j <= (j + side - 1) && j < m; j++) {
+    //     }
+    //   }
+    // }
+
+    for (int side = 1; side <= mx_size; side++) {
+      cout << "\tside : " << side << endl;
+      for (int i = 0; i < (n - side); i++) {
+        for (int j = 0; j < (m - side); j++) {
+          bug(i, j);
+        }
+      }
+    }
 
     return ans;
   }
@@ -23,30 +46,19 @@ int main() {
 
   Solution sol;
 
-  int base = -2;
+  string line;
+  getline(cin, line);
 
-  int n = 10;
+  bug(line);
 
-  for (int i = 0; i < n; i++) {
-    int rem = i % base;
-    int qut = i / base;
-    bug(i, rem, qut);
-  }
+  vector<vector<char>> mat = parse2DVector<char>(line);
 
-  for (int i = -9; i < 0; i++) {
-    int rem = i % base;
-    int qut = i / base;
-    bug(i, rem, qut);
-  }
+  print2DVector(mat);
 
-  // string line;
-  // getline(cin, line);
+  // bug(mat.size());
+  // bug(mat[0].size());
 
-  // vector<int> nums = parseIntVector(line);
-
-  // printVect(nums);
-
-  // int ans = sol.solve(nums);
+  // int ans = sol.maximalSquare(mat);
 
   // cout << "ans : " << ans << endl;
 
