@@ -1,0 +1,6 @@
+
+
+erase elements from begin 
+
+
+v.erase(v.begin());

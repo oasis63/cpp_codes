@@ -92,8 +92,8 @@ void print2DVector(const vector<vector<T>>& matrix) {
   cout << endl;
 }
 
-template <typename K, typename V>
-void printMap(const unordered_map<K, V>& mp) {
+template <typename MapType>
+void printMap(const MapType& mp) {
   for (const auto& pair : mp) {
     cout << pair.first << " : " << pair.second << "\n";
   }
@@ -120,7 +120,8 @@ vector<T> parseVector(const string& s) {
           } else if (quoteChar == c) {
             insideQuote = false;
           } else {
-            throw runtime_error("Mismatched quote character at position " + to_string(i));
+            throw runtime_error("Mismatched quote character at position " +
+                                to_string(i));
           }
         } else if (insideQuote) {
           result.push_back(c);
@@ -139,9 +140,11 @@ vector<T> parseVector(const string& s) {
             else
               result.push_back(stod(token));  // double or long double
           } catch (const invalid_argument&) {
-            throw runtime_error("Invalid number token: '" + token + "' at position " + to_string(i));
+            throw runtime_error("Invalid number token: '" + token +
+                                "' at position " + to_string(i));
           } catch (const out_of_range&) {
-            throw runtime_error("Number out of range: '" + token + "' at position " + to_string(i));
+            throw runtime_error("Number out of range: '" + token +
+                                "' at position " + to_string(i));
           }
           token = "";
         }
@@ -199,7 +202,8 @@ vector<vector<T>> parse2DVector(const string& s) {
           } else if (quoteChar == c) {
             insideQuote = false;
           } else {
-            throw runtime_error("Mismatched quote character at position " + to_string(i));
+            throw runtime_error("Mismatched quote character at position " +
+                                to_string(i));
           }
         } else if (insideQuote) {
           currentRow.push_back(c);
@@ -211,7 +215,8 @@ vector<vector<T>> parse2DVector(const string& s) {
           insideRow = false;
         }
 
-      } else if constexpr (is_integral<T>::value || is_floating_point<T>::value) {
+      } else if constexpr (is_integral<T>::value ||
+                           is_floating_point<T>::value) {
         if (c == '[') {
           insideRow = true;
           currentRow.clear();
@@ -226,9 +231,11 @@ vector<vector<T>> parse2DVector(const string& s) {
             else
               currentRow.push_back(stod(token));  // default to double
           } catch (const invalid_argument&) {
-            throw runtime_error("Invalid number token: '" + token + "' at position " + to_string(i));
+            throw runtime_error("Invalid number token: '" + token +
+                                "' at position " + to_string(i));
           } catch (const out_of_range&) {
-            throw runtime_error("Number out of range: '" + token + "' at position " + to_string(i));
+            throw runtime_error("Number out of range: '" + token +
+                                "' at position " + to_string(i));
           }
 
           token = "";

@@ -1197,7 +1197,6 @@ add_executable(C__
         reverseNumbers.cpp
         test.cpp
         test2.cpp
-        test2.h
         test3.cpp
         test4.cpp
         test5.cpp

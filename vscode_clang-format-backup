@@ -3,4 +3,3 @@ BreakBeforeBraces: Attach
 IndentWidth: 2
 ColumnLimit: 0
 AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: false
