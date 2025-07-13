@@ -7,7 +7,8 @@ using namespace std;
 // bitmask
 
 string decToBinBitMask(int n) {
-  if (n == 0) return "0";
+  if (n == 0)
+    return "0";
 
   string bin = "";
 
@@ -15,9 +16,7 @@ string decToBinBitMask(int n) {
 
   bitset<32> bs(mask);
 
-  bug(bs);
   int len = bs.size();
-  bug(len);
 
   bool started = false;
 
