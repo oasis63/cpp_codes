@@ -6,8 +6,44 @@ using namespace std;
 
 class Solution {
  public:
-  int solve(vector<int> &vect) {
+  int solve(int A, int B) {
     int ans = 0;
+    // left bottom corner
+    int i = A, j = B;
+    // bug(i, j);
+    while (i > 1 && j > 1) {
+      ans++;
+      i--;
+      j--;
+    }
+
+    // bug(ans);
+    // right bottom corner
+    i = A, j = B;
+    while (i < 8 && j > 1) {
+      ans++;
+      i++;
+      j--;
+    }
+    // bug(ans);
+
+    // right top corner
+    i = A, j = B;
+    while (i < 8 && j < 8) {
+      ans++;
+      i++;
+      j++;
+    }
+    // bug(ans);
+
+    // left top corner
+    i = A, j = B;
+    while (i > 1 && j < 8) {
+      ans++;
+      i--;
+      j++;
+    }
+    // bug(ans);
 
     return ans;
   }
@@ -23,16 +59,12 @@ int main() {
 
   Solution sol;
 
-  string line;
-  getline(cin, line);
+  // int a = 4, b = 4;
+  int a = 3, b = 1;
 
-  vector<int> nums = parseIntVector(line);
+  int ans = sol.solve(a, b);
 
-  printVect(nums);
-
-  int ans = sol.solve(nums);
-
-  cout << "ans : " << ans << endl;
+  bug(ans);
 
   return 0;
 }
