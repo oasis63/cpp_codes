@@ -1,19 +1,43 @@
 #include <bits/stdc++.h>
+
+#include "UTILS/helper.h"
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
+class Solution {
+ public:
+  int solve(vector<int> &vect) {
+    int ans = 0;
 
-pair<int, int> solve() {
-  pair<int, int> pr = make_pair(5, 3);
-  return pr;
-  //   return {11, 22};
-}
+    return ans;
+  }
+};
 
 int main() {
-  pair<int, int> res = solve();
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-  cout << res.first << "  " << res.second << endl;
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
+
+  Solution sol;
+
+  string line;
+  getline(cin, line);
+
+  // vector<int> nums = parseVector<int>(line);
+
+  // printVect(nums);
+
+  for (int i = 0; i < 1000; i++) {
+    bug(i);
+  }
+
+  cout << "Solution started ...." << endl;
+  // int ans = sol.solve(nums);
+
+  // cout << "ans : " << ans << endl;
 
   return 0;
 }

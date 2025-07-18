@@ -1,44 +1,82 @@
 #include <bits/stdc++.h>
 
 // #include "UTILS/helper.h"
+
 using namespace std;
 
-typedef long long ll;
+void test_case() {
+  int n, k, t;
+  cin >> n >> k;
+  cin.ignore();
 
-int main() {
-  // freopen("input2.txt", "r", stdin);
-  // freopen("output2.txt", "w", stdout);
+  // bug(n, k);
 
-  int n;
-  cin >> n;
+  // string line;
+  // getline(cin, line);
+  // vector<int> rainy = parseVector<int>(line);
+  vector<int> rainy;
+  for (int i = 0; i < n; i++) {
+    cin >> t;
+    rainy.push_back(t);
+  }
 
-  vector<int> a, b;
-  ll A = 0, B = 0;
+  // printVector(rainy);
 
-  for (int x = n; x >= 1; x--) {
-    if (B < A) {
-      B += x;
-      b.push_back(x);
+  vector<int> prefix(n, 0);
+
+  int curr = 0;
+  for (int i = 0; i < n; i++) {
+    if (rainy[i] == 0) {
+      curr++;
+      prefix[i] = curr;
     } else {
-      A += x;
-      a.push_back(x);
+      curr = 0;
     }
   }
 
-  if (A == B) {
-    cout << "YES\n";
-    cout << a.size() << endl;
-    for (int i : a) {
-      cout << i << " ";
+  // cout << "Prefix sum " << endl;
+  // printVector(prefix);
+
+  int res = 0;
+
+  for (int i = 0; i < n; i++) {
+    // should not be rainy
+    if (rainy[i] == 0) {
+      //  i only if all aj=0  for all j (i≤ j ≤ i+k−1)
+      int j = i + k - 1;
+      int last_day = prefix[j];
+      if (last_day) {
+        int total_weather = last_day - prefix[i] + 1;
+
+        // bug(total_weather);
+
+        if (total_weather == k) {
+          res++;
+          i = j + 1;
+        }
+      }
     }
-    cout << endl;
-    cout << b.size() << endl;
-    for (int i : b) {
-      cout << i << " ";
-    }
-    cout << endl;
-  } else {
-    cout << "NO \n";
+  }
+
+  cout << res << endl;
+
+  // cout << "result : " << res << endl;
+  // cout << "------------------------------------------------" << endl;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
+  // freopen("input.txt", "r", stdin);
+  // freopen("output.txt", "w", stdout);
+
+  int tc;
+  cin >> tc;
+  cin.ignore();
+  while (tc--) {
+    test_case();
   }
 
   return 0;

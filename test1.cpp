@@ -1,72 +1,76 @@
 #include <bits/stdc++.h>
+
+#include "UTILS/helper.h"
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-
-string solve(string &str) {
-  vector<int> freq(26, 0);
-
-  int n = str.length();
-
-  for (char c : str) {
-    freq[c - 'a']++;
+class Solution {
+ public:
+  bool isEqualFreq(int *a, int *b) {
+    for (int i = 0; i < 26; i++) {
+      if (a[i] != b[i])
+        return false;
+    }
+    return true;
   }
 
-  bool middle_taken = false;
-  int taken = 0;
-  for (int i = 0; i < 26; i++) {
-    // odd frequency
-    if (freq[i] % 2 == 1) {
-      if (n % 2 == 0 || middle_taken) {
-        return "NO SOLUTION";
-      } else {
-        middle_taken = true;
-        str[n / 2] = 'a' + i;
+  bool checkInclusion(string s1, string s2) {
+    int n1 = s1.length();
+    int n2 = s2.length();
 
-        freq[i]--;
+    if (n1 > n2)
+      return false;
+
+    int freq1[26] = {0};
+    int freq2[26] = {0};
+
+    for (char &c : s1) {
+      freq1[c - 'a']++;
+    }
+
+    int window1 = s1.length();
+
+    for (int i = 0; i < window1; i++) {
+      char c = freq2[i];
+      freq2[c - 'a']++;
+    }
+
+    if (isEqualFreq(freq1, freq2)) {
+      return true;
+    }
+
+    for (int i = window1; i < n2; i++) {
+      freq2[s2[i - window1] - 'a']--;
+
+      freq2[s2[i] - 'a']++;
+
+      if (isEqualFreq(freq1, freq2)) {
+        return true;
       }
     }
-    // even frequency
-    int half = freq[i] / 2;
-    for (int j = 0; j < half; j++) {
-      str[taken + j] = str[n - j - taken - 1] = 'a' + i;
-    }
-    taken += half;
-  }
 
-  return str;
-}
+    return false;
+  }
+};
 
 int main() {
-  fast;
-  // freopen("input2.txt", "r", stdin);
-  // freopen("output2.txt", "w", stdout);
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-  int tc;
-  cin >> tc;
-  cin.ignore();
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
 
-  while (tc--) {
-    string str;
-    getline(cin, str);
+  Solution sol;
 
-    string str1 = str + str;
-    // cout << str1 << endl;
+  string s1, s2;
+  getline(cin, s1);
+  getline(cin, s2);
 
-    string res = solve(str1);
+  cout << "Solution started ...." << endl;
+  bool ans = sol.checkInclusion(s1, s2);
 
-    cout << res << endl;
-  }
+  cout << "ans : " << ans << endl;
 
   return 0;
 }
-
-/*
-
-input : AAAACACBA
-
-output :  AACABACAA
-
-
-*/

@@ -55,7 +55,8 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
 inline int power(int a, int b) {
   int x = 1;
   while (b) {
-    if (b & 1) x *= a;
+    if (b & 1)
+      x *= a;
     a *= a;
     b >>= 1;
   }

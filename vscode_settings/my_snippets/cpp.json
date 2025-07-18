@@ -8,9 +8,26 @@
     "prefix": "cppsample",
     "body": [
       "#include<bits/stdc++.h>",
+      "#include \"UTILS/helper.h\"",
       "using namespace std;\n",
       "#define fast ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);",
       "#define ll long long \n",
+      "int main(){\n",
+      "    freopen(\"input.txt\",\"r\",stdin);",
+      "    freopen(\"output.txt\",\"w\",stdout);",
+      "    $1\n",
+      "    return 0;",
+      "}"
+    ],
+    "description": "cpp sample code"
+  },
+  "cpp basic code": {
+    "prefix": "cppbasic",
+    "body": [
+      "#include<bits/stdc++.h>",
+      "#include \"UTILS/helper.h\"",
+      "using namespace std;\n",
+      "",
       "int main(){\n",
       "    $1\n",
       "    return 0;",
@@ -61,8 +78,8 @@
       "};\n",
       "Solution sol;\n",
       "int main() {",
-      "    freopen(\"inputs.txt\",\"r\",stdin);",
-      "    freopen(\"oututs.txt\",\"w\",stdout);",
+      "    freopen(\"input.txt\",\"r\",stdin);",
+      "    freopen(\"output.txt\",\"w\",stdout);",
       "    vector<int> nums{1, 3, 1};",
       "    int res = sol.solve(nums);",
       "    cout << \"res : \" << res << endl;\n",
@@ -151,8 +168,8 @@
       "int32_t main() {",
       "",
       "    #ifndef ONLINE_JUDGE",
-      "        freopen(\"inputs.txt\",  \"r\",  stdin);",
-      "        freopen(\"outputs.txt\", \"w\", stdout);",
+      "        freopen(\"input.txt\",  \"r\",  stdin);",
+      "        freopen(\"output.txt\", \"w\", stdout);",
       "    #endif",
       "",
       "    vector<int> nums{1, 3, 1};",
@@ -304,6 +321,7 @@
       "",
       "  printVect(nums);",
       "",
+      "  cout << \"Solution started ....\" << endl;",
       "  int ans = sol.solve(nums);",
       "",
       "  cout << \"ans : \" << ans << endl;",
@@ -312,5 +330,11 @@
       "}"
     ],
     "description": "Custom LeetCode C++ snippet using UTILS/helper.h with parsing and solve method"
+  },
+  // my code samples
+  "vvi": {
+    "prefix": "vvi",
+    "body": ["vector<vector<int>>"],
+    "description": "C++ function to print a vector"
   }
 }
