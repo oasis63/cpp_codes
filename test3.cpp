@@ -1,83 +1,111 @@
 #include <bits/stdc++.h>
 
-// #include "UTILS/helper.h"
-
+#include "UTILS/helper.h"
 using namespace std;
 
-void test_case() {
-  int n, k, t;
-  cin >> n >> k;
-  cin.ignore();
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
 
-  // bug(n, k);
-
-  // string line;
-  // getline(cin, line);
-  // vector<int> rainy = parseVector<int>(line);
-  vector<int> rainy;
-  for (int i = 0; i < n; i++) {
-    cin >> t;
-    rainy.push_back(t);
-  }
-
-  // printVector(rainy);
-
-  vector<int> prefix(n, 0);
-
-  int curr = 0;
-  for (int i = 0; i < n; i++) {
-    if (rainy[i] == 0) {
-      curr++;
-      prefix[i] = curr;
-    } else {
-      curr = 0;
-    }
-  }
-
-  // cout << "Prefix sum " << endl;
-  // printVector(prefix);
-
-  int res = 0;
-
-  for (int i = 0; i < n; i++) {
-    // should not be rainy
-    if (rainy[i] == 0) {
-      //  i only if all aj=0  for all j (i≤ j ≤ i+k−1)
-      int j = i + k - 1;
-      int last_day = prefix[j];
-      if (last_day) {
-        int total_weather = last_day - prefix[i] + 1;
-
-        // bug(total_weather);
-
-        if (total_weather == k) {
-          res++;
-          i = j + 1;
-        }
+class Solution {
+ public:
+  bool sameFreq(unordered_map<char, int> s, unordered_map<char, int> t) {
+    for (auto& [u, v] : t) {
+      if (s[u] < t[u]) {
+        return false;
       }
     }
+    return true;
   }
 
-  cout << res << endl;
+  string minWindow(string s, string t) {
+    int n1 = s.length();
+    int n2 = t.length();
 
-  // cout << "result : " << res << endl;
-  // cout << "------------------------------------------------" << endl;
-}
+    if (n1 < n2)
+      return "";
+
+    // int freqS[26] = {0};
+    // int freqT[26] = {0};
+
+    unordered_map<char, int> freqS;
+    unordered_map<char, int> freqT;
+
+    for (auto& c : t) {
+      freqT[c]++;
+    }
+
+    for (int i = 0; i < n2; i++) {
+      freqS[s[i]]++;
+    }
+
+    string ans = "";
+
+    if (sameFreq(freqS, freqT)) {
+      ans = t;
+      return ans;
+    }
+
+    cout << "print freqS " << endl;
+    printMap(freqS);
+
+    cout << "print freqT " << endl;
+    printMap(freqT);
+
+    int left = 0, right = n2;
+
+    bug(n1, n2);
+
+    while (left < right && left <= n1 && right <= n1) {
+      bug(left, right);
+
+      if (sameFreq(freqS, freqT)) {
+        // bug(ansLength, subLength);
+        if (ans == "" || (right - left) < (int)ans.length()) {
+          ans = s.substr(left, right - left + 1);
+          bug(ans);
+        }
+        // if (left < n1)
+        freqS[s[left]]--;
+
+        left++;
+        // if (left < n1)
+        // freqS[s[left]]++;
+
+      } else {
+        // no same frequency move the right pointer
+        // cout << "Different Frequency " << endl;
+
+        // if (right < n1) {
+        freqS[s[right]]++;
+        // }
+        right++;
+      }
+
+      // if (right == 20) {
+      //   printMap(freqS);
+      // }
+    }
+
+    return ans;
+  }
+};
+
+// abbbbbcdd
 
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
 
-  // freopen("input.txt", "r", stdin);
-  // freopen("output.txt", "w", stdout);
+  Solution sol;
 
-  int tc;
-  cin >> tc;
-  cin.ignore();
-  while (tc--) {
-    test_case();
-  }
+  string s, t;
+  getline(cin, s);
+  getline(cin, t);
+
+  string res = sol.minWindow(s, t);
+
+  bug(res);
+  cout << res << endl;
 
   return 0;
 }
