@@ -113,6 +113,7 @@ vector<T> parseVector(const string& s) {
     for (size_t i = 0; i < s.size(); ++i) {
       char c = s[i];
 
+      // Case 1: T is char
       if constexpr (is_same<T, char>::value) {
         if (c == '\'' || c == '"') {
           if (!insideQuote) {
@@ -121,14 +122,14 @@ vector<T> parseVector(const string& s) {
           } else if (quoteChar == c) {
             insideQuote = false;
           } else {
-            throw runtime_error("Mismatched quote character at position " +
-                                to_string(i));
+            throw runtime_error("Mismatched quote character at position " + to_string(i));
           }
         } else if (insideQuote) {
           result.push_back(c);
         }
       }
 
+      // Case 2: T is integral or floating point
       else if constexpr (is_integral<T>::value || is_floating_point<T>::value) {
         if (isdigit(c) || c == '-' || c == '.') {
           token += c;
@@ -139,34 +140,52 @@ vector<T> parseVector(const string& s) {
             else if constexpr (is_same<T, float>::value)
               result.push_back(stof(token));
             else
-              result.push_back(stod(token));  // double or long double
+              result.push_back(stod(token));  // for double or long double
           } catch (const invalid_argument&) {
-            throw runtime_error("Invalid number token: '" + token +
-                                "' at position " + to_string(i));
+            throw runtime_error("Invalid number token: '" + token + "' at position " + to_string(i));
           } catch (const out_of_range&) {
-            throw runtime_error("Number out of range: '" + token +
-                                "' at position " + to_string(i));
+            throw runtime_error("Number out of range: '" + token + "' at position " + to_string(i));
           }
           token = "";
         }
       }
-    }
 
-    // Final token
-    if (!token.empty()) {
-      try {
-        if constexpr (is_same<T, int>::value)
-          result.push_back(stoi(token));
-        else if constexpr (is_same<T, float>::value)
-          result.push_back(stof(token));
-        else
-          result.push_back(stod(token));
-      } catch (const exception& e) {
-        throw runtime_error("Final number parse error: " + string(e.what()));
+      // Case 3: T is string
+      else if constexpr (is_same<T, string>::value) {
+        if (c == '"' || c == '\'') {
+          if (!insideQuote) {
+            insideQuote = true;
+            quoteChar = c;
+          } else if (quoteChar == c) {
+            insideQuote = false;
+            result.push_back(token);
+            token = "";
+          } else {
+            throw runtime_error("Mismatched quote character at position " + to_string(i));
+          }
+        } else if (insideQuote) {
+          token += c;
+        }
       }
     }
 
-    if constexpr (is_same<T, char>::value) {
+    // Final cleanup
+    if (!token.empty()) {
+      if constexpr (is_integral<T>::value || is_floating_point<T>::value) {
+        try {
+          if constexpr (is_same<T, int>::value)
+            result.push_back(stoi(token));
+          else if constexpr (is_same<T, float>::value)
+            result.push_back(stof(token));
+          else
+            result.push_back(stod(token));
+        } catch (const exception& e) {
+          throw runtime_error("Final number parse error: " + string(e.what()));
+        }
+      }
+    }
+
+    if constexpr (is_same<T, char>::value || is_same<T, string>::value) {
       if (insideQuote) {
         throw runtime_error("Unclosed quote in input string.");
       }
@@ -186,13 +205,14 @@ vector<vector<T>> parse2DVector(const string& s) {
   string token = "";
   bool insideRow = false;
   bool insideQuote = false;
-  char quoteChar = '\0';  // Tracks whether we’re inside ' or "
+  char quoteChar = '\0';
 
   try {
     for (size_t i = 0; i < s.size(); ++i) {
       char c = s[i];
 
-      if constexpr (is_same<T, char>::value) {
+      // Case 1: Char or String Type
+      if constexpr (is_same<T, char>::value || is_same<T, string>::value) {
         if (c == '[') {
           insideRow = true;
           currentRow.clear();
@@ -200,14 +220,19 @@ vector<vector<T>> parse2DVector(const string& s) {
           if (!insideQuote) {
             quoteChar = c;
             insideQuote = true;
+            token.clear();  // prepare for new token
           } else if (quoteChar == c) {
             insideQuote = false;
+            if constexpr (is_same<T, char>::value)
+              currentRow.push_back(token[0]);
+            else
+              currentRow.push_back(token);
+            token.clear();
           } else {
-            throw runtime_error("Mismatched quote character at position " +
-                                to_string(i));
+            throw runtime_error("Mismatched quote at position " + to_string(i));
           }
         } else if (insideQuote) {
-          currentRow.push_back(c);
+          token += c;
         } else if (c == ']') {
           if (!currentRow.empty()) {
             result.push_back(currentRow);
@@ -215,12 +240,14 @@ vector<vector<T>> parse2DVector(const string& s) {
           }
           insideRow = false;
         }
+      }
 
-      } else if constexpr (is_integral<T>::value ||
-                           is_floating_point<T>::value) {
+      // Case 2: Numeric Types
+      else if constexpr (is_integral<T>::value || is_floating_point<T>::value) {
         if (c == '[') {
           insideRow = true;
           currentRow.clear();
+          token.clear();
         } else if ((isdigit(c) || c == '-' || c == '.') && insideRow) {
           token += c;
         } else if ((c == ',' || c == ' ' || c == ']') && !token.empty()) {
@@ -230,32 +257,39 @@ vector<vector<T>> parse2DVector(const string& s) {
             else if constexpr (is_same<T, float>::value)
               currentRow.push_back(stof(token));
             else
-              currentRow.push_back(stod(token));  // default to double
-          } catch (const invalid_argument&) {
-            throw runtime_error("Invalid number token: '" + token +
-                                "' at position " + to_string(i));
-          } catch (const out_of_range&) {
-            throw runtime_error("Number out of range: '" + token +
-                                "' at position " + to_string(i));
+              currentRow.push_back(stod(token));
+          } catch (...) {
+            throw runtime_error("Invalid numeric token: " + token);
           }
+          token.clear();
 
-          token = "";
           if (c == ']') {
             result.push_back(currentRow);
+            currentRow.clear();
             insideRow = false;
           }
         }
       }
     }
 
-    if (insideQuote) {
-      throw runtime_error("Unclosed quote in input string.");
+    if (!token.empty() && (is_integral<T>::value || is_floating_point<T>::value)) {
+      // Handle any trailing token not yet pushed
+      if constexpr (is_same<T, int>::value)
+        currentRow.push_back(stoi(token));
+      else if constexpr (is_same<T, float>::value)
+        currentRow.push_back(stof(token));
+      else
+        currentRow.push_back(stod(token));
+      result.push_back(currentRow);
     }
+
+    if (insideQuote)
+      throw runtime_error("Unclosed quote in input.");
 
     return result;
   } catch (const exception& e) {
     cerr << "Parsing Error: " << e.what() << endl;
-    return {};  // return empty result on error
+    return {};
   }
 }
 

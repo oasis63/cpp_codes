@@ -1,2 +1,1 @@
-res : abc
-abc
+1

@@ -1,43 +1,17 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-
 using namespace std;
 
-class Solution {
- public:
-  int solve(vector<int> &vect) {
-    int ans = 0;
-
-    return ans;
-  }
-};
-
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+  // str1.compare(pos1, len1, str2);
 
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
+  string str1 = "dddd";
+  string str2 = "ccd";
 
-  Solution sol;
+  int res = str1.compare(0, 2, str2);
 
-  string line;
-  getline(cin, line);
-
-  // vector<int> nums = parseVector<int>(line);
-
-  // printVect(nums);
-
-  for (int i = 0; i < 1000; i++) {
-    bug(i);
-  }
-
-  cout << "Solution started ...." << endl;
-  // int ans = sol.solve(nums);
-
-  // cout << "ans : " << ans << endl;
+  bug(res);
 
   return 0;
 }

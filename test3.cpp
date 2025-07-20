@@ -1,111 +1,136 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
-
-class Solution {
+class TrieNode {
  public:
-  bool sameFreq(unordered_map<char, int> s, unordered_map<char, int> t) {
-    for (auto& [u, v] : t) {
-      if (s[u] < t[u]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  unordered_map<string, TrieNode*> children;
+  bool is_end;
 
-  string minWindow(string s, string t) {
-    int n1 = s.length();
-    int n2 = t.length();
-
-    if (n1 < n2)
-      return "";
-
-    // int freqS[26] = {0};
-    // int freqT[26] = {0};
-
-    unordered_map<char, int> freqS;
-    unordered_map<char, int> freqT;
-
-    for (auto& c : t) {
-      freqT[c]++;
-    }
-
-    for (int i = 0; i < n2; i++) {
-      freqS[s[i]]++;
-    }
-
-    string ans = "";
-
-    if (sameFreq(freqS, freqT)) {
-      ans = t;
-      return ans;
-    }
-
-    cout << "print freqS " << endl;
-    printMap(freqS);
-
-    cout << "print freqT " << endl;
-    printMap(freqT);
-
-    int left = 0, right = n2;
-
-    bug(n1, n2);
-
-    while (left < right && left <= n1 && right <= n1) {
-      bug(left, right);
-
-      if (sameFreq(freqS, freqT)) {
-        // bug(ansLength, subLength);
-        if (ans == "" || (right - left) < (int)ans.length()) {
-          ans = s.substr(left, right - left + 1);
-          bug(ans);
-        }
-        // if (left < n1)
-        freqS[s[left]]--;
-
-        left++;
-        // if (left < n1)
-        // freqS[s[left]]++;
-
-      } else {
-        // no same frequency move the right pointer
-        // cout << "Different Frequency " << endl;
-
-        // if (right < n1) {
-        freqS[s[right]]++;
-        // }
-        right++;
-      }
-
-      // if (right == 20) {
-      //   printMap(freqS);
-      // }
-    }
-
-    return ans;
+  TrieNode() {
+    this->is_end = false;
   }
 };
 
-// abbbbbcdd
+void insert1(TrieNode* root, vector<string>& strs) {
+  TrieNode* pCrawler = root;
+
+  for (string& str : strs) {
+    if (pCrawler->children.count(str) == 0) {
+      pCrawler->children[str] = new TrieNode();
+    }
+    pCrawler = pCrawler->children[str];
+  }
+
+  pCrawler->is_end = true;
+}
+
+void insert(TrieNode* pCrawler, string str, bool is_end_of_string) {
+  // TrieNode* pCrawler = root;
+
+  // for (string& str : strs) {
+  if (pCrawler->children.count(str) == 0) {
+    pCrawler->children[str] = new TrieNode();
+  }
+  pCrawler = pCrawler->children[str];
+  // }
+
+  pCrawler->is_end = is_end_of_string;
+}
+
+void dfs(TrieNode* currNode, vector<string>& final_result, string curr_path) {
+  if (currNode->is_end) {
+    final_result.push_back(curr_path);
+    return;
+  }
+  // iterate over all the map currNode children
+
+  for (auto& [strValue, childNode] : currNode->children) {
+    dfs(childNode, final_result, curr_path + strValue);
+  }
+}
+
+class Solution {
+ public:
+  //  insert data in Trie
+  void process(TrieNode* root, string& str) {
+    vector<string> vect;
+    int n = str.length();
+
+    TrieNode* pCrawler = root;
+
+    string temp = "";
+
+    for (int i = 0; i < n; i++) {
+      if (str[i] == '/') {
+        if (temp != "") {
+          // vect.push_back(temp);
+          if (pCrawler->children.count(temp) == 0) {
+            pCrawler->children[temp] = new TrieNode();
+          }
+          pCrawler = pCrawler->children[temp];
+        }
+        temp = "";
+        temp += str[i];
+      } else {
+        temp.push_back(str[i]);
+      }
+    }
+
+    // vect.push_back(temp);
+
+    if (pCrawler->children.count(temp) == 0) {
+      pCrawler->children[temp] = new TrieNode();
+    }
+    pCrawler = pCrawler->children[temp];
+
+    pCrawler->is_end = true;
+  }
+
+  vector<string> removeSubfolders(vector<string>& folder) {
+    TrieNode* root = new TrieNode();
+
+    for (string& str : folder) {
+      process(root, str);
+    }
+
+    vector<string> final_result;
+
+    for (auto& [strValue, childNode] : root->children) {
+      dfs(childNode, final_result, strValue);
+    }
+
+    return final_result;
+  }
+};
 
 int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
 
   Solution sol;
 
-  string s, t;
-  getline(cin, s);
-  getline(cin, t);
+  string line;
+  getline(cin, line);
 
-  string res = sol.minWindow(s, t);
+  bug(line);
 
-  bug(res);
-  cout << res << endl;
+  vector<string> folder = parseVector<string>(line);
+
+  printVect(folder);
+
+  cout << "\nSolution started ....\n"
+       << endl;
+  vector<string> ans = sol.removeSubfolders(folder);
+
+  cout << "\nAns " << endl;
+  printVect(ans);
 
   return 0;
 }
