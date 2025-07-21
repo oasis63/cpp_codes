@@ -79,7 +79,7 @@
       "  cout << \"Solution started ....\" << endl;",
       "  int ans = sol.solve(nums);",
       "",
-      "  cout << \"ans : \" << ans << endl;",
+      "  cout << ans << endl;",
       "",
       "  return 0;",
       "}"

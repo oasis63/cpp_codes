@@ -1,15 +1,42 @@
 #include <bits/stdc++.h>
 
-#include "UTILS/helper.h"
+// #include "UTILS/helper.h"
 
 using namespace std;
 
+const int MOD = 1'000'000'007;
+
 class Solution {
  public:
-  int solve(vector<int> &vect) {
-    int ans = 0;
+  int solve(vector<int> &coins, vector<int> &dp, int n, int amount) {
+    if (amount < 0) {
+      return 0;
+    }
 
-    return ans;
+    // amount is 0,, can be got by not selecting any coins
+    if (amount == 0) {
+      return 1;
+    }
+
+    if (dp[amount] != -1) {
+      return dp[amount];
+    }
+
+    int ways = 0;
+
+    for (int coin : coins) {
+      ways = (ways + solve(coins, dp, n, amount - coin)) % MOD;
+    }
+
+    return dp[amount] = ways;
+  }
+
+  int countCoins(vector<int> &coins, int n, int amount) {
+    vector<int> dp(amount + 1, -1);
+
+    int ans = solve(coins, dp, n, amount);
+
+    return ans == INT_MAX ? -1 : ans;
   }
 };
 
@@ -18,31 +45,23 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
+  // freopen("input.txt", "r", stdin);
+  // freopen("output.txt", "w", stdout);
 
   Solution sol;
 
-  int n, total;
-  cin >> n >> total;
+  int n, x;
+  cin >> n >> x;
   cin.ignore();
 
   vector<int> coins(n);
-  for (int &i : coins) {
-    cin >> i;
+
+  for (auto &elem : coins) {
+    cin >> elem;
   }
 
-  string line;
-  getline(cin, line);
+  int ans = sol.countCoins(coins, n, x);
 
-  vector<int> nums = parseVector<int>(line);
-
-  printVect(nums);
-
-  cout << "Solution started ...." << endl;
-  int ans = sol.solve(nums);
-
-  cout << "ans : " << ans << endl;
-
+  cout << ans << endl;
   return 0;
 }
