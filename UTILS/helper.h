@@ -39,7 +39,7 @@ using namespace std;
 #define que_max priority_queue<int>
 #define que_min priority_queue<int, vi, greater<int>>
 
-#define MOD 1000000007
+// #define MOD 1000000007
 
 template <typename Arg1>
 void __f(const char* name, Arg1&& arg1) {

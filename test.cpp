@@ -1,47 +1,48 @@
 #include <bits/stdc++.h>
-// #include "UTILS/helper.h"
+
+#include "UTILS/helper.h"
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-// #define ll long long
+class Solution {
+ public:
+  int solve(vector<int> &vect) {
+    int ans = 0;
+
+    return ans;
+  }
+};
 
 int main() {
-  fast;
-  // freopen("input.txt", "r", stdin);
-  // freopen("output.txt", "w", stdout);
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-  int n, k;
-  cin >> n >> k;
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
+
+  Solution sol;
+
+  int n, total;
+  cin >> n >> total;
   cin.ignore();
 
-  vector<int> weights(n);
-
-  for (int &r : weights) {
-    cin >> r;
+  vector<int> coins(n);
+  for (int &i : coins) {
+    cin >> i;
   }
 
-  sort(weights.begin(), weights.end());
-  // printVect(weights);
+  string line;
+  getline(cin, line);
 
-  int ans = 0;
+  vector<int> nums = parseVector<int>(line);
 
-  int sz = weights.size();
-  int left = 0, right = sz - 1;
+  printVect(nums);
 
-  while (left <= right) {
-    int sum = weights[left] + weights[right];
+  cout << "Solution started ...." << endl;
+  int ans = sol.solve(nums);
 
-    if (sum <= k) {
-      left++;
-      right--;
-      ans++;
-    } else if (sum > k) {
-      right--;
-      ans++;
-    }
-  }
-
-  cout << ans << endl;
+  cout << "ans : " << ans << endl;
 
   return 0;
 }
