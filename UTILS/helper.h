@@ -9,14 +9,14 @@ using namespace std;
 
 #define printVect(a)                 \
   for (auto x : a) cout << x << " "; \
-  cout << endl
+  cout << "\n"
 
 #define printPairVect(a) \
-  for (auto x : a) cout << x.F << " " << x.S << endl
+  for (auto x : a) cout << x.F << " " << x.S << "\n"
 
 #define printVectRange(a, x, y)                    \
   for (int i = x; i < y; i++) cout << a[i] << " "; \
-  cout << endl
+  cout << "\n"
 
 #define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
 
@@ -32,7 +32,6 @@ using namespace std;
 #define mii map<int, int>
 #define mpi map<pii, int>
 #define spi set<pii>
-#define endl "\n"
 #define sz(x) ((int)x.size())
 #define all(p) p.begin(), p.end()
 
@@ -43,7 +42,7 @@ using namespace std;
 
 template <typename Arg1>
 void __f(const char* name, Arg1&& arg1) {
-  cout << name << " : " << arg1 << endl;
+  cout << name << " : " << arg1 << "\n";
 }
 template <typename Arg1, typename... Args>
 void __f(const char* names, Arg1&& arg1, Args&&... args) {
@@ -63,6 +62,24 @@ inline int power(int a, int b) {
   return x;
 }
 
+// define input_output_files
+void set_io_files(const string& inputFile, const string& outputFile) {
+  // freopen(inputFile.c_str(), "r", stdin);
+  // freopen(outputFile.c_str(), "w", stdout);
+
+  FILE* in = freopen(inputFile.c_str(), "r", stdin);
+  if (!in) {
+    perror(("freopen " + inputFile + " failed").c_str());
+    exit(EXIT_FAILURE);
+  }
+
+  FILE* out = freopen(outputFile.c_str(), "w", stdout);
+  if (!out) {
+    perror(("freopen " + outputFile + " failed").c_str());
+    exit(EXIT_FAILURE);
+  }
+}
+
 // Function declarations
 template <typename T>
 void copyVector(const vector<T>& source, vector<T>& destination) {
@@ -79,7 +96,15 @@ void printVector(const vector<T>& vec) {
   for (const T& item : vec) {
     cout << item << " ";
   }
-  cout << endl;
+  cout << "\n";
+}
+
+template <typename T>
+void printVectorWithIndices(const vector<T>& vec) {
+  for (int i = 0; i < (int)vec.size(); i++) {
+    cout << i << " " << vec[i] << "\n";
+  }
+  cout << "\n";
 }
 
 template <typename T>
@@ -88,9 +113,9 @@ void print2DVector(const vector<vector<T>>& matrix) {
     for (const T& item : row) {
       cout << item << " ";
     }
-    cout << endl;
+    cout << "\n";
   }
-  cout << endl;
+  cout << "\n";
 }
 
 template <typename MapType>
@@ -98,7 +123,7 @@ void printMap(const MapType& mp) {
   for (const auto& pair : mp) {
     cout << pair.first << " : " << pair.second << "\n";
   }
-  cout << endl;
+  cout << "\n";
 }
 
 // 1D VECTOR TO PARSE INPUT OF ALL TYPES OF DATA TYPE
@@ -193,7 +218,7 @@ vector<T> parseVector(const string& s) {
 
     return result;
   } catch (const exception& e) {
-    cerr << "Parsing Error: " << e.what() << endl;
+    cerr << "Parsing Error: " << e.what() << "\n";
     return {};
   }
 }
@@ -288,7 +313,7 @@ vector<vector<T>> parse2DVector(const string& s) {
 
     return result;
   } catch (const exception& e) {
-    cerr << "Parsing Error: " << e.what() << endl;
+    cerr << "Parsing Error: " << e.what() << "\n";
     return {};
   }
 }

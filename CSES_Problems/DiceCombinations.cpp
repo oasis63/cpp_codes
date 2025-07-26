@@ -11,6 +11,24 @@ const int MOD = 1'000'000'007;
 
 vector<ll> dp;
 
+/*
+
+ vector<int> dp(amount + 1, 0);
+
+  dp[0] = 1;
+
+  for (int i = 1; i <= amount; i++) {
+    for (int &coin : coins) {
+      int rem = i - coin;
+      if (rem >= 0) {
+        dp[i] = dp[i] + dp[i - coin];
+      }
+    }
+  }
+
+
+*/
+
 int diceSumWays(int n) {
   if (n < 0)
     return 0;

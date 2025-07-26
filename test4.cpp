@@ -1,90 +1,97 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
+using namespace std;
 
 class Solution {
  public:
-  bool sameFreq(unordered_map<char, int> s, unordered_map<char, int> t) {
-    for (auto& [u, v] : t) {
-      // if (t[u] != s[u]) {
-      //   return false;
-      // }
+  int maximumUniqueSubarray(vector<int>& nums) {
+    // element, index
 
-      if (s[u] < t[u]) {
-        return false;
-      }
-    }
-    return true;
-  }
+    int n = nums.size();
 
-  string minWindow(string s, string t) {
-    int n1 = s.length();
-    int n2 = t.length();
+    // vector<int> prefix(n + 1, 0);
+    // for (int i = 1; i < n; i++) {
+    //   prefix[i] = prefix[i - 1] + nums[i];
+    // }
 
-    if (n1 < n2)
-      return "";
-
-    // bug(s, t);
-
-    // transformToLower(s);
-    // transformToLower(t);
-
-    // bug(s, t);
-
-    // int freqS[26] = {0};
-    // int freqT[26] = {0};
-
-    unordered_map<char, int> freqS;
-    unordered_map<char, int> freqT;
-
-    for (auto& c : t) {
-      freqT[c]++;
+    vector<int> prefix(n, 0);
+    prefix[0] = nums[0];
+    for (int i = 1; i < n; i++) {
+      prefix[i] = prefix[i - 1] + nums[i];
     }
 
-    int window2 = n2;
+    unordered_map<int, int> mp;
+    mp[nums[0]] = 0;
 
-    // brute force
-    string ans = "";
+    int max_sum = nums[0];
+    int curr_sum = nums[0];
 
-    for (int i = 0; i < n1; i++) {
-      for (int j = i + n2 - 1; j < n1; j++) {
-        string sub1 = s.substr(i, j - i + 1);
-        // cout << sub1 << endl;
+    int left = 0, right = 1;
 
-        unordered_map<char, int> freqSub;
-        for (auto& c : sub1) {
-          freqSub[c]++;
-        }
+    int prev_left = 0;
 
-        if (sameFreq(freqSub, freqT)) {
-          if (ans == "" || sub1.length() < ans.length()) {
-            ans = sub1;
+    while (left < right && right < n) {
+      if (mp.count(nums[right])) {
+        left = mp[nums[right]];
+
+        int temp_sum = 0;
+        for (int i = prev_left; i <= left; i++) {
+          if (mp.count(nums[i])) {
+            mp.erase(nums[i]);
+            temp_sum += nums[i];
           }
         }
+
+        curr_sum -= temp_sum;
+
+        // bug(temp_sum, curr_sum);
+
+        curr_sum += nums[right];
+
+        mp[nums[right]] = right;
+        left++;
+        right++;
+
+        prev_left = left;
+
+      } else {
+        mp[nums[right]] = right;
+
+        curr_sum += nums[right];
+
+        max_sum = max(max_sum, curr_sum);
+
+        right++;
       }
     }
 
-    return ans;
+    return max_sum;
   }
 };
 
 int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
 
   Solution sol;
 
-  string s, t;
-  getline(cin, s);
-  getline(cin, t);
+  string line;
+  getline(cin, line);
 
-  string res = sol.minWindow(s, t);
+  vector<int> nums = parseVector<int>(line);
 
-  bug(res);
+  printVect(nums);
+
+  cout << "Solution started ...." << endl;
+  int ans = sol.maximumUniqueSubarray(nums);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

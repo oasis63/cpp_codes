@@ -1,136 +1,74 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-
 using namespace std;
 
-class TrieNode {
- public:
-  unordered_map<string, TrieNode*> children;
-  bool is_end;
-
-  TrieNode() {
-    this->is_end = false;
+// find parent of a node
+int findParent(vector<int> &parent, int node) {
+  if (parent[node] == node) {
+    return node;
   }
-};
-
-void insert1(TrieNode* root, vector<string>& strs) {
-  TrieNode* pCrawler = root;
-
-  for (string& str : strs) {
-    if (pCrawler->children.count(str) == 0) {
-      pCrawler->children[str] = new TrieNode();
-    }
-    pCrawler = pCrawler->children[str];
-  }
-
-  pCrawler->is_end = true;
+  return findParent(parent, parent[node]);
 }
 
-void insert(TrieNode* pCrawler, string str, bool is_end_of_string) {
-  // TrieNode* pCrawler = root;
+// unite two nodes in a set
+// node1 < node2  .. in value
+void unite(vector<int> &parent, int node1, int node2) {
+  int node1Parent = findParent(parent, node1);
+  int node2Parent = findParent(parent, node2);
 
-  // for (string& str : strs) {
-  if (pCrawler->children.count(str) == 0) {
-    pCrawler->children[str] = new TrieNode();
-  }
-  pCrawler = pCrawler->children[str];
-  // }
+  // bug(node1, node1Parent, node2, node2Parent);
 
-  pCrawler->is_end = is_end_of_string;
+  if (node1Parent < node2Parent)
+    parent[node2Parent] = node1Parent;
+  else
+    parent[node1Parent] = node2Parent;
 }
-
-void dfs(TrieNode* currNode, vector<string>& final_result, string curr_path) {
-  if (currNode->is_end) {
-    final_result.push_back(curr_path);
-    return;
-  }
-  // iterate over all the map currNode children
-
-  for (auto& [strValue, childNode] : currNode->children) {
-    dfs(childNode, final_result, curr_path + strValue);
-  }
-}
-
-class Solution {
- public:
-  //  insert data in Trie
-  void process(TrieNode* root, string& str) {
-    vector<string> vect;
-    int n = str.length();
-
-    TrieNode* pCrawler = root;
-
-    string temp = "";
-
-    for (int i = 0; i < n; i++) {
-      if (str[i] == '/') {
-        if (temp != "") {
-          // vect.push_back(temp);
-          if (pCrawler->children.count(temp) == 0) {
-            pCrawler->children[temp] = new TrieNode();
-          }
-          pCrawler = pCrawler->children[temp];
-        }
-        temp = "";
-        temp += str[i];
-      } else {
-        temp.push_back(str[i]);
-      }
-    }
-
-    // vect.push_back(temp);
-
-    if (pCrawler->children.count(temp) == 0) {
-      pCrawler->children[temp] = new TrieNode();
-    }
-    pCrawler = pCrawler->children[temp];
-
-    pCrawler->is_end = true;
-  }
-
-  vector<string> removeSubfolders(vector<string>& folder) {
-    TrieNode* root = new TrieNode();
-
-    for (string& str : folder) {
-      process(root, str);
-    }
-
-    vector<string> final_result;
-
-    for (auto& [strValue, childNode] : root->children) {
-      dfs(childNode, final_result, strValue);
-    }
-
-    return final_result;
-  }
-};
 
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+  set_io_files("input.txt", "output.txt");
 
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
+  int n, m;
+  cin >> n >> m;
+  cin.ignore();
 
-  Solution sol;
+  // union and find
+  // 1...n
+  vector<int> parent(n + 1, -1);
 
-  string line;
-  getline(cin, line);
+  for (int i = 0; i <= n; i++) {
+    parent[i] = i;
+  }
 
-  bug(line);
+  int src, dest;
 
-  vector<string> folder = parseVector<string>(line);
+  for (int i = 0; i < m; i++) {
+    cin >> src >> dest;
+    cin.ignore();
+    // bug(src, dest);
+    // now unite the nodes
 
-  printVect(folder);
+    unite(parent, src, dest);
+  }
 
-  cout << "\nSolution started ....\n"
-       << endl;
-  vector<string> ans = sol.removeSubfolders(folder);
+  // cout << "initial parent vector \n";
+  // printVectorWithIndices(parent);
 
-  cout << "\nAns " << endl;
-  printVect(ans);
+  cout << "After updating parent vector \n";
+  printVectorWithIndices(parent);
+
+  vector<pair<int, int>> parentMapVect;
+
+  for (int i = 1; i <= n; i++) {
+    parentMapVect.push_back({i, parent[i]});
+  }
+
+  sort(parentMapVect.begin(), parentMapVect.end(), [](const auto &a, const auto &b) {
+    return a.second < b.second;
+  });
+
+  cout << "\nParentMap : \n";
+  printMap(parentMapVect);
 
   return 0;
 }
