@@ -3,6 +3,7 @@
 #include <vector>
 using namespace std;
 
+// similar to  525. Contiguous Array
 int maxLenZeroSumSubarray(vector<int>& nums) {
   unordered_map<int, int> sumIndex;
   int maxLen = 0, sum = 0;

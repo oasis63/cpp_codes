@@ -1,97 +1,33 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-
 using namespace std;
 
-class Solution {
- public:
-  int maximumUniqueSubarray(vector<int>& nums) {
-    // element, index
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
 
-    int n = nums.size();
+void solve(int src, vector<int> temp) {
+  printVect(temp);
 
-    // vector<int> prefix(n + 1, 0);
-    // for (int i = 1; i < n; i++) {
-    //   prefix[i] = prefix[i - 1] + nums[i];
-    // }
-
-    vector<int> prefix(n, 0);
-    prefix[0] = nums[0];
-    for (int i = 1; i < n; i++) {
-      prefix[i] = prefix[i - 1] + nums[i];
-    }
-
-    unordered_map<int, int> mp;
-    mp[nums[0]] = 0;
-
-    int max_sum = nums[0];
-    int curr_sum = nums[0];
-
-    int left = 0, right = 1;
-
-    int prev_left = 0;
-
-    while (left < right && right < n) {
-      if (mp.count(nums[right])) {
-        left = mp[nums[right]];
-
-        int temp_sum = 0;
-        for (int i = prev_left; i <= left; i++) {
-          if (mp.count(nums[i])) {
-            mp.erase(nums[i]);
-            temp_sum += nums[i];
-          }
-        }
-
-        curr_sum -= temp_sum;
-
-        // bug(temp_sum, curr_sum);
-
-        curr_sum += nums[right];
-
-        mp[nums[right]] = right;
-        left++;
-        right++;
-
-        prev_left = left;
-
-      } else {
-        mp[nums[right]] = right;
-
-        curr_sum += nums[right];
-
-        max_sum = max(max_sum, curr_sum);
-
-        right++;
-      }
-    }
-
-    return max_sum;
+  if (src == 10) {
+    return;
   }
-};
+
+  // for (int i = 0; i < 10; i++) {
+  temp.push_back(src);
+
+  solve(src + 1, temp);
+  // }
+}
 
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
-
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
 
-  Solution sol;
+  vector<int> vect;
+  vect.push_back(1);
 
-  string line;
-  getline(cin, line);
-
-  vector<int> nums = parseVector<int>(line);
-
-  printVect(nums);
-
-  cout << "Solution started ...." << endl;
-  int ans = sol.maximumUniqueSubarray(nums);
-
-  cout << "ans : " << ans << endl;
+  solve(1, vect);
 
   return 0;
 }

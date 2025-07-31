@@ -10,15 +10,12 @@ void nextGreaterElement(vector<int> &nums1, vector<int> &nums2) {
   // monotonic stack
   stack<int> stk;
 
-  for (int i = 0; i < n * 2; i++) {
-    cout << nums2[i] << "  " << (!stk.empty() ? stk.top() : -1) << endl;
-
-    while (!stk.empty() && nums2[i % n] > nums2[stk.top()]) {
-      mp[stk.top()] = i % n;
+  for (int i = 0; i < n; i++) {
+    while (!stk.empty() && nums2[i] > stk.top()) {
+      mp[stk.top()] = nums2[i];
       stk.pop();
     }
-    if (i < n)
-      stk.push(i % n);
+    stk.push(nums2[i]);
   }
 
   while (!stk.empty()) {
@@ -28,18 +25,9 @@ void nextGreaterElement(vector<int> &nums1, vector<int> &nums2) {
 
   vector<int> ngte;
 
-  for (int i = 0; i < n; i++) {
-    if (mp[i] == -1) {
-      ngte.push_back(-1);
-    } else
-      ngte.push_back(nums2[mp[i]]);
+  for (int &el : nums1) {
+    ngte.push_back(mp[el]);
   }
-
-  next_permutation(nums2.begin(), nums2.end());
-
-  // for (int &el : nums1) {
-  //   ngte.push_back(mp[el]);
-  // }
 
   printVector<int>(ngte);
 }

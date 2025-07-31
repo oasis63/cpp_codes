@@ -1,93 +1,92 @@
 #include <bits/stdc++.h>
 
-// #include "UTILS/helper.h"
+#include "UTILS/helper.h"
 using namespace std;
 
-// find parent of a node
+// find parent with path compression
 int findParent(vector<int> &parent, int node) {
-  if (parent[node] == node) {
-    return node;
-  }
-  return findParent(parent, parent[node]);
+  if (parent[node] != node)
+    parent[node] = findParent(parent, parent[node]);
+  return parent[node];
 }
 
 // unite two nodes in a set
 // node1 < node2  .. in value
-void unite(vector<int> &parent, int node1, int node2) {
-  int node1Parent = findParent(parent, node1);
-  int node2Parent = findParent(parent, node2);
+void unite(vector<int> &parent, vector<int> &rank, int node1, int node2) {
+  int root1 = findParent(parent, node1);
+  int root2 = findParent(parent, node2);
 
-  parent[node2Parent] = node1Parent;
+  if (root1 == root2)
+    return;
+
+  if (rank[root1] < rank[root2]) {
+    parent[root1] = root2;
+  } else if (rank[root1] > rank[root2]) {
+    parent[root2] = root1;
+  } else {
+    parent[root2] = root1;
+    rank[root1]++;
+  }
 }
 
 int main() {
-  // set_io_files("input.txt", "output.txt");
+  set_io_files("input.txt", "output.txt");
 
   int n, m;
   cin >> n >> m;
   cin.ignore();
 
-  // vector<pair<int,int>> edges;
-  unordered_map<int, int> edges;
-  int src, dest;
+  // union and find
+  // 1...n
+  // vector<int> parent(n + 1, -1);
+  vector<int> parent(n + 1), rank(n + 1, 0);
+  iota(parent.begin(), parent.end(), 0);
 
+  int src, dest;
   for (int i = 0; i < m; i++) {
     cin >> src >> dest;
     cin.ignore();
+    // bug(src, dest);
+    // now unite the nodes
 
-    edges[src] = dest;
+    unite(parent, rank, src, dest);
   }
 
-  // union and find
-  // 0....n-1
-  // 1...n
-  vector<int> parent(n + 1, -1);
-  // cout << "n : " << n << endl;
-  // cout << "parent size : " << parent.size() << endl;
-  // same node will be parent of itself initially
+  cout << "After updating parent vector \n";
+  printVectorWithIndices(parent);
 
-  // unordered_map<int, int> parentMap;
-
-  for (int i = 0; i <= n; i++) {
-    parent[i] = i;
-    // parentMap[i] = i;
-  }
-
-  // cout << "initial parent vector \n";
-  // printVectorWithIndices(parent);
-
-  // now unite the nodes having
-  for (const auto &[node1, node2] : edges) {
-    unite(parent, node1, node2);
-  }
-
-  // cout << "After updating parent vector \n";
-  // printVectorWithIndices(parent);
-
-  // cout << "\nNow find out the values not matching : " << "\n";
-
-  vector<pair<int, int>> ans;
-  // int prev_index;
+  vector<pair<int, int>> parentMapVect;
 
   for (int i = 1; i <= n; i++) {
-    if (i > 1 && parent[i] != parent[i - 1]) {
-      ans.push_back({i - 1, i});
-      // parent[i] = parent[i - 1];
-    }
-    // if (i == 1) {
-    //   prev_index = i;
-    // } else if (parent[i] != parent[prev_index]) {
-    //   ans.push_back({prev_index, i});
-    //   parent[i] = parent[prev_index];
-    //   prev_index = i;
-    // }
+    parentMapVect.push_back({i, findParent(parent, i)});
   }
 
-  // cout << "Again after updating the parent \n";
-  // printVectorWithIndices(parent);
+  sort(parentMapVect.begin(), parentMapVect.end(), [](const auto &a, const auto &b) {
+    return a.second < b.second;
+  });
 
-  // cout << "\nAns Pair \n";
-  // printPairVect(ans);
+  cout << "\nParentMap : \n";
+  printMap(parentMapVect);
+
+  cout << "--------------------------------------\n";
+  for (int i = 0; i <= n; i++) {
+    cout << parentMapVect[i].first << "  " << parentMapVect[i].second << endl;
+  }
+
+  vector<pair<int, int>> ans;
+
+  for (int i = 1; i <= n; i++) {
+    int curr = parentMapVect[i].second;
+    int prev = parentMapVect[i - 1].second;
+
+    // bug(curr, prev);
+
+    if (i > 0 && curr != 0 && curr != prev) {
+      ans.push_back({prev, curr});
+    }
+  }
+
+  cout << "\nAns------\n";
 
   int res_len = ans.size();
   cout << res_len << "\n";

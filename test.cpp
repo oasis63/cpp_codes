@@ -1,98 +1,72 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
+
 using namespace std;
 
-// find parent with path compression
-int findParent(vector<int> &parent, int node) {
-  if (parent[node] != node)
-    parent[node] = findParent(parent, parent[node]);
-  return parent[node];
-}
+class Solution {
+ public:
+  void divideInGroups(vector<int>& nums, int ind, int n, int k, vector<vector<int>>& groups, vector<int> vect) {
+    if (ind >= n) {
+      groups.push_back(vect);
+      return;
+    }
 
-// unite two nodes in a set
-// node1 < node2  .. in value
-void unite(vector<int> &parent, vector<int> &rank, int node1, int node2) {
-  int root1 = findParent(parent, node1);
-  int root2 = findParent(parent, node2);
+    for (int grp_count = 0; grp_count < k; grp_count++) {
+      // exclude
+      divideInGroups(nums, ind + 1, n, k, groups, vect);
 
-  if (root1 == root2)
-    return;
-
-  if (rank[root1] < rank[root2]) {
-    parent[root1] = root2;
-  } else if (rank[root1] > rank[root2]) {
-    parent[root2] = root1;
-  } else {
-    parent[root2] = root1;
-    rank[root1]++;
-  }
-}
-
-int main() {
-  set_io_files("input.txt", "output.txt");
-
-  int n, m;
-  cin >> n >> m;
-  cin.ignore();
-
-  // union and find
-  // 1...n
-  // vector<int> parent(n + 1, -1);
-  vector<int> parent(n + 1), rank(n + 1, 0);
-  iota(parent.begin(), parent.end(), 0);
-
-  int src, dest;
-  for (int i = 0; i < m; i++) {
-    cin >> src >> dest;
-    cin.ignore();
-    // bug(src, dest);
-    // now unite the nodes
-
-    unite(parent, rank, src, dest);
-  }
-
-  cout << "After updating parent vector \n";
-  printVectorWithIndices(parent);
-
-  vector<pair<int, int>> parentMapVect;
-
-  for (int i = 1; i <= n; i++) {
-    parentMapVect.push_back({i, findParent(parent, i)});
-  }
-
-  sort(parentMapVect.begin(), parentMapVect.end(), [](const auto &a, const auto &b) {
-    return a.second < b.second;
-  });
-
-  cout << "\nParentMap : \n";
-  printMap(parentMapVect);
-
-  cout << "--------------------------------------\n";
-  for (int i = 0; i <= n; i++) {
-    cout << parentMapVect[i].first << "  " << parentMapVect[i].second << endl;
-  }
-
-  vector<pair<int, int>> ans;
-
-  for (int i = 1; i <= n; i++) {
-    int curr = parentMapVect[i].second;
-    int prev = parentMapVect[i - 1].second;
-
-    // bug(curr, prev);
-
-    if (i > 0 && curr != 0 && curr != prev) {
-      ans.push_back({prev, curr});
+      // include
+      vect.push_back(nums[ind]);
+      divideInGroups(nums, ind + 1, n, k, groups, vect);
+      vect.pop_back();
     }
   }
 
-  cout << "\nAns------\n";
+  double largestSumOfAverages(vector<int>& nums, int k) {
+    double mx_sum = 0.0;
 
-  int res_len = ans.size();
-  cout << res_len << "\n";
-  for (const auto &[u, v] : ans) {
-    cout << u << " " << v << "\n";
+    // divide into k groups
+
+    vector<vector<int>> groups;
+    vector<int> vect;
+
+    int n = nums.size();
+
+    divideInGroups(nums, 0, n, k, groups, vect);
+
+    print2DVector<int>(groups);
+
+    cout << fixed;
+    cout << setprecision(6);
+    return mx_sum;
   }
+};
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
+  set_io_files("input.txt", "output.txt");
+
+  Solution sol;
+
+  string line;
+  getline(cin, line);
+
+  vector<int> nums = parseVector<int>(line);
+
+  int k;
+  cin >> k;
+
+  printVect(nums);
+  bug(k);
+
+  cout << "Solution started ...." << endl;
+  double ans = sol.largestSumOfAverages(nums, k);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

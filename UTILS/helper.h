@@ -115,7 +115,7 @@ void print2DVector(const vector<vector<T>>& matrix) {
     }
     cout << "\n";
   }
-  cout << "\n";
+  cout << "---------------------\n";
 }
 
 template <typename MapType>
