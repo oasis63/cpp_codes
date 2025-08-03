@@ -1,107 +1,107 @@
-feat: cracked the code, literally
-fix: segfault? what segfault?
-feat: summoned another algorithmic demon
-perf: made it run faster than my GPA
-wip: cried a little, wrote some code
-docs: translating hieroglyphs into English
-chore: cleaned up the mess I made
-feat: dynamic sadness resolved
-feat: trust the process (literally)
-feat: greed is good (for this one)
-feat: hammer meets problem
-fix: sacrifice to the code gods successful
-temp: YOLO commit
-feat: connected the dots (literally)
-feat: shook the family tree
-fix: probably fixed it, probably broke something else
-chore: added caffeine to the algorithm
-refactor: untangled some spaghetti
-feat: now with 100% more recursion
-fix: it compiles… ship it
-wip: still figuring out what’s happening
-feat: it worked on LeetCode, I swear
-fix: syntax error—again
-chore: renamed stuff because I was bored
-refactor: cleaned up the mess I just made
-feat: brute-forced my way through life and this problem
-fix: rebalanced the binary tree and my emotions
-perf: optimized like a broke college student
-chore: removed a line that did nothing but judge me
-feat: added logic, removed happiness
-fix: fixed the fix I fixed earlier
-refactor: now it's slightly less of a dumpster fire
-feat: recursion inside recursion, inception unlocked
-fix: no clue why it works, but it does
-chore: deleted 300 lines of broken dreams
-docs: added comment that explains nothing
-feat: solved it, not proud of how
-fix: turned a bug into a feature, on purpose
-chore: pretending I understand pointers
-feat: now with more edge cases
-fix: balanced the tree, not my life
-wip: debugging my soul
-feat: array problem solved, sanity not included
-chore: left some TODOs for future-me to cry over
-fix: bug was my fault, obviously
-feat: conquered the graph, still afraid of heights
-refactor: renamed variables from x to something less cursed
-fix: realized I was the bug
-docs: wrote documentation so vague even I’m confused
-feat: not DFS or BFS, just BS
-fix: emergency push. don’t ask.
-feat: learned the hard way
-fix: stopped memory from leaking like emotions
-feat: wrote code that looks like code
-fix: panic-coded and it worked
-feat: reached 0 test cases failed, confidence still low
-fix: forgot semicolon, broke the universe
-refactor: simplified code, now incomprehensible
-feat: unlocked recursion level 99
-fix: ghost in the code removed
-chore: deleted 4 hours of effort
-feat: solved one, opened ten more
-fix: removed infinite loop... I think
-docs: added deep philosophical comments
-fix: unbroke the broke
-feat: went full brute-force, regrets pending
-chore: added meaningless logging
-feat: BFSed my way through depression
-fix: removed logic that did nothing, like me
-feat: yes, it's a greedy solution, don’t judge
-wip: running from time complexity
-fix: StackOverflow nightmare avoided
-feat: reinvented the wheel—again
-fix: patched it with duct tape
-chore: wrote a function, lost my mind
-feat: O(n^2) never looked so good
-fix: looped myself into despair
-feat: built a heap of hope
-fix: just binary searched my will to code
-chore: restructured everything, chaos ensured
-feat: one small step for code, one giant leap for bugs
-fix: recursion finally obeyed
-feat: got all test cases green, not my sleep
-chore: blessed this commit with debugging prints
-fix: typo killed my dreams
-feat: wrote magic that even I don’t understand
-fix: removed one off-by-one demon
-chore: gave variables real names this time
-feat: converted tears into working logic
-fix: made it pass, don’t ask how
-feat: punched logic until it worked
-fix: algorithm now 5% less trash
-chore: slapped on a base case
-feat: Math.random() solved it
-fix: no bugs found, suspicious
-feat: two pointers but no direction in life
-fix: null was the real villain
-chore: added bandaid to runtime error
-feat: tackled DP like a boss
-fix: removed console.log for dignity
-feat: string manipulation: pain edition
-fix: swapped bug with another bug
-feat: wrote code in the eye of a storm
-fix: tamed the recursive beast
-chore: wrote a README no one will read
-feat: pushed code, pulling sanity
-fix: stopped array from gaslighting me
+✨ feat: cracked the code, literally
+🐛 fix: segfault? what segfault?
+👹 feat: summoned another algorithmic demon
+⚡ perf: made it run faster than my GPA
+😭 wip: cried a little, wrote some code
+📝 docs: translating hieroglyphs into English
+🧹 chore: cleaned up the mess I made
+🔮 feat: dynamic sadness resolved
+🎯 feat: trust the process (literally)
+💰 feat: greed is good (for this one)
+🔨 feat: hammer meets problem
+🧙‍♂️ fix: sacrifice to the code gods successful
+🧨 temp: YOLO commit
+🧩 feat: connected the dots (literally)
+🌳 feat: shook the family tree
+🔧 fix: probably fixed it, probably broke something else
+☕ chore: added caffeine to the algorithm
+🍝 refactor: untangled some spaghetti
+🌀 feat: now with 100% more recursion
+🚢 fix: it compiles… ship it
+🧐 wip: still figuring out what’s happening
+🧪 feat: it worked on LeetCode, I swear
+💥 fix: syntax error—again
+🎨 chore: renamed stuff because I was bored
+🧽 refactor: cleaned up the mess I just made
+💪 feat: brute-forced my way through life and this problem
+🌲 fix: rebalanced the binary tree and my emotions
+🏎️ perf: optimized like a broke college student
+🫣 chore: removed a line that did nothing but judge me
+🧠 feat: added logic, removed happiness
+♻️ fix: fixed the fix I fixed earlier
+🔥 refactor: now it's slightly less of a dumpster fire
+🪞 feat: recursion inside recursion, inception unlocked
+🤷 fix: no clue why it works, but it does
+🪓 chore: deleted 300 lines of broken dreams
+📚 docs: added comment that explains nothing
+🙃 feat: solved it, not proud of how
+🔁 fix: turned a bug into a feature, on purpose
+🧠 chore: pretending I understand pointers
+🚧 feat: now with more edge cases
+😵‍💫 fix: balanced the tree, not my life
+🧘 wip: debugging my soul
+🧩 feat: array problem solved, sanity not included
+📝 chore: left some TODOs for future-me to cry over
+🫠 fix: bug was my fault, obviously
+🕸️ feat: conquered the graph, still afraid of heights
+🔤 refactor: renamed variables from x to something less cursed
+🪞 fix: realized I was the bug
+🤔 docs: wrote documentation so vague even I’m confused
+💩 feat: not DFS or BFS, just BS
+🆘 fix: emergency push. don’t ask.
+🧵 feat: learned the hard way
+🫗 fix: stopped memory from leaking like emotions
+🧙 feat: wrote code that looks like code
+🚨 fix: panic-coded and it worked
+🎯 feat: reached 0 test cases failed, confidence still low
+🚫 fix: forgot semicolon, broke the universe
+💀 refactor: simplified code, now incomprehensible
+🧬 feat: unlocked recursion level 99
+👻 fix: ghost in the code removed
+🧹 chore: deleted 4 hours of effort
+🔄 feat: solved one, opened ten more
+🐍 fix: removed infinite loop... I think
+📖 docs: added deep philosophical comments
+🛠️ fix: unbroke the broke
+🔨 feat: went full brute-force, regrets pending
+📈 chore: added meaningless logging
+🌊 feat: BFSed my way through depression
+🙈 fix: removed logic that did nothing, like me
+🤑 feat: yes, it's a greedy solution, don’t judge
+⏱️ wip: running from time complexity
+💣 fix: StackOverflow nightmare avoided
+🧲 feat: reinvented the wheel—again
+🩹 fix: patched it with duct tape
+🌀 chore: wrote a function, lost my mind
+🪫 feat: O(n^2) never looked so good
+🔁 fix: looped myself into despair
+⛰️ feat: built a heap of hope
+🎯 fix: just binary searched my will to code
+🎭 chore: restructured everything, chaos ensured
+🚀 feat: one small step for code, one giant leap for bugs
+🧞 fix: recursion finally obeyed
+🎉 feat: got all test cases green, not my sleep
+🔍 chore: blessed this commit with debugging prints
+📉 fix: typo killed my dreams
+🎩 feat: wrote magic that even I don’t understand
+🔧 fix: removed one off-by-one demon
+🧻 chore: gave variables real names this time
+😢 feat: converted tears into working logic
+🤐 fix: made it pass, don’t ask how
+🥊 feat: punched logic until it worked
+🧃 fix: algorithm now 5% less trash
+🧯 chore: slapped on a base case
+🎲 feat: Math.random() solved it
+🔍 fix: no bugs found, suspicious
+🔀 feat: two pointers but no direction in life
+🎭 fix: null was the real villain
+🩹 chore: added bandaid to runtime error
+🏆 feat: tackled DP like a boss
+🧼 fix: removed console.log for dignity
+🧶 feat: string manipulation: pain edition
+🪳 fix: swapped bug with another bug
+🌪️ feat: wrote code in the eye of a storm
+🧟 fix: tamed the recursive beast
+📄 chore: wrote a README no one will read
+🧠 feat: pushed code, pulling sanity
+🫥 fix: stopped array from gaslighting me
