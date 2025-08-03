@@ -4,44 +4,23 @@
 
 using namespace std;
 
+// 401. Binary Watch
+
 class Solution {
  public:
-  void divideInGroups(vector<int>& nums, int ind, int n, int k, vector<vector<int>>& groups, vector<int> vect) {
-    if (ind >= n) {
-      groups.push_back(vect);
-      return;
-    }
+  vector<string> readBinaryWatch(int turnedOn) {
+    vector<string> ans;
+    string minutes = "";
+    string hours = "";
 
-    for (int grp_count = 0; grp_count < k; grp_count++) {
-      // exclude
-      divideInGroups(nums, ind + 1, n, k, groups, vect);
+    vector<int> hoursBit = {32, 16, 8, 4, 2, 1};
+    vector<int> minutesBit = {8, 4, 2, 1};
 
-      // include
-      vect.push_back(nums[ind]);
-      divideInGroups(nums, ind + 1, n, k, groups, vect);
-      vect.pop_back();
-    }
-  }
-
-  double largestSumOfAverages(vector<int>& nums, int k) {
-    double mx_sum = 0.0;
-
-    // divide into k groups
-
-    vector<vector<int>> groups;
-    vector<int> vect;
-
-    int n = nums.size();
-
-    divideInGroups(nums, 0, n, k, groups, vect);
-
-    print2DVector<int>(groups);
-
-    cout << fixed;
-    cout << setprecision(6);
-    return mx_sum;
+    return ans;
   }
 };
+
+// write a test
 
 int main() {
   ios_base::sync_with_stdio(0);
@@ -52,21 +31,14 @@ int main() {
 
   Solution sol;
 
-  string line;
-  getline(cin, line);
-
-  vector<int> nums = parseVector<int>(line);
-
-  int k;
-  cin >> k;
-
-  printVect(nums);
-  bug(k);
+  int turnedOn;
+  cin >> turnedOn;
 
   cout << "Solution started ...." << endl;
-  double ans = sol.largestSumOfAverages(nums, k);
+  vector<string> ans = sol.readBinaryWatch(turnedOn);
 
-  cout << "ans : " << ans << endl;
+  cout << "ans : " << endl;
+  printVector<string>(ans);
 
   return 0;
 }

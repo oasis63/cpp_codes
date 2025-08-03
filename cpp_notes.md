@@ -10,3 +10,6 @@ Use find() for the first occurrence,
 rfind() for the last,
 find_first_of() for any character from a set,
 at() or operator[] for direct access by index,
+
+// Remove the first character
+str.erase(0, 1);

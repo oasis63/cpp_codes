@@ -35,6 +35,15 @@ string decToBinBitMask(int n) {
   return bin;
 }
 
+void printBitRepresentation(int x) {
+  for (int i = 31; i >= 0; i--) {
+    if (x & (1 << i))
+      cout << "1";
+    else
+      cout << "0";
+  }
+}
+
 string decToBin(int n) {
   string bin = "";
 
