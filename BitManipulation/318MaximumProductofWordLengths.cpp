@@ -8,14 +8,15 @@ using namespace std;
 class Solution {
  public:
   int bit_len(string word) {
-    int a = 0;
+    int mask = 0;
 
     for (char& w : word) {
       int i = w - 'a';
-      a = a | (1 << i);
+      // setting the ith bit in mask
+      mask = mask | (1 << i);
     }
 
-    return a;
+    return mask;
   }
 
   int maxProduct(vector<string>& words) {
