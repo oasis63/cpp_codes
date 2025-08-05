@@ -7,29 +7,29 @@ using namespace std;
 class Solution {
  public:
   int totalFruit(vector<int>& fruits) {
-    unordered_map<int, int> basket;
-    int left = 0, maxFruits = 0;
+    int n = fruits.size();
+    int mx_fruits = 0;
+    unordered_map<int, int> mp;
 
-    for (int right = 0; right < (int)fruits.size(); ++right) {
-      basket[fruits[right]]++;
+    int left = 0;
+    for (int i = 0; i < n; i++) {
+      mp[fruits[i]]++;
 
-      // If there are more than 2 fruit types, shrink window from the left
-      while (basket.size() > 2) {
-        basket[fruits[left]]--;
-        if (basket[fruits[left]] == 0) {
-          basket.erase(fruits[left]);
+      while (mp.size() > 2) {
+        mp[fruits[left]]--;
+        if (mp[fruits[left]] == 0) {
+          mp.erase(fruits[left]);
         }
+
         left++;
       }
 
-      // Update max length
-      maxFruits = max(maxFruits, right - left + 1);
+      mx_fruits = max(mx_fruits, i - left + 1);
     }
 
-    return maxFruits;
+    return mx_fruits;
   }
 };
-
 int main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0);

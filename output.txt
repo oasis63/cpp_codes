@@ -1,2 +1,4 @@
-a aa aaa aaaa 
-mx_prod : 0
+1 6 2 9 
+Solution started ....
+1 2 6 9 
+ans : 2
