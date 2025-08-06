@@ -4,56 +4,70 @@
 
 using namespace std;
 
-typedef long long ll;
-
-// complete this 11th Project's Euler Problem
-
 class Solution {
  public:
-  ll find_product(int a, int b, int c, int d) {
-    ll prod1 = (ll)(a * b);
-    ll prod2 = (ll)(c * d);
+  // first ( fruits count) index less than or equal to the baskets size
 
-    ll prod = (ll)prod1 * prod2;
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
 
-    return prod;
+    vector<pair<int, int>> fruitsPair(n);
+    vector<pair<int, int>> basketsPair(n);
 
-    // return (ll)(a * b) * (ll)(c * d);
-  }
+    for (int i = 0; i < n; i++) {
+      fruitsPair.push_back({fruits[i], i});
+    }
 
-  ll solve(vector<vector<int>> &mat) {
-    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+      basketsPair.push_back({baskets[i], i});
+    }
 
-    int r = mat.size();     // 20;
-    int c = mat[0].size();  // 20;
+    int lastIndex = 0;
 
-    // bug(mat.size(), mat[0].size());
+    // for (const auto& [val, ind] : fruitsPair) {
 
-    for (int i = 0; i < r - 3; i++) {
-      for (int j = 0; j < c - 3; j++) {
-        // horizontal
-        ll horizontal = find_product(mat[i][j], mat[i][j + 1], mat[i][j + 2], mat[i][j + 3]);
+    //   // update basket value to -1   ==> used basket
+    //   // update fruits value to -1   ==> kept fruit in basket
+    // }
 
-        // bug(mat[i][j], mat[i][j + 1], mat[i][j + 2], mat[i][j + 3], horizontal);
+    // let's try to fill the baskets
 
-        // vertical
-        ll vertical = find_product(mat[i][j], mat[i + 1][j], mat[i + 2][j], mat[i + 3][j]);
+    for (const auto& [u, v] : basketsPair) {
+    }
 
-        // bug(mat[i][j], mat[i + 1][j], mat[i + 2][j], mat[i + 3][j], vertical);
+    for (int i = 0; i < n; i++) {
+      bool found = false;
+      for (int j = 0; j < n; j++) {
+        if (baskets[j] == -1)
+          continue;
 
-        // diagonal
-        ll diagonal = find_product(mat[i][j], mat[i + 1][j + 1], mat[i + 2][j + 2], mat[i + 3][j + 3]);
-
-        // bug(mat[i][j], mat[i + 1][j + 1], mat[i + 2][j + 2], mat[i + 3][j + 3], diagonal);
-
-        ans = max({ans, horizontal, vertical, diagonal});
+        if (baskets[j] >= fruits[i]) {
+          baskets[j] = -1;
+          found = true;
+          break;
+        }
+      }
+      if (found) {
+        fruits[i] = -1;
       }
     }
 
+    for (int i = 0; i < fruits.size(); i++) {
+      cout << i << "  ---- > " << fruits[i] << endl;
+      if (fruits[i] != -1) {
+        ans++;
+      }
+    }
+
+    // for (int i : fruits) {
+    //     if (i != -1) {
+    //         ans++;
+    //     }
+    // }
     return ans;
   }
 };
-
 int main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0);
@@ -63,22 +77,16 @@ int main() {
 
   Solution sol;
 
-  vector<vector<int>> mat;
+  string line;
+  getline(cin, line);
 
-  int tc = 20;
+  vector<int> fruits = parseVector<int>(line);
 
-  while (tc--) {
-    string line;
-    getline(cin, line);
-
-    vector<int> nums = parseVector<int>(line);
-    mat.push_back(nums);
-  }
-
-  // print2DVector<int>(mat);
+  getline(cin, line);
+  vector<int> baskets = parseVector<int>(line);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.solve(mat);
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
 
   cout << "ans : " << ans << endl;
 

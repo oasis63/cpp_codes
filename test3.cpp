@@ -6,27 +6,21 @@ using namespace std;
 
 class Solution {
  public:
-  int totalFruit(vector<int>& fruits) {
-    unordered_map<int, int> basket;
-    int left = 0, maxFruits = 0;
+  vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+    if (nums1.size() > nums2.size())
+      return intersect(nums2, nums1);
 
-    for (int right = 0; right < (int)fruits.size(); ++right) {
-      basket[fruits[right]]++;
+    vector<int> ans;
+    unordered_map<int, int> count;
 
-      // If there are more than 2 fruit types, shrink window from the left
-      while (basket.size() > 2) {
-        basket[fruits[left]]--;
-        if (basket[fruits[left]] == 0) {
-          basket.erase(fruits[left]);
-        }
-        left++;
-      }
+    for (const int num : nums1)
+      ++count[num];
 
-      // Update max length
-      maxFruits = max(maxFruits, right - left + 1);
-    }
+    for (const int num : nums2)
+      if (const auto it = count.find(num); it != count.cend() && it->second-- > 0)
+        ans.push_back(num);
 
-    return maxFruits;
+    return ans;
   }
 };
 
@@ -47,13 +41,9 @@ int main() {
   printVect(nums);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.totalFruit(nums);
+  int ans = sol.solve(nums);
 
   cout << "ans : " << ans << endl;
 
   return 0;
 }
-
-// [3,3,3,1,2,1,1,2,3,3,4]   --  5
-// [0,1,6,6,4,4,6]    ---  5
-// [1,0,1,4,1,4,1,2,3]  -- 5

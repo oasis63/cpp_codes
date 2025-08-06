@@ -6,10 +6,7 @@ using namespace std;
 
 typedef long long ll;
 
-// TODO: complete this code ... correct result is not coming
-
-// Project Euler
-// 11. Largest Product in a Grid
+// 11th Project's Euler Problem
 
 class Solution {
  public:
@@ -37,19 +34,19 @@ class Solution {
         // horizontal
         ll horizontal = find_product(mat[i][j], mat[i][j + 1], mat[i][j + 2], mat[i][j + 3]);
 
-        // bug(mat[i][j], mat[i][j + 1], mat[i][j + 2], mat[i][j + 3], horizontal);
-
         // vertical
         ll vertical = find_product(mat[i][j], mat[i + 1][j], mat[i + 2][j], mat[i + 3][j]);
 
-        // bug(mat[i][j], mat[i + 1][j], mat[i + 2][j], mat[i + 3][j], vertical);
+        // diagonal1
+        ll diagonal1 = find_product(mat[i][j], mat[i + 1][j + 1], mat[i + 2][j + 2], mat[i + 3][j + 3]);
 
-        // diagonal
-        ll diagonal = find_product(mat[i][j], mat[i + 1][j + 1], mat[i + 2][j + 2], mat[i + 3][j + 3]);
+        // diagonal2
 
-        // bug(mat[i][j], mat[i + 1][j + 1], mat[i + 2][j + 2], mat[i + 3][j + 3], diagonal);
+        ll diagonal2 = 0;
+        if (j - 3 >= 0 && i + 3 < r)
+          diagonal2 = find_product(mat[i][j], mat[i + 1][j - 1], mat[i + 2][j - 2], mat[i + 3][j - 3]);
 
-        ans = max({ans, horizontal, vertical, diagonal});
+        ans = max({ans, horizontal, vertical, diagonal1, diagonal2});
       }
     }
 

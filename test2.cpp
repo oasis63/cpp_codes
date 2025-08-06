@@ -6,63 +6,67 @@ using namespace std;
 
 class Solution {
  public:
-  //  max should be at most k times min
-  //  max <= min*k
+  // first ( fruits count) index less than or equal to the baskets size
 
-  int binarySearch(vector<int>& nums, int start, int end, int key) {
-    int mid;
-
-    while (start <= end) {
-      mid = start + (end - start) / 2;
-
-      if (nums[mid] == key)
-        return mid;
-      else if (nums[mid] > key)
-        end = mid - 1;
-      else
-        start = mid + 1;
+  int find_search(vector<int>& fruits, int basketSize) {
+    int n = fruits.size();
+    for (int i = 0; i < n; i++) {
+      if (fruits[i] > basketSize)
+        return -1;
+      if (fruits[i] != -1) {
+        return i;
+      }
     }
 
     return -1;
   }
 
-  int minRemoval(vector<int>& nums, int k) {
-    sort(nums.begin(), nums.end());
-    int n = nums.size();
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
 
-    int prev_i = -1;
-    int prev_j = -1;
+    sort(fruits.begin(), fruits.end());
 
-    for (int i = 0; i < n - 1; i++) {
-      // auto ptr1 = upper_bound(nums.begin(), nums.end(), nums[i] * k) - nums.begin();
-      auto ptr1 = lower_bound(nums.begin(), nums.end(), nums[i] * k);
+    // let's try to fill the baskets
 
-      if (ptr1 == nums.end()) {
-        break;
-      } else {
-        prev_i = i;
-        prev_j = ptr1 - nums.begin();
+    for (const auto& basketSize : baskets) {
+      int ind = find_search(fruits, basketSize);
+
+      if (ind != -1 && ind < n) {
+        fruits[ind] = -1;
       }
-      int tmp = ptr1 - nums.begin();
-      bug(nums[i] * k, tmp, nums[tmp]);
     }
 
-    bug(prev_i, prev_j);
+    // for (int i = 0; i < n; i++) {
+    //   bool found = false;
+    //   for (int j = 0; j < n; j++) {
+    //     if (baskets[j] == -1)
+    //       continue;
 
-    if (prev_i == -1)
-      return 0;
-
-    return (n - prev_j - 1 + prev_i);
-
-    // for (int i = 0; i < n - 1; i++) {
-    //   int ind = binarySearch(nums, i + 1, n - 1, nums[i] * k);
-
-    //   if (ind != -1) {
-    //     return (n - ind - 1 + i);
+    //     if (baskets[j] >= fruits[i]) {
+    //       baskets[j] = -1;
+    //       found = true;
+    //       break;
+    //     }
+    //   }
+    //   if (found) {
+    //     fruits[i] = -1;
     //   }
     // }
 
-    return n - 1;
+    for (int i = 0; i < fruits.size(); i++) {
+      cout << i << "  ---- > " << fruits[i] << endl;
+      if (fruits[i] != -1) {
+        ans++;
+      }
+    }
+
+    // for (int i : fruits) {
+    //     if (i != -1) {
+    //         ans++;
+    //     }
+    // }
+    return ans;
   }
 };
 
@@ -78,15 +82,13 @@ int main() {
   string line;
   getline(cin, line);
 
-  vector<int> nums = parseVector<int>(line);
+  vector<int> fruits = parseVector<int>(line);
 
-  int k;
-  cin >> k;
-
-  printVect(nums);
+  getline(cin, line);
+  vector<int> baskets = parseVector<int>(line);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.minRemoval(nums, k);
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
 
   cout << "ans : " << ans << endl;
 

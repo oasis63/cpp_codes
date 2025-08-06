@@ -6,94 +6,45 @@ using namespace std;
 
 class Solution {
  public:
-  //  max should be at most k times min
-  //  max <= min*k
+  int earliestFinishTime(vector<int>& landStartTime,
+                         vector<int>& landDuration,
+                         vector<int>& waterStartTime,
+                         vector<int>& waterDuration) {
+    int n = landStartTime.size();
+    int m = waterStartTime.size();
 
-  // element <= key
-  // key >= element
-  //  key = nums[i]*factor
-  // element <= nums[i]* factor
-  // element/factor <= nums[i]
+    int mn_time = INT_MAX;
 
-  int binarySearch(vector<int>& nums, int start, int end, int key, int factor) {
-    int mid;
-    int index = -1;
-
-    while (start <= end) {
-      mid = start + (end - start) / 2;
-
-      int mx_elem = nums[mid];
-
-      if ((double)(mx_elem / (double)factor) <= (double)key) {
-        index = mid;
-        // end = mid - 1;
-        start = mid + 1;
-      } else {
-        // start = mid + 1;
-        end = mid - 1;
-      }
-      // if (nums[mid] == key)
-      //   return mid;
-      // else if (nums[mid] > key)
-      //   end = mid - 1;
-      // else
-      //   start = mid + 1;
-    }
-    return index;
-  }
-
-  int minRemoval1(vector<int>& nums, int k) {
-    sort(nums.begin(), nums.end());
-
-    printVect(nums);
-
-    int n = nums.size();
-    if (n <= 1)
-      return 0;
-
-    int ans = INT_MAX;
-
-    //  answer = n - (j - i + 1).
-
-    for (int i = 0; i < n - 1; i++) {
-      // int key = nums[i] * k;
-      int key = nums[i];
-      int ind = binarySearch(nums, i + 1, n - 1, key, k);
-
-      bug(key, i, ind);
-
-      if (ind != -1) {
-        // return (n - ind - 1 + i);
-        ans = min(ans, n - ind - 1 + i);
-        bug(ans);
+    // start land first
+    for (int i = 0; i < n; i++) {
+      int end_time = landStartTime[i] + landDuration[i];
+      for (int j = 0; j < m; j++) {
+        if (waterStartTime[j] <= end_time) {
+          mn_time = min(mn_time, end_time + waterDuration[j]);
+        } else {
+          // the ride has not started yet
+          mn_time =
+              min(mn_time, waterStartTime[j] + waterDuration[j]);
+        }
       }
     }
-    return ans != INT_MAX ? ans : n - 1;
-  }
 
-  // using sliding window
-  int minRemoval(vector<int>& nums, int k) {
-    sort(nums.begin(), nums.end());
+    // start water first
 
-    printVect(nums);
+    for (int i = 0; i < m; i++) {
+      int end_time = waterStartTime[i] + waterDuration[i];
 
-    int n = nums.size();
-    if (n <= 1)
-      return 0;
-
-    int ans = INT_MAX;
-
-    int left = 0, right = 0;
-
-    while (left <= right && left < n && right < n) {
-      while (right < n && (double)nums[left] >= (double)((double)nums[right] / (double)k)) {
-        right++;
+      for (int j = 0; j < n; j++) {
+        if (landStartTime[j] <= end_time) {
+          mn_time = min(mn_time, end_time + landDuration[j]);
+        } else {
+          // the ride has not started yet
+          mn_time = min(mn_time, landStartTime[j] + landDuration[j]);
+        }
       }
-      ans = min(ans, n - right + left);
-      left++;
     }
 
-    return ans;
+    return mn_time;
   }
 };
 
@@ -111,13 +62,10 @@ int main() {
 
   vector<int> nums = parseVector<int>(line);
 
-  int k;
-  cin >> k;
-
   printVect(nums);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.minRemoval(nums, k);
+  int ans = sol.solve(nums);
 
   cout << "ans : " << ans << endl;
 
