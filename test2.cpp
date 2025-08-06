@@ -55,6 +55,25 @@ class SegmentTree {
     return min(q1, q2);
   }
 
+  void updateUtil(ll start, ll ending, ll node, ll index, ll val) {
+    if (start == ending) {
+      st[node] = value;
+      return;
+    }
+
+    int mid = (start + ending) / 2;
+
+    if (index <= mid) {
+      updateUtil(start, mid, 2 * node + 1, index, val);
+    } else {
+      updateUtil(mid + 1, ending, 2 * node + 2, index, val);
+    }
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+
+    return;
+  }
+
   void build(vector<ll> &vect) {
     ll n = vect.size();
     buildUtil(0, n - 1, 0, vect);
@@ -62,6 +81,10 @@ class SegmentTree {
 
   ll query(ll l, ll r) {
     return queryUtil(0, n - 1, l, r, 0);
+  }
+
+  void update(int index, int val) {
+    updateUtil(0, n - 1, 0, index, val);
   }
 };
 

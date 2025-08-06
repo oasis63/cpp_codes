@@ -55,6 +55,25 @@ class SegmentTree {
     return q1 + q2;
   }
 
+  void updateUtil(ll start, ll ending, ll node, ll index, ll val) {
+    if (start == ending) {
+      st[node] = val;
+      return;
+    }
+
+    int mid = (start + ending) / 2;
+
+    if (index <= mid) {
+      updateUtil(start, mid, 2 * node + 1, index, val);
+    } else {
+      updateUtil(mid + 1, ending, 2 * node + 2, index, val);
+    }
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+
+    return;
+  }
+
   void build(vector<ll> &vect) {
     ll n = vect.size();
     buildUtil(0, n - 1, 0, vect);
@@ -62,6 +81,10 @@ class SegmentTree {
 
   ll query(ll l, ll r) {
     return queryUtil(0, n - 1, l, r, 0);
+  }
+
+  void update(int index, int val) {
+    updateUtil(0, n - 1, 0, index, val);
   }
 };
 
@@ -87,13 +110,19 @@ int main() {
 
   tree.build(vect);
 
-  ll a, b;
+  ll a, b, c;
 
   while (q--) {
-    cin >> a >> b;
+    cin >> a >> b >> c;
     cin.ignore();
-    ll res = tree.query(a - 1, b - 1);
-    cout << res << endl;
+
+    if (a == 1) {
+      // update
+      tree.update(b - 1, c);
+    } else {
+      ll res = tree.query(b - 1, c - 1);
+      cout << res << endl;
+    }
   }
 
   return 0;
