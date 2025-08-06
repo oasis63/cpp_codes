@@ -2,7 +2,7 @@
 using namespace std;
 
 class SegmentTree {
-public:
+ public:
   vector<int> st;
   int n;
   SegmentTree(int _n) {
@@ -28,7 +28,9 @@ public:
     st[node] = st[2 * node + 1] + st[2 * node + 2];
   }
 
-  void build(vector<int> &v) { buildUtil(0, n - 1, 0, v); }
+  void build(vector<int> &v) {
+    buildUtil(0, n - 1, 0, v);
+  }
 
   int queryUtil(int start, int ending, int l, int r, int node) {
     // non overlapping case
@@ -51,7 +53,9 @@ public:
     return q1 + q2;
   }
 
-  int query(int l, int r) { return queryUtil(0, n - 1, l, r, 0); }
+  int query(int l, int r) {
+    return queryUtil(0, n - 1, l, r, 0);
+  }
 
   void updateUtil(int start, int ending, int node, int index, int value) {
     if (start == ending) {
@@ -73,11 +77,12 @@ public:
     return;
   }
 
-  void update(int x, int y) { updateUtil(0, n - 1, 0, x, y); }
+  void update(int x, int y) {
+    updateUtil(0, n - 1, 0, x, y);
+  }
 };
 
 int main() {
-
   cout << "Segment Tree" << endl;
 
   vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8};

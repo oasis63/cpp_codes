@@ -1,94 +1,100 @@
 #include <bits/stdc++.h>
 
-#include "UTILS/helper.h"
+// #include "UTILS/helper.h"
 
 using namespace std;
 
-class Solution {
+typedef long long ll;
+
+class SegmentTree {
  public:
-  // first ( fruits count) index less than or equal to the baskets size
+  ll n;
+  vector<ll> st;
 
-  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
-    int n = fruits.size();
-    int ans = 0;
+  SegmentTree(ll _n) {
+    this->n = _n;
+    st.resize(4 * n, 0);
+  }
 
-    vector<pair<int, int>> fruitsPair(n);
-    vector<pair<int, int>> basketsPair(n);
-
-    for (int i = 0; i < n; i++) {
-      fruitsPair.push_back({fruits[i], i});
+  void buildUtil(ll start, ll ending, ll node, vector<ll> &vect) {
+    // leaf node
+    if (start == ending) {
+      st[node] = vect[start];
+      return;
     }
 
-    for (int i = 0; i < n; i++) {
-      basketsPair.push_back({baskets[i], i});
+    ll mid = (start + ending) / 2;
+
+    // left sub tree
+    buildUtil(start, mid, 2 * node + 1, vect);
+
+    // right sub tree
+    buildUtil(mid + 1, ending, 2 * node + 2, vect);
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+  }
+
+  ll queryUtil(ll start, ll ending, ll l, ll r, ll node) {
+    // no overlapping
+    if (start > r || ending < l) {
+      return 0;
     }
 
-    int lastIndex = 0;
-
-    // for (const auto& [val, ind] : fruitsPair) {
-
-    //   // update basket value to -1   ==> used basket
-    //   // update fruits value to -1   ==> kept fruit in basket
-    // }
-
-    // let's try to fill the baskets
-
-    for (const auto& [u, v] : basketsPair) {
+    // complete overlapping
+    if (start >= l && ending <= r) {
+      return st[node];
     }
 
-    for (int i = 0; i < n; i++) {
-      bool found = false;
-      for (int j = 0; j < n; j++) {
-        if (baskets[j] == -1)
-          continue;
+    //  partial case
 
-        if (baskets[j] >= fruits[i]) {
-          baskets[j] = -1;
-          found = true;
-          break;
-        }
-      }
-      if (found) {
-        fruits[i] = -1;
-      }
-    }
+    ll mid = (start + ending) / 2;
 
-    for (int i = 0; i < fruits.size(); i++) {
-      cout << i << "  ---- > " << fruits[i] << endl;
-      if (fruits[i] != -1) {
-        ans++;
-      }
-    }
+    ll q1 = queryUtil(start, mid, l, r, 2 * node + 1);
+    ll q2 = queryUtil(mid + 1, ending, l, r, 2 * node + 2);
 
-    // for (int i : fruits) {
-    //     if (i != -1) {
-    //         ans++;
-    //     }
-    // }
-    return ans;
+    return q1 + q2;
+  }
+
+  void build(vector<ll> &vect) {
+    ll n = vect.size();
+    buildUtil(0, n - 1, 0, vect);
+  }
+
+  ll query(ll l, ll r) {
+    return queryUtil(0, n - 1, l, r, 0);
   }
 };
+
 int main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0);
   cout.tie(0);
 
-  set_io_files("input.txt", "output.txt");
+  // set_io_files("input.txt", "output.txt");
 
-  Solution sol;
+  ll n, q;
+  cin >> n >> q;
+  cin.ignore();
 
-  string line;
-  getline(cin, line);
+  vector<ll> vect(n);
 
-  vector<int> fruits = parseVector<int>(line);
+  for (ll &i : vect) {
+    cin >> i;
+  }
+  cin.ignore();
 
-  getline(cin, line);
-  vector<int> baskets = parseVector<int>(line);
+  SegmentTree tree(n);
 
-  cout << "Solution started ...." << endl;
-  int ans = sol.numOfUnplacedFruits(fruits, baskets);
+  tree.build(vect);
 
-  cout << "ans : " << ans << endl;
+  ll a, b;
+
+  while (q--) {
+    cin >> a >> b;
+    cin.ignore();
+    ll res = tree.query(a - 1, b - 1);
+    cout << res << endl;
+  }
 
   return 0;
 }
