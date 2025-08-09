@@ -57,7 +57,7 @@ class SegmentTree {
 
   void updateUtil(ll start, ll ending, ll node, ll index, ll val) {
     if (start == ending) {
-      st[node] = value;
+      st[node] = val;
       return;
     }
 
