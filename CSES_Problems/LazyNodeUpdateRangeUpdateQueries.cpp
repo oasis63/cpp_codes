@@ -159,3 +159,22 @@ int main() {
 
   return 0;
 }
+
+/*
+
+
+Example
+Input:
+
+8 3
+3 2 4 5 1 1 5 3
+2 4
+1 2 5 1
+2 4
+Output:
+
+5
+6
+
+
+*/
