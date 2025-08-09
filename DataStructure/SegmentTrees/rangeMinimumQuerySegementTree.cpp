@@ -1,17 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 // Range Minimum Queries
 
-
 class SegmentTree {
-public:
+ public:
   vector<int> st;
   int n;
   SegmentTree(int _n) {
     this->n = _n;
-    st.resize(4 * _n, 0);
+    st.resize(4 * n, 0);
   }
 
   void printVect() {
@@ -67,7 +65,9 @@ public:
     return min(q1, q2);
   }
 
-  int query(int l, int r) { return queryUtil(0, n - 1, l, r, 0); }
+  int query(int l, int r) {
+    return queryUtil(0, n - 1, l, r, 0);
+  }
 
   void updateUtil(int start, int ending, int node, int index, int value) {
     if (start == ending) {
@@ -89,11 +89,12 @@ public:
     return;
   }
 
-  void update(int x, int y) { updateUtil(0, n - 1, 0, x, y); }
+  void update(int x, int y) {
+    updateUtil(0, n - 1, 0, x, y);
+  }
 };
 
 int main() {
-
   cout << "Segment Tree" << endl;
 
   vector<int> v = {3, 2, 4, 5, 1, 1, 5, 3};

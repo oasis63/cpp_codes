@@ -24,7 +24,7 @@ class SegmentTree {
     buildUtil(start, mid, vect, 2 * node + 1);
     buildUtil(mid + 1, ending, vect, 2 * node + 2);
 
-    st[node] = st[2 * node + 1] ^ st[2 * node + 2];
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);
   }
 
   void build(vector<int> &vect) {
@@ -33,7 +33,7 @@ class SegmentTree {
 
   int queryUtil(int start, int ending, int l, int r, int node) {
     if (start > r || ending < l) {
-      return 0;
+      return INT_MAX;
     }
 
     if (start >= l && ending <= r) {
@@ -45,7 +45,7 @@ class SegmentTree {
     int q1 = queryUtil(start, mid, l, r, 2 * node + 1);
     int q2 = queryUtil(mid + 1, ending, l, r, 2 * node + 2);
 
-    return q1 ^ q2;
+    return min(q1, q2);
   }
 
   int query(int l, int r) {
@@ -65,7 +65,7 @@ class SegmentTree {
       updateUtil(mid + 1, ending, index, val, 2 * node + 2);
     }
 
-    st[node] = st[2 * node + 1] ^ st[2 * node + 2];
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);
 
     return;
   }
@@ -94,15 +94,14 @@ int main() {
   int a, b, c;
 
   while (q--) {
-    // cin >> a >> b >> c;
-    cin >> b >> c;
+    cin >> a >> b >> c;
     cin.ignore();
-    // if (a == 1) {
-    //   tree.update(b - 1, c);
-    // } else {
-    int res = tree.query(b - 1, c - 1);
-    cout << res << endl;
-    // }
+    if (a == 1) {
+      tree.update(b - 1, c);
+    } else {
+      int res = tree.query(b - 1, c - 1);
+      cout << res << endl;
+    }
   }
 
   return 0;
