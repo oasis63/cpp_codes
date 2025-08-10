@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// segment tree with updating a range
+// segment tree with updating a range and  // Point update
 
 typedef long long ll;
 
