@@ -4,102 +4,147 @@
 
 using namespace std;
 
-// Solution 1
-class Solution1 {
+class SegmentTree {
  public:
-  bool solve(string& res, unordered_set<string>& unique_params,
-             vector<bool>& used, string& nums, int n) {
-    if ((int)res.size() == n && unique_params.insert(res).second) {
-      if (res[0] == '0')
-        return false;
-      int n1 = stoi(res);
-      if ((n1 & (n1 - 1)) == 0) {
-        return true;
-      }
-      return false;
-    }
+  vector<int> st;   // stores index of smallest element >= fruit in the segment
+  vector<int> arr;  // original array
+  int n;
+  const int INF = 1e9;
 
-    for (int i = 0; i < n; i++) {
-      if (used[i])
-        continue;
-
-      used[i] = true;
-
-      res.push_back(nums[i]);
-
-      bool result = solve(res, unique_params, used, nums, n);
-
-      if (result)
-        return true;
-
-      res.pop_back();
-
-      used[i] = false;
-    }
-
-    return false;
+  SegmentTree(vector<int>& v) {
+    n = v.size();
+    arr = v;
+    st.resize(4 * n, INF);
+    build(0, n - 1, 0);
   }
-  bool permuteUnique(string num) {
-    // vector<string> ans;
-    string res;
-    // vector<pair<char, int>> prRes;
 
-    int n = num.size();
-
-    unordered_set<string> unique_params;
-    vector<bool> used(n, false);
-
-    return solve(res, unique_params, used, num, num.size());
-
-    // for (string& str : ans) {
-    //     // cout << str << endl;
-
-    //     // skipping the strings containing
-    //     // leading zeros
-    //     if (str[0] == '0')
-    //         continue;
-
-    //     int n1 = stoi(str);
-    //     if ((n1 & (n1 - 1)) == 0) {
-    //         return true;
-    //     }
-    // }
-
-    // return false;
+  void build(int start, int end, int node) {
+    if (start == end) {
+      st[node] = start;  // store index
+      return;
+    }
+    int mid = (start + end) / 2;
+    build(start, mid, 2 * node + 1);
+    build(mid + 1, end, 2 * node + 2);
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);  // min index
   }
-  bool reorderedPowerOf2(int n) {
-    if (n == 1)
-      return true;
-    if (n % 10 == n) {
-      return n & (n - 1);
+
+  // Update value at position idx
+  void update(int start, int end, int node, int idx, int val) {
+    if (start == end) {
+      arr[idx] = val;
+      st[node] = idx;
+      return;
+    }
+    int mid = (start + end) / 2;
+    if (idx <= mid)
+      update(start, mid, 2 * node + 1, idx, val);
+    else
+      update(mid + 1, end, 2 * node + 2, idx, val);
+
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);
+  }
+
+  void update(int idx, int val) {
+    update(0, n - 1, 0, idx, val);
+  }
+
+  // Find smallest index where arr[index] >= fruit
+  int findFirst(int start, int end, int node, int fruit) {
+    if (start == end) {
+      return (arr[start] >= fruit) ? start : INF;
     }
 
-    string num = to_string(n);
-    return permuteUnique(num);
+    int mid = (start + end) / 2;
+    // Check left child first
+    if (arr[st[2 * node + 1]] >= fruit) {
+      return findFirst(start, mid, 2 * node + 1, fruit);
+    }
+    return findFirst(mid + 1, end, 2 * node + 2, fruit);
+  }
+
+  int findFirst(int fruit) {
+    int idx = findFirst(0, n - 1, 0, fruit);
+    return (idx == INF ? -1 : idx);
   }
 };
 
-// solution2
-
 class Solution {
  public:
-  string sortStr(int n) {
-    string str = to_string(n);
-    sort(str.begin(), str.end());
-    return str;
-  }
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
 
-  bool reorderedPowerOf2(int n) {
-    string num1 = sortStr(n);
+    vector<int> placed(n, -1);
 
-    // all the powers of 2
-    for (int i = 0; i < 32; i++) {
-      int p1 = 1 << i;
-      string ps = sortStr(p1);
-      if (ps == num1)
-        return true;
+    int m = baskets.size();
+
+    vector<pair<int, int>> basket_pair;
+
+    for (int i = 0; i < m; i++) {
+      basket_pair.emplace_back(baskets[i], i);
     }
-    return false;
+
+    sort(basket_pair.begin(), basket_pair.end());
+
+    SegmentTree tree(baskets);
+
+    for (int i = 0; i < n; i++) {
+      int fruit = fruits[i];
+
+      int p_ind = tree.findFirst(fruit);
+
+      bug(fruit, p_ind);
+
+      // int value = basket_pair[p_ind].first;
+      // int ind = basket_pair[p_ind].second;
+
+      // bug(fruit, value, ind);
+    }
+
+    for (int i : fruits) {
+      if (i != -1) {
+        ans++;
+      }
+    }
+
+    // for (int i = 0; i < n; i++) {
+    //   int fruit = fruits[i];
+
+    //   int p_ind = lower_bound(basket_pair.begin(), basket_pair.end(), make_pair(fruit, -1),
+    //                           [](const pair<int, int>& a, const pair<int, int>& b) { return a.first < b.first; }) -
+    //               basket_pair.begin();
+
+    //   int value = basket_pair[p_ind].first;
+    //   int ind = basket_pair[p_ind].second;
+
+    //   bug(fruit, value, ind);
+    // }
+
+    // printPairVect(basket_pair);
+
+    // for (int i = 0; i < n; i++) {
+    //   bool found = false;
+    //   // for (auto it = available.begin(); it != available.end(); ++it) {
+    //   for (int j = 0; j < m; j++) {
+    //     if (baskets[j] >= fruits[i]) {
+    //       baskets[j] = -1;
+    //       found = true;
+    //       break;
+    //     }
+    //   }
+
+    //   if (found) {
+    //     fruits[i] = -1;
+    //   }
+    // }
+
+    // for (int i : fruits) {
+    //   if (i != -1) {
+    //     ans++;
+    //   }
+    // }
+    return ans;
   }
 };
 
@@ -112,11 +157,16 @@ int main() {
 
   Solution sol;
 
-  int n;
-  cin >> n;
+  string line;
+  getline(cin, line);
+
+  vector<int> fruits = parseVector<int>(line);
+  getline(cin, line);
+
+  vector<int> baskets = parseVector<int>(line);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.reorderedPowerOf2(n);
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
 
   cout << "ans : " << ans << endl;
 

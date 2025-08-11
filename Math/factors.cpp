@@ -1,41 +1,37 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
+vector<int> factorize(int n) {
+  vector<int> res;
 
-vector<int> factorize(int n){
-    vector<int>res;
+  res.push_back(1);
 
-    res.push_back(1);
+  int t = sqrt(n);
 
-    int t = sqrt(n);
-
-    for(int i=2;i<=t;i++){
-        while(n%i==0){
-            res.push_back(i);
-            n=n/i;
-        }
+  for (int i = 2; i <= t; i++) {
+    while (n % i == 0) {
+      res.push_back(i);
+      n = n / i;
     }
+  }
 
-    if(n!=1)
-        res.push_back(n);
-    return res;
+  if (n != 1)
+    res.push_back(n);
+  return res;
 }
 
+int main() {
+  vector<int> v = factorize(36);
 
-int main(){
+  for (int i : v) {
+    cout << i << " ";
+  }
 
-   vector<int> v = factorize(36);
+  cout << endl;
 
-   for(int i : v){
-        cout<<i<<" ";
-   }
+  v = factorize(17);
 
-    cout<<endl;
-
-    v = factorize(17);
-
-   for(int i : v){
-        cout<<i<<" ";
-   }
-
+  for (int i : v) {
+    cout << i << " ";
+  }
 }

@@ -6,43 +6,63 @@ using namespace std;
 
 class Solution {
  public:
-  void solve(vector<vector<int>>& ans, vector<int>& res, vector<bool> used,
-             vector<int>& nums, int n) {
-    if ((int)res.size() == n) {
-      ans.push_back(res);
-      return;
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
+
+    vector<int> placed(n, -1);
+
+    int m = baskets.size();
+
+    vector<pair<int, int>> basket_pair;
+
+    for (int i = 0; i < m; i++) {
+      basket_pair.emplace_back(baskets[i], i);
     }
+
+    sort(basket_pair.begin(), basket_pair.end());
 
     for (int i = 0; i < n; i++) {
-      if (used[i])
-        continue;
+      int fruit = fruits[i];
 
-      if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
-        continue;
+      int p_ind = lower_bound(basket_pair.begin(), basket_pair.end(), make_pair(fruit, -1),
+                              [](const pair<int, int>& a, const pair<int, int>& b) { return a.first < b.first; }) -
+                  basket_pair.begin();
 
-      used[i] = true;
+      int value = basket_pair[p_ind].first;
+      int ind = basket_pair[p_ind].second;
 
-      res.push_back(nums[i]);
-
-      solve(ans, res, used, nums, n);
-
-      res.pop_back();
-
-      used[i] = false;
+      bug(fruit, value, ind);
     }
-  }
-  vector<vector<int>> permuteUnique(vector<int>& nums) {
-    vector<vector<int>> ans;
-    vector<int> res;
 
-    int n = nums.size();
-    vector<bool> used(n, false);
+    // printPairVect(basket_pair);
 
-    string params = "";
-    unordered_set<string> tracker;
+    // set<int> available;
+    // for (int i = 0; i < n; ++i) {
+    //     available.insert(i);
+    // }
+    for (int i = 0; i < n; i++) {
+      bool found = false;
+      // for (auto it = available.begin(); it != available.end(); ++it) {
+      for (int j = 0; j < m; j++) {
+        if (baskets[j] >= fruits[i]) {
+          // available.erase(it);
+          baskets[j] = -1;
+          found = true;
+          break;
+        }
+      }
 
-    sort(nums.begin(), nums.end());
-    solve(ans, res, used, nums, n);
+      if (found) {
+        fruits[i] = -1;
+      }
+    }
+
+    for (int i : fruits) {
+      if (i != -1) {
+        ans++;
+      }
+    }
     return ans;
   }
 };
@@ -59,14 +79,15 @@ int main() {
   string line;
   getline(cin, line);
 
-  vector<int> nums = parseVector<int>(line);
+  vector<int> fruits = parseVector<int>(line);
+  getline(cin, line);
 
-  printVect(nums);
+  vector<int> baskets = parseVector<int>(line);
 
   cout << "Solution started ...." << endl;
-  vector<vector<int>> ans = sol.permuteUnique(nums);
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
 
-  print2DVector(ans);
+  cout << "ans : " << ans << endl;
 
   return 0;
 }
