@@ -4,123 +4,105 @@
 
 using namespace std;
 
-typedef long long ll;
-
-class SegmentTree {
- public:
-  int n;
-  // this tree will contain max value in a range
-  vector<ll> st;
-  // const ll NEG_INF = INT_MIN;
-  const ll NEG_INF = -1e15;
-
-  SegmentTree(int _n) {
-    this->n = _n;
-    st.resize(4 * n, NEG_INF);
-  }
-
-  // build
-  void buildUtil(int start, int ending, int node, vector<int>& vect) {
-    if (start == ending) {
-      st[node] = vect[start];
-      return;
-    }
-
-    int mid = (start + ending) / 2;
-
-    buildUtil(start, mid, 2 * node + 1, vect);
-    buildUtil(mid + 1, ending, 2 * node + 2, vect);
-
-    st[node] = max(st[2 * node + 1], st[2 * node + 2]);
-  }
-
-  void build(vector<int>& vect) {
-    buildUtil(0, n - 1, 0, vect);
-  }
-
-  // update
-
-  void updateUtil(int start, int ending, int index, ll val, int node) {
-    if (start == ending) {
-      st[node] = val;
-      return;
-    }
-
-    int mid = (start + ending) / 2;
-    if (index <= mid) {
-      updateUtil(start, mid, index, val, 2 * node + 1);
-    } else {
-      updateUtil(mid + 1, ending, index, val, 2 * node + 2);
-    }
-
-    st[node] = max(st[2 * node + 1], st[2 * node + 2]);
-  }
-
-  void update(int index, ll val) {
-    updateUtil(0, n - 1, index, val, 0);
-  }
-
-  // query
-  // return a index in from st
-  // such that it is greater than value val
-  int queryFindFirstUtil(int start, int ending, int node, int val) {
-    if (st[node] < val)
-      return -1;
-
-    if (start == ending) {
-      return start;
-    }
-
-    int mid = (start + ending) / 2;
-
-    int leftTree = queryFindFirstUtil(start, mid, 2 * node + 1, val);
-
-    if (leftTree != -1)
-      return leftTree;
-
-    int rightTree = queryFindFirstUtil(mid + 1, ending, 2 * node + 2, val);
-
-    return rightTree;
-  }
-
-  int queryFindFirst(ll val) {
-    return queryFindFirstUtil(0, n - 1, 0, val);
-  }
-};
-
 class Solution {
  public:
-  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
-    int n = fruits.size();
-    int ans = 0;
+  const int MOD = 1000000007;
 
-    SegmentTree tree(n);
-    tree.build(baskets);
+  int modular_expo(int base, int exp) {
+    long long res = 1;
 
-    for (int fruit : fruits) {
-      int idx = tree.queryFindFirst(fruit);
-      if (idx == -1) {
-        ans++;
+    while (exp > 0) {
+      if (exp % 2 == 1) {
+        res = (res * base) % MOD;
+      }
+      base = (base * base) % MOD;
+      exp /= 2;
+    }
+
+    return res;
+  }
+
+  unordered_set<string> paths;
+  // int ans = 0;
+
+  int find_ways(int amount, vector<long long>& coins, int ind, int n,
+                vector<int>& dp, string path) {
+    bug(amount, ind);
+    if (amount == 0) {
+      cout << path << endl;
+      if (paths.insert(path).second) {
+        // ans++;
+        return 1;
+      } else
+        return 0;
+    }
+    if (ind >= n)
+      return 0;
+    if (amount < 0)
+      return 0;
+
+    if (dp[amount] != -1)
+      return dp[amount];
+
+    int take = find_ways(amount - coins[ind], coins, ind + 1, n, dp,
+                         path + "/" + to_string(coins[ind]));
+
+    int donot_take = find_ways(amount, coins, ind + 1, n, dp, path);
+
+    return dp[amount] = (take + donot_take) % MOD;
+  }
+
+  int numberOfWays(int total, int x) {
+    int amount = total;
+
+    vector<long long> coins;
+
+    for (int i = 1; i <= total; i++) {
+      if (x == 1) {
+        coins.push_back(i);
       } else {
-        tree.update(idx, -1e15);
+        long long res = modular_expo(i, x);
+        if (res <= total) {
+          coins.push_back(res);
+        } else {
+          break;
+        }
       }
     }
-    return ans;
+
+    int n = coins.size();
+
+    printVector(coins);
+
+    vector<int> dp(amount + 1, -1);
+    dp[0] = 1;
+    dp[1] = 1;
+
+    int res = find_ways(amount, coins, 0, n, dp, "");
+
+    printVectorWithIndices(dp);
+
+    return res;
+    // return ans;
   }
 };
 
 int main() {
-  ios::sync_with_stdio(0);
+  ios_base::sync_with_stdio(0);
   cin.tie(0);
+  cout.tie(0);
 
-  vector<int> fruits1 = {4, 2, 5};
-  vector<int> baskets1 = {3, 5, 4};
+  set_io_files("input.txt", "output.txt");
+
   Solution sol;
-  cout << sol.numOfUnplacedFruits(fruits1, baskets1) << "\n";  // Expected: 1
 
-  vector<int> fruits2 = {3, 6, 1};
-  vector<int> baskets2 = {6, 4, 7};
-  cout << sol.numOfUnplacedFruits(fruits2, baskets2) << "\n";  // Expected: 0
+  int n, x;
+  cin >> n >> x;
+
+  cout << "Solution started ...." << endl;
+  int ans = sol.numberOfWays(n, x);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }
