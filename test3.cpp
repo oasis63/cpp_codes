@@ -4,82 +4,147 @@
 
 using namespace std;
 
-// House Robber III
-
-class Data {
+class SegmentTree {
  public:
-  int first;
-  int second;
-  int third;
-};
+  vector<int> st;   // stores index of smallest element >= fruit in the segment
+  vector<int> arr;  // original array
+  int n;
+  const int INF = 1e9;
 
-class TreeNode {
- public:
-  int val;
-  TreeNode* left;
-  TreeNode* right;
+  SegmentTree(vector<int>& v) {
+    n = v.size();
+    arr = v;
+    st.resize(4 * n, INF);
+    build(0, n - 1, 0);
+  }
 
-  TreeNode(int key) {
-    val = key;
-    left = NULL;
-    right = NULL;
+  void build(int start, int end, int node) {
+    if (start == end) {
+      st[node] = start;  // store index
+      return;
+    }
+    int mid = (start + end) / 2;
+    build(start, mid, 2 * node + 1);
+    build(mid + 1, end, 2 * node + 2);
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);  // min index
+  }
+
+  // Update value at position idx
+  void update(int start, int end, int node, int idx, int val) {
+    if (start == end) {
+      arr[idx] = val;
+      st[node] = idx;
+      return;
+    }
+    int mid = (start + end) / 2;
+    if (idx <= mid)
+      update(start, mid, 2 * node + 1, idx, val);
+    else
+      update(mid + 1, end, 2 * node + 2, idx, val);
+
+    st[node] = min(st[2 * node + 1], st[2 * node + 2]);
+  }
+
+  void update(int idx, int val) {
+    update(0, n - 1, 0, idx, val);
+  }
+
+  // Find smallest index where arr[index] >= fruit
+  int findFirst(int start, int end, int node, int fruit) {
+    if (start == end) {
+      return (arr[start] >= fruit) ? start : INF;
+    }
+
+    int mid = (start + end) / 2;
+    // Check left child first
+    if (arr[st[2 * node + 1]] >= fruit) {
+      return findFirst(start, mid, 2 * node + 1, fruit);
+    }
+    return findFirst(mid + 1, end, 2 * node + 2, fruit);
+  }
+
+  int findFirst(int fruit) {
+    int idx = findFirst(0, n - 1, 0, fruit);
+    return (idx == INF ? -1 : idx);
   }
 };
-
-// LRD
-void preorder(TreeNode* root) {
-  if (root) {
-    cout << root->val << " ";
-    preorder(root->left);
-    preorder(root->right);
-  }
-}
-
-// LDR
-void inorder(TreeNode* root) {
-  if (root) {
-    inorder(root->left);
-    cout << root->val << " ";
-    inorder(root->right);
-  }
-}
 
 class Solution {
  public:
-  Data solve(TreeNode* root) {
-    // base cases
-    if (!root) return {0, 0, 0};
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
 
-    // leave node
-    if (!root->left && !root->right) {
-      return {root->val, 0, 0};
+    vector<int> placed(n, -1);
+
+    int m = baskets.size();
+
+    vector<pair<int, int>> basket_pair;
+
+    for (int i = 0; i < m; i++) {
+      basket_pair.emplace_back(baskets[i], i);
     }
 
-    Data sub_left = solve(root->left);
-    Data sub_right = solve(root->right);
+    sort(basket_pair.begin(), basket_pair.end());
 
-    int first_element = root->val + max(sub_left.second + sub_right.second,
-                                        sub_left.third + sub_right.third);
-    int second_element = sub_left.first + sub_right.first;
-    // int third_element = sub_left.second + sub_right.second;
-    int third_element =
-        max({sub_left.first, sub_left.second, sub_left.third}) +
-        max({sub_right.first, sub_right.second, sub_right.third});
+    SegmentTree tree(baskets);
 
-    return {first_element, second_element, third_element};
-  }
+    for (int i = 0; i < n; i++) {
+      int fruit = fruits[i];
 
-  int rob(TreeNode* root) {
-    // int res = 0;
+      int p_ind = tree.findFirst(fruit);
 
-    Data result = solve(root);
+      bug(fruit, p_ind);
 
-    return max({result.first, result.second, result.third});
+      // int value = basket_pair[p_ind].first;
+      // int ind = basket_pair[p_ind].second;
 
-    // cout << "first_element : " << result.first << endl;
-    // cout << "second_element : " << result.second << endl;
+      // bug(fruit, value, ind);
+    }
 
-    // return res;
+    for (int i : fruits) {
+      if (i != -1) {
+        ans++;
+      }
+    }
+
+    // for (int i = 0; i < n; i++) {
+    //   int fruit = fruits[i];
+
+    //   int p_ind = lower_bound(basket_pair.begin(), basket_pair.end(), make_pair(fruit, -1),
+    //                           [](const pair<int, int>& a, const pair<int, int>& b) { return a.first < b.first; }) -
+    //               basket_pair.begin();
+
+    //   int value = basket_pair[p_ind].first;
+    //   int ind = basket_pair[p_ind].second;
+
+    //   bug(fruit, value, ind);
+    // }
+
+    // printPairVect(basket_pair);
+
+    // for (int i = 0; i < n; i++) {
+    //   bool found = false;
+    //   // for (auto it = available.begin(); it != available.end(); ++it) {
+    //   for (int j = 0; j < m; j++) {
+    //     if (baskets[j] >= fruits[i]) {
+    //       baskets[j] = -1;
+    //       found = true;
+    //       break;
+    //     }
+    //   }
+
+    //   if (found) {
+    //     fruits[i] = -1;
+    //   }
+    // }
+
+    // for (int i : fruits) {
+    //   if (i != -1) {
+    //     ans++;
+    //   }
+    // }
+    return ans;
   }
 };
 
@@ -88,45 +153,22 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
+  set_io_files("input.txt", "output.txt");
 
   Solution sol;
 
-  // 7
-  TreeNode* root = NULL;
-  root = new TreeNode(3);
-  root->left = new TreeNode(2);
-  root->right = new TreeNode(3);
-  root->right->right = new TreeNode(1);
-  root->left->right = new TreeNode(3);
+  string line;
+  getline(cin, line);
 
-  // 9
-  // TreeNode* root = NULL;
-  // root = new TreeNode(3);
-  // root->left = new TreeNode(4);
-  // root->right = new TreeNode(5);
-  // root->right->right = new TreeNode(1);
-  // root->left->right = new TreeNode(3);
-  // root->left->left = new TreeNode(1);
+  vector<int> fruits = parseVector<int>(line);
+  getline(cin, line);
 
-  // 7
-  // TreeNode* root = NULL;
-  // root = new TreeNode(4);
-  // root->left = new TreeNode(1);
-  // root->left->left = new TreeNode(2);
-  // root->left->left->left = new TreeNode(3);
+  vector<int> baskets = parseVector<int>(line);
 
-  // 7
-  // TreeNode* root = NULL;
-  // root = new TreeNode(2);
-  // root->left = new TreeNode(1);
-  // root->left->right = new TreeNode(4);
-  // root->right = new TreeNode(3);
+  cout << "Solution started ...." << endl;
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
 
-  int res = sol.rob(root);
-
-  cout << "\nresult : " << res << endl;
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

@@ -1,22 +1,93 @@
 #include <bits/stdc++.h>
+
+#include "UTILS/helper.h"
+
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-#define ll long long
+class Solution {
+ public:
+  int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+    int n = fruits.size();
+    int ans = 0;
+
+    vector<int> placed(n, -1);
+
+    int m = baskets.size();
+
+    vector<pair<int, int>> basket_pair;
+
+    for (int i = 0; i < m; i++) {
+      basket_pair.emplace_back(baskets[i], i);
+    }
+
+    sort(basket_pair.begin(), basket_pair.end());
+
+    for (int i = 0; i < n; i++) {
+      int fruit = fruits[i];
+
+      int p_ind = lower_bound(basket_pair.begin(), basket_pair.end(), make_pair(fruit, -1),
+                              [](const pair<int, int>& a, const pair<int, int>& b) { return a.first < b.first; }) -
+                  basket_pair.begin();
+
+      int value = basket_pair[p_ind].first;
+      int ind = basket_pair[p_ind].second;
+
+      bug(fruit, value, ind);
+    }
+
+    // printPairVect(basket_pair);
+
+    // set<int> available;
+    // for (int i = 0; i < n; ++i) {
+    //     available.insert(i);
+    // }
+    for (int i = 0; i < n; i++) {
+      bool found = false;
+      // for (auto it = available.begin(); it != available.end(); ++it) {
+      for (int j = 0; j < m; j++) {
+        if (baskets[j] >= fruits[i]) {
+          // available.erase(it);
+          baskets[j] = -1;
+          found = true;
+          break;
+        }
+      }
+
+      if (found) {
+        fruits[i] = -1;
+      }
+    }
+
+    for (int i : fruits) {
+      if (i != -1) {
+        ans++;
+      }
+    }
+    return ans;
+  }
+};
 
 int main() {
-  bitset<3> bs(3);
-  bitset<3> bs1(5);
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-  cout << bs << endl;
+  set_io_files("input.txt", "output.txt");
 
-  cout << bs.test(0) << endl;
-  cout << bs.test(1) << endl;
-  cout << bs.test(2) << endl;
+  Solution sol;
 
-  cout << (bs & bs1) << endl;
+  string line;
+  getline(cin, line);
 
-  cout << bs.count() << endl;
+  vector<int> fruits = parseVector<int>(line);
+  getline(cin, line);
+
+  vector<int> baskets = parseVector<int>(line);
+
+  cout << "Solution started ...." << endl;
+  int ans = sol.numOfUnplacedFruits(fruits, baskets);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }

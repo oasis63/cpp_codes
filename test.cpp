@@ -4,83 +4,167 @@
 
 using namespace std;
 
-#define ll long long
+// segment tree with updating a range
 
-class Solution {
+typedef long long ll;
+
+class SegmentTree {
+ private:
+  ll n;
+  vector<ll> st;
+  vector<ll> lazy;
+
+  void buildUtil(ll start, ll ending, vector<ll> &vect, ll node) {
+    if (start == ending) {
+      st[node] = vect[start];
+      return;
+    }
+
+    ll mid = (start + ending) / 2;
+
+    buildUtil(start, mid, vect, 2 * node + 1);
+    buildUtil(mid + 1, ending, vect, 2 * node + 2);
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+  }
+
+  ll queryUtil(ll start, ll ending, ll l, ll r, ll node) {
+    // no overlapping
+    if (start > r || ending < l) {
+      return INT_MAX;
+    }
+
+    // complete overlapping
+    if (start >= l && ending <= r) {
+      return st[node];
+    }
+
+    //  partial case
+
+    ll mid = (start + ending) / 2;
+
+    ll q1 = queryUtil(start, mid, l, r, 2 * node + 1);
+    ll q2 = queryUtil(mid + 1, ending, l, r, 2 * node + 2);
+
+    return min(q1, q2);
+  }
+
+  void updateUtil(ll start, ll ending, ll node, ll index, ll val) {
+    if (start == ending) {
+      st[node] = val;
+      return;
+    }
+
+    int mid = (start + ending) / 2;
+
+    if (index <= mid) {
+      updateUtil(start, mid, 2 * node + 1, index, val);
+    } else {
+      updateUtil(mid + 1, ending, 2 * node + 2, index, val);
+    }
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+
+    return;
+  }
+
+  // lazy propagation
+  void lazy_updateUtil(ll start, ll ending, ll l, ll r, ll val, ll node) {
+    // non-overlapping case
+
+    if (start > r || ending < l) {
+      return;
+    }
+
+    // lazy propagation / clear the lazy upate .. update the previous lazy value
+    if (lazy[node] != 0) {
+      st[node] += lazy[node] * (ending - start + 1);
+
+      // not a leaf node
+      if (start != ending) {
+        lazy[2 * node + 1] += lazy[node];
+        lazy[2 * node + 2] += lazy[node];
+      }
+
+      lazy[node] = 0;
+    }
+
+    // complete overlap
+    if (start >= l && ending <= r) {
+      st[node] += val * (ending - start + 1);
+
+      // not a leaf node
+      if (start != ending) {
+        lazy[2 * node + 1] += val;
+        lazy[2 * node + 2] += val;
+      }
+      return;
+    }
+
+    ll mid = (start + ending) / 2;
+
+    lazy_updateUtil(start, mid, l, r, val, 2 * node + 1);
+    lazy_updateUtil(mid + 1, ending, l, r, val, 2 * node + 2);
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
+    return;
+  }
+
+  ll lazy_queryUtil(ll start, ll ending, ll l, ll r, ll node) {
+    if (start > r || ending < l) {
+      return 0;
+    }
+
+    // lazy propagation / clear the lazy update
+
+    if (lazy[node] != 0) {
+      st[node] += lazy[node] * (ending - start + 1);
+
+      if (start != ending) {
+        lazy[2 * node + 1] += lazy[node];
+        lazy[2 * node + 2] += lazy[node];
+      }
+
+      lazy[node] = 0;
+    }
+
+    if (start >= l && ending <= r) {
+      return st[node];
+    }
+
+    ll mid = (start + ending) / 2;
+
+    ll q1 = lazy_queryUtil(start, mid, l, r, 2 * node + 1);
+    ll q2 = lazy_queryUtil(mid + 1, ending, l, r, 2 * node + 2);
+
+    return q1 + q2;
+  }
+
  public:
-  long long minCost(int m, int n, vector<vector<int>>& waitCost) {
-    long long ans = 0L;
+  SegmentTree(ll _n) {
+    this->n = _n;
+    st.resize(4 * n, 0);
+    lazy.resize(4 * n, 0);
+  }
 
-    vector<vector<ll>> mat(m, vector<ll>(n, 0));
+  void build(vector<ll> &vect) {
+    buildUtil(0, n - 1, vect, 0);
+  }
 
-    // fill the matrix with their entry fees
+  ll query(ll l, ll r) {
+    return queryUtil(0, n - 1, l, r, 0);
+  }
 
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        mat[i][j] = (i + 1) * (j + 1);
-      }
-    }
+  void update(int index, int val) {
+    updateUtil(0, n - 1, 0, index, val);
+  }
 
-    print2DVector(mat);
+  ll lazy_query(ll l, ll r) {
+    return lazy_queryUtil(0, n - 1, l, r, 0);
+  }
 
-    int seconds = 1;
-
-    // first row
-    // 1s lapsed since we have already moved out of 0,0 cell
-    for (int j = 1; j < n; j++) {
-      int cost = mat[0][j - 1];
-      // wait time , as we are moving to mat[i][j] cell at even seconds
-      if (seconds % 2 == 0) {
-        cost += waitCost[0][j - 1];
-      }
-
-      mat[0][j] += cost;
-      seconds++;
-    }
-
-    // reset the column for vertical direction
-    seconds = 1;
-    // first column
-    // 1s lapsed since we have already moved out of 0,0 cell
-    for (int i = 1; i < m; i++) {
-      int cost = mat[i - 1][0];
-      // wait time , as we are moving to mat[i][j] cell at even seconds
-      if (seconds % 2 == 0) {
-        cost += waitCost[i - 1][0];
-      }
-
-      mat[i][0] += cost;
-      seconds++;
-    }
-
-    cout << "\nMat after updating first row and first column fees : " << endl;
-    print2DVector(mat);
-
-    // now start at the third cell with time as 3s
-
-    seconds = 2;
-
-    for (int i = 1; i < m; i++) {
-      int prev_seconds = seconds;
-      for (int j = 1; j < n; j++) {
-        // if ((seconds & 1) == 0) {
-        // if (seconds % 2 == 0) {
-        //   mat[i][j] += min(mat[i - 1][j] + waitCost[i - 1][j], mat[i][j - 1] + waitCost[i][j - 1]);
-        // } else {
-        //   mat[i][j] += min(mat[i - 1][j], mat[i][j - 1]);
-        // }
-
-        mat[i][j] += min(mat[i - 1][j] + waitCost[i - 1][j], mat[i][j - 1] + waitCost[i][j - 1]);
-
-        seconds++;
-      }
-      seconds = prev_seconds + 1;
-    }
-
-    cout << "\nMat after updating all the values fees : " << endl;
-    print2DVector(mat);
-
-    return mat[m - 1][n - 1];
+  void lazy_update(ll l, ll r, ll val) {
+    lazy_updateUtil(0, n - 1, l, r, val, 0);
   }
 };
 
@@ -89,36 +173,37 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
+  set_io_files("input.txt", "output.txt");
 
-  Solution sol;
-  int m, n;
-  cin >> m >> n;
+  ll n, q;
+  cin >> n >> q;
   cin.ignore();
 
-  // bug(m, n);
+  vector<ll> nums(n, 0);
 
-  vector<vector<int>> waitCost;
-
-  for (int i = 0; i < m; i++) {
-    cin.ignore();
-
-    string line;
-    getline(cin, line);
-
-    // bug(line);
-
-    vector<int> nums = parseIntVector(line);
-    waitCost.push_back(nums);
+  for (ll &i : nums) {
+    cin >> i;
   }
 
-  cout << "WaitCost " << endl;
-  print2DVector(waitCost);
+  SegmentTree tree(n);
 
-  long long ans = sol.minCost(m, n, waitCost);
+  tree.build(nums);
 
-  cout << "ans : " << ans << endl;
+  ll a, b, c, d;
+  while (q--) {
+    cin >> a;
+
+    if (a == 2) {
+      cin >> b;
+      cin.ignore();
+      ll res = tree.lazy_query(b - 1, b - 1);
+      cout << res << endl;
+    } else {
+      cin >> b >> c >> d;
+      cin.ignore();
+      tree.lazy_update(b - 1, c - 1, d);
+    }
+  }
 
   return 0;
 }
