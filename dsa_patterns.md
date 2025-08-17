@@ -12,3 +12,4 @@
 6. dictionary or words --- trie
 7. nodes, edges, paths ---- Graph
 8. finding pairs --- use pointers
+9. String , store and search --- Trie

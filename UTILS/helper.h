@@ -80,6 +80,19 @@ void set_io_files(const string& inputFile, const string& outputFile) {
   }
 }
 
+// split string
+vector<string> split(const string& str, char delim) {
+  vector<string> tokens;
+  stringstream ss(str);
+  string token;
+
+  while (getline(ss, token, delim)) {
+    tokens.push_back(token);
+  }
+
+  return tokens;
+}
+
 // Function declarations
 template <typename T>
 void copyVector(const vector<T>& source, vector<T>& destination) {

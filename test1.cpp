@@ -4,172 +4,150 @@
 
 using namespace std;
 
-struct pair_hash {
-  size_t operator()(const pair<int, int>& p) const {
-    return hash<int>()(p.first) ^ (hash<int>()(p.second) << 1);
-  }
-};
+const int MX_SIZE = 26;
 
-class Solution1 {
+class TrieNode {
  public:
-  const int MOD = 1000000007;
+  bool is_end;
+  TrieNode* children[MX_SIZE];
 
-  // auto makeKey = [&](int a, int b) {
-  //     return ((long long)a << 32) | (unsigned int)b;
-  // };
-
-  long long makeKey(int a, int b) {
-    return ((long long)a << 32) | (unsigned int)b;
-  }
-
-  int modular_expo(int base, int exp) {
-    long long res = 1;
-
-    while (exp > 0) {
-      if (exp % 2 == 1) {
-        res = (res * base) % MOD;
-      }
-      base = (base * base) % MOD;
-      exp /= 2;
+  TrieNode() {
+    this->is_end = false;
+    for (int i = 0; i < MX_SIZE; i++) {
+      this->children[i] = NULL;
     }
-
-    return res;
-  }
-
-  // unordered_map<pair<int, int>, int, pair_hash> mp_dp;
-  // unordered_map<long long, int> mp_dp;
-
-  // amount , index  --> number of ways
-
-  int find_ways(int amount, vector<long long>& coins, int ind, int n,
-                vector<vector<int>>& dp) {
-    if (amount == 0) {
-      return 1;
-    }
-    if (ind >= n)
-      return 0;
-    if (amount < 0)
-      return 0;
-
-    // if (mp_dp.count({amount, ind})) {
-    //     return mp_dp[{amount, ind}];
-    // }
-
-    // if (mp_dp.count(makeKey(amount, ind))) {
-    //   return mp_dp[makeKey(amount, ind)];
-    // }
-
-    if (dp[amount][ind] != -1) {
-      return dp[amount][ind];
-    }
-
-    int take = find_ways(amount - coins[ind], coins, ind + 1, n, dp);
-    int donot_take = find_ways(amount, coins, ind + 1, n, dp);
-
-    int total_ways = (take + donot_take) % MOD;
-
-    dp[amount][ind] = total_ways;
-    // mp_dp[makeKey(amount, ind)] = total_ways;
-
-    return total_ways;
-  }
-
-  int numberOfWays(int total, int x) {
-    int amount = total;
-
-    vector<long long> coins;
-
-    for (int i = 1; i <= total; i++) {
-      if (x == 1) {
-        coins.push_back(i);
-      } else {
-        long long res = modular_expo(i, x);
-        if (res <= total) {
-          coins.push_back(res);
-        } else {
-          break;
-        }
-      }
-    }
-
-    int n = coins.size();
-
-    vector<vector<int>> dp(amount + 1, vector<int>(n + 1, -1));
-    // dp[0] = 1;
-
-    int res = find_ways(amount, coins, 0, n, dp);
-
-    return res;
   }
 };
+
+void insert_trie(TrieNode* root, string word) {
+  TrieNode* curr = root;
+
+  int len = word.length();
+  for (int i = 0; i < len; i++) {
+    int key = word[i] - 'a';
+
+    if (!curr->children[key]) {
+      curr->children[key] = new TrieNode();
+    }
+
+    curr = curr->children[key];
+  }
+
+  curr->is_end = true;
+}
+
+bool search_trie(TrieNode* root, string word) {
+  TrieNode* curr = root;
+
+  int len = word.length();
+  for (int i = 0; i < len; i++) {
+    int key = word[i] - 'a';
+
+    if (!curr->children[key]) {
+      return false;
+    }
+
+    curr = curr->children[key];
+  }
+
+  return (curr && curr->is_end);
+  // return true;
+}
+
+string mod_search_trie(TrieNode* root, string word) {
+  TrieNode* curr = root;
+
+  string found_str = "";
+
+  int len = word.length();
+  for (int i = 0; i < len; i++) {
+    int key = word[i] - 'a';
+
+    // to get the smallest
+
+    if (curr && curr->is_end) {
+      return found_str;
+    }
+
+    if (!curr->children[key]) {
+      // return false;
+      break;
+    }
+    found_str.push_back(word[i]);
+    curr = curr->children[key];
+  }
+
+  if (curr && curr->is_end) {
+    return found_str;
+  }
+
+  return "";
+  // return found_str;
+  // return (curr && curr->is_end);
+  // return true;
+}
 
 class Solution {
  public:
-  const int MOD = 1000000007;
+  vector<string> split(string str, char delim) {
+    vector<string> strs;
+    stringstream ss(str);
+    string token;
 
-  int modular_expo(int base, int exp) {
-    long long res = 1;
-
-    while (exp > 0) {
-      if (exp % 2 == 1) {
-        res = (res * base) % MOD;
-      }
-      base = (base * base) % MOD;
-      exp /= 2;
+    while (getline(ss, token, delim)) {
+      strs.push_back(token);
     }
 
-    return res;
+    return strs;
   }
 
-  int find_ways(int amount, vector<long long>& coins, int ind, int n,
-                vector<vector<int>>& dp) {
-    if (amount == 0) {
-      return 1;
+  string replaceWords(vector<string>& dictionary, string sentence) {
+    vector<string> strs = split(sentence, ' ');
+
+    bug(sentence);
+    printVector(dictionary);
+    printVector(strs);
+
+    // build the trie
+    TrieNode* root = new TrieNode();
+
+    for (string& st : dictionary) {
+      insert_trie(root, st);
     }
-    if (ind >= n)
-      return 0;
-    if (amount < 0)
-      return 0;
 
-    if (dp[amount][ind] != -1) {
-      return dp[amount][ind];
-    }
+    // for (string& st : dictionary) {
+    //   string rs = mod_search_trie(root, st);
+    //   bug(rs, st);
+    // }
 
-    int take = find_ways(amount - coins[ind], coins, ind + 1, n, dp);
-    int donot_take = find_ways(amount, coins, ind + 1, n, dp);
+    // unordered_map<string, string> mp;
+    string final_str = "";
 
-    int total_ways = (take + donot_take) % MOD;
+    int strs_size = strs.size();
+    for (int i = 0; i < strs_size; i++) {
+      string st = strs[i];
+      // iterate over 26 letters
+      // take the rs which is not empty and is smallest
 
-    dp[amount][ind] = total_ways;
-
-    return total_ways;
-  }
-
-  int numberOfWays(int total, int x) {
-    int amount = total;
-
-    vector<long long> coins;
-
-    for (int i = 1; i <= total; i++) {
-      if (x == 1) {
-        coins.push_back(i);
+      string rs = mod_search_trie(root, st);
+      // bug(st, rs);
+      if (rs.empty()) {
+        // string is not found
+        rs = st;
       } else {
-        long long res = modular_expo(i, x);
-        if (res <= total) {
-          coins.push_back(res);
-        } else {
-          break;
-        }
+        // mp[st] = rs;
+      }
+
+      final_str += rs;
+      if (i < strs_size - 1) {
+        final_str += " ";
       }
     }
 
-    int n = coins.size();
+    // for (string& st : strs) {
+    // }
 
-    vector<vector<int>> dp(amount + 1, vector<int>(n + 1, -1));
-
-    int res = find_ways(amount, coins, 0, n, dp);
-
-    return res;
+    return final_str;
   }
 };
 
@@ -182,11 +160,17 @@ int main() {
 
   Solution sol;
 
-  int n, x;
-  cin >> n >> x;
+  string line;
+  getline(cin, line);
+
+  vector<string> dict = parseVector<string>(line);
+
+  getline(cin, line);
+
+  string sentence = line;
 
   cout << "Solution started ...." << endl;
-  int ans = sol.numberOfWays(n, x);
+  string ans = sol.replaceWords(dict, sentence);
 
   cout << "ans : " << ans << endl;
 

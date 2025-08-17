@@ -1,2 +1,5 @@
 Solution started ....
-ans : 281138048
+sentence : the cattle was rattled by the battery
+cat bat rat 
+the cattle was rattled by the battery 
+ans : the cat was rat by the bat
