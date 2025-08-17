@@ -49,7 +49,7 @@ bool search_trie(TrieNode* root, string word) {
 bool recur_search_trie(TrieNode* root, TrieNode* curr, string word, int ind,
                        int n) {
   if (ind >= n) {
-    return true;
+    return curr->is_end;
   }
 
   int key = word[ind] - 'a';
@@ -59,4 +59,25 @@ bool recur_search_trie(TrieNode* root, TrieNode* curr, string word, int ind,
   }
 
   return recur_search_trie(root, curr->children[key], word, ind + 1, n);
+}
+
+int main() {
+  vector<string> words = {"hello", "wow", "mango", "mike", "pikachu"};
+
+  TrieNode* root = new TrieNode();
+
+  for (string& word : words) {
+    insert_trie(root, word);
+  }
+
+  words.push_back("hell");
+
+  for (string& word : words) {
+    bool res = search_trie(root, word);
+    bool res1 = recur_search_trie(root, root, word, 0, word.length());
+
+    bug(word, res, res1);
+  }
+
+  return 0;
 }

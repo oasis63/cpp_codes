@@ -49,7 +49,7 @@ bool search_trie(TrieNode* root, string word) {
 bool recur_search_trie(TrieNode* root, TrieNode* curr, string word, int ind,
                        int n) {
   if (ind >= n) {
-    return true;
+    return curr->is_end;
   }
 
   int key = word[ind] - 'a';
