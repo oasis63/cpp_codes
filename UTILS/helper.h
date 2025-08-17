@@ -18,8 +18,6 @@ using namespace std;
   for (int i = x; i < y; i++) cout << a[i] << " "; \
   cout << "\n"
 
-#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
-
 #define F first
 #define S second
 #define pb push_back
@@ -39,6 +37,8 @@ using namespace std;
 #define que_min priority_queue<int, vi, greater<int>>
 
 // #define MOD 1000000007
+
+#define bug(...) __f(#__VA_ARGS__, __VA_ARGS__)
 
 template <typename Arg1>
 void __f(const char* name, Arg1&& arg1) {

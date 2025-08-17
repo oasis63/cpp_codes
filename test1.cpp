@@ -4,80 +4,71 @@
 
 using namespace std;
 
-class TrieNode {
+class Solution {
  public:
-  bool is_end;
-  TrieNode* children[26];
+  int gainPnts(int mxPnts) {
+    return (rand() % mxPnts) + 1;
+  }
 
-  TrieNode() {
-    for (int i = 0; i < 26; i++) {
-      this->children[i] = NULL;
+  double new21Game(int n, int k, int maxPts) {
+    srand(time(0));
+
+    // int pnts = gainPnts(maxPts);
+    // bug(pnts);
+
+    // total points gained
+    int total_pnts = 0;
+
+    // probability
+    double prob = 0.0;
+
+    int draws = 0;
+
+    // draws  total_points < k
+    while (total_pnts < k) {
+      total_pnts += gainPnts(maxPts);
+
+      draws++;
     }
-    is_end = false;
+
+    bug(draws);
+    bug(total_pnts);
+
+    double tmp = (double)n / (double)maxPts;
+    tmp = round(tmp * 1e5) / 1e5;
+
+    cout << fixed << setprecision(5);
+    bug(tmp);
+
+    double res = (double)tmp / (double)draws;
+    res = round(res * 1e5) / 1e5;
+
+    bug(res);
+
+    bug(prob);
+
+    return prob;
   }
 };
 
-void insert_trie(TrieNode* root, string word) {
-  TrieNode* curr = root;
-
-  for (char& c : word) {
-    int key = c - 'a';
-
-    if (!curr->children[key]) {
-      curr->children[key] = new TrieNode();
-    }
-
-    curr = curr->children[key];
-  }
-  curr->is_end = true;
-}
-
-bool search_trie(TrieNode* root, string word) {
-  TrieNode* curr = root;
-
-  for (char& c : word) {
-    int key = c - 'a';
-
-    if (!curr->children[key]) {
-      return false;
-    }
-    curr = curr->children[key];
-  }
-  return (curr != NULL && curr->is_end);
-}
-
-bool recur_search_trie(TrieNode* root, TrieNode* curr, string word, int ind,
-                       int n) {
-  if (ind >= n) {
-    return curr->is_end;
-  }
-
-  int key = word[ind] - 'a';
-
-  if (!curr->children[key]) {
-    return false;
-  }
-
-  return recur_search_trie(root, curr->children[key], word, ind + 1, n);
-}
-
 int main() {
-  vector<string> words = {"hello", "wow", "mango", "mike", "pikachu"};
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-  TrieNode* root = new TrieNode();
+  set_io_files("input.txt", "output.txt");
 
-  for (string& word : words) {
-    insert_trie(root, word);
-  }
+  Solution sol;
 
-  words.push_back("hell");
+  // int n = 6, k = 1, maxPts = 10;
+  // int n = 10, k = 1, maxPts = 10;
+  int n = 21, k = 17, maxPts = 10;
 
-  for (string& word : words) {
-    bool res = search_trie(root, word);
-    bool res1 = recur_search_trie(root, root, word, 0, word.length());
+  cout << "Solution started ...." << endl;
 
-    bug(word, res, res1);
-  }
+  double ans = sol.new21Game(n, k, maxPts);
+
+  cout << "ans : " << ans << endl;
 
   return 0;
 }
