@@ -1,7 +1,8 @@
+the day is sunny the the the sunny is is 
 Solution started ....
-draws : 6
-total_pnts : 20
-tmp : 2.10000
-res : 0.35000
-prob : 0.00000
-ans : 0.00000
+day 1
+sunny 2
+is 3
+the 4
+the is sunny day 
+the is sunny day 

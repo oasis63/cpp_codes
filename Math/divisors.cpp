@@ -7,11 +7,12 @@ void divisors(int n) {
 
   for (int i = 1; i <= sqrt(n); i++) {
     if (n % i == 0) {
+      v.push_back(i);
       if (n / i == i)
         cout << i << " ";
       else {
         cout << i << " ";
-        // cout<<n/i<<" ";
+        cout << n / i << " ";
         v.push_back(n / i);
       }
     }

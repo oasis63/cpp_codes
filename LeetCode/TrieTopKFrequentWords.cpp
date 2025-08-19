@@ -17,16 +17,19 @@ class TrieNode {
  public:
   TrieNode* children[26];
   bool is_end;
-  int count_of_ends;
+  int freq;
 
   TrieNode() {
     this->is_end = false;
-    this->count_of_ends = 0;
+    this->freq = 0;
     for (int i = 0; i < 26; i++) {
       this->children[i] = NULL;
     }
   }
 };
+
+// min heap
+priority_queue<pair<string, int>, vector<pair<string, int>>, my_comp> min_heap;
 
 void insert_trie(TrieNode* root, string word) {
   TrieNode* curr = root;
@@ -63,10 +66,46 @@ void search_trie(TrieNode* curr, string temp, int k) {
 
 class Solution {
  public:
-  string longestWord(vector<string>& words) {
-    string ans = "";
+  vector<string> topKFrequent(vector<string>& words, int k) {
+    TrieNode* root = new TrieNode();
 
-    return ans;
+    for (string& word : words) {
+      insert_trie(root, word);
+    }
+
+    // vector<pair<string, int>> vect;
+    // search_trie(root, vect, "", k);
+    search_trie(root, "", k);
+
+    vector<string> ans1;
+
+    while (!min_heap.empty()) {
+      cout << min_heap.top().first << " " << min_heap.top().second << endl;
+      ans1.push_back(min_heap.top().first);
+      min_heap.pop();
+    }
+
+    reverse(ans1.begin(), ans1.end());
+    printVector(ans1);
+
+    return ans1;
+
+    // sort(vect.begin(), vect.end(), [](const auto& a, const auto& b) {
+    //   if (a.second == b.second) {
+    //     return a.first < b.first;
+    //   }
+    //   return a.second > b.second;
+    // });
+
+    // vector<string> ans;
+    // for (auto& v : vect) {
+    //   ans.push_back(v.first);
+    //   k--;
+    //   if (k == 0)
+    //     break;
+    // }
+
+    // return ans;
   }
 };
 
@@ -84,10 +123,13 @@ int main() {
 
   vector<string> words = parseVector<string>(line);
 
+  int k;
+  cin >> k;
+
   printVect(words);
 
   cout << "Solution started ...." << endl;
-  string ans = sol.longestWord(words);
+  vector<string> ans = sol.topKFrequent(words, k);
 
   printVect(ans);
 
