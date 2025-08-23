@@ -1,8 +1,14 @@
-the day is sunny the the the sunny is is 
 Solution started ....
-day 1
-sunny 2
-is 3
-the 4
-the is sunny day 
-the is sunny day 
+currStr : m
+currStr : mo
+currStr : mou
+currStr : mous
+currStr : mouse
+Suggested Products 
+ans.size() : 5
+mobile moneypot monitor mouse 
+mobile moneypot monitor mouse 
+mouse mousepad 
+mouse mousepad 
+mouse mousepad 
+---------------------
