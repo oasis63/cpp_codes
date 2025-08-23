@@ -6,24 +6,26 @@ using namespace std;
 
 class TrieNode {
  public:
-  TrieNode* children[26];
+  // TrieNode* children[26];
+
+  unordered_map<char, TrieNode*> children;
   bool is_end;
+
   TrieNode() {
     this->is_end = false;
-    for (int i = 0; i < 26; i++) {
-      this->children[i] = NULL;
-    }
+    // for (int i = 0; i < 26; i++) {
+    //   this->children[i] = NULL;
+    // }
   }
 };
 
 void insert_trie(TrieNode* root, string& word) {
   TrieNode* curr = root;
   for (char& c : word) {
-    int key = c - 'a';
-    if (!curr->children[key]) {
-      curr->children[key] = new TrieNode();
+    if (!curr->children.count(c)) {
+      curr->children[c] = new TrieNode();
     }
-    curr = curr->children[key];
+    curr = curr->children[c];
   }
   curr->is_end = true;
 }
@@ -31,11 +33,10 @@ void insert_trie(TrieNode* root, string& word) {
 bool search_trie(TrieNode* root, string& word) {
   TrieNode* curr = root;
   for (char& c : word) {
-    int key = c - 'a';
-    if (!curr->children[key]) {
+    if (!curr->children.count(c)) {
       return false;
     }
-    curr = curr->children[key];
+    curr = curr->children[c];
   }
   return curr->is_end;
 }
@@ -63,10 +64,9 @@ void getSuggestions(TrieNode* root, string str, vector<string>& res) {
   TrieNode* currNode = root;
 
   for (char& c : str) {
-    int key = c - 'a';
-    if (!currNode->children[key])
+    if (!currNode->children.count(c))
       return;
-    currNode = currNode->children[key];
+    currNode = currNode->children[c];
   }
 
   dfs(currNode, str, res);
@@ -81,10 +81,10 @@ class Solution {
       insert_trie(root, product);
     }
 
-    // for (string& product : products) {
-    //   bool res = search_trie(root, product);
-    //   bug(product, res);
-    // }
+    for (string& product : products) {
+      bool res = search_trie(root, product);
+      bug(product, res);
+    }
 
     vector<vector<string>> suggestions;
 
