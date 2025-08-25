@@ -1,14 +1,7 @@
-Solution started ....
-currStr : m
-currStr : mo
-currStr : mou
-currStr : mous
-currStr : mouse
-Suggested Products 
-ans.size() : 5
-mobile moneypot monitor mouse 
-mobile moneypot monitor mouse 
-mouse mousepad 
-mouse mousepad 
-mouse mousepad 
----------------------
+--------------left to right subarrays ---------------: 
+a ab abc abcd abcde b bc bcd bcde c cd cde d de e 
+a ab abc abcd abcde b bc bcd bcde c cd cde d de e 
+
+--------------right to left subarrays ---------------: 
+e d de c cd cde b bc bcd bcde a ab abc abcd abcde 
+a ab abc abcd abcde b bc bcd bcde c cd cde d de e 

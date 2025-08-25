@@ -98,13 +98,9 @@ class Solution {
 
       bug(currStr);
 
-      // reach to the last char of the current string
-
       getSuggestions(root, currStr, res);
 
-      if ((int)res.size() > 0) {
-        suggestions.push_back(res);
-      }
+      suggestions.push_back(res);
     }
 
     return suggestions;

@@ -6,9 +6,8 @@ using namespace std;
 
 class TrieNode {
  public:
-  unordered_map<char, TrieNode*> children;
   bool is_end;
-
+  unordered_map<char, TrieNode*> children;
   TrieNode() {
     this->is_end = false;
   }
@@ -16,63 +15,86 @@ class TrieNode {
 
 void insert_trie(TrieNode* root, string word) {
   TrieNode* curr = root;
-  int len = word.length();
-
-  for (int i = 0; i < len; i++) {
-    if (!curr->children.count(word[i])) {
-      curr->children[word[i]] = new TrieNode();
+  for (char& c : word) {
+    if (!curr->children.count(c)) {
+      curr->children[c] = new TrieNode();
     }
-    curr = curr->children[word[i]];
+    curr = curr->children[c];
   }
   curr->is_end = true;
 }
 
-bool sol_search(TrieNode* curr, int ind, string word) {
-  if (ind == (int)word.length()) {
-    return true;
+int count_min_extras(TrieNode* curr, string str, int ind, int n, int& extras) {
+  // base case
+  if (ind >= n)
+    return INT_MAX;
+
+  // reached to the last character and it matches to the curr->children
+  // so no extras will be there
+
+  // found
+  if (curr->children.count(str[ind])) {
+    curr = curr->children[str[ind]];
+
+    int res1 = count_min_extras(curr, str, ind + 1, n, extras);
   }
 
-  int res = false;
+  // not found
 
-  for (auto& [curr_char, next_node] : curr->children) {
-    int new_ind = ind;
-    if (word[ind] == curr_char) {
-      new_ind += 1;
-    }
-
-    res = sol_search(next_node, new_ind, word);
-    if (res)
-      return true;
-  }
-
-  return res;
+  return 0;
 }
 
 class Solution {
  public:
-  int numMatchingSubseq(string s, vector<string>& words) {
-    int matches = 0;
+  int minExtraChar(string s, vector<string>& dictionary) {
+    int extras = 0;
 
     TrieNode* root = new TrieNode();
-    insert_trie(root, s);
+    for (string& word : dictionary) {
+      insert_trie(root, word);
+    }
 
-    set<string> st;
+    int len = s.length();
 
-    for (string& word : words) {
-      TrieNode* curr = root;
+    // count_min_extras(root, s, 0, len, extras);
 
-      if (st.find(word) != st.end()) {
-        matches++;
-        continue;
-      }
+    TrieNode* curr = root;
 
-      if (sol_search(curr, 0, word)) {
-        matches++;
-        st.insert(word);
+    int hit = 0;
+
+    // for (char& c : s) {
+    for (int i = 0; i < len; i++) {
+      char c = s[i];
+      if (curr->children.count(c)) {
+        curr = curr->children[c];
+        hit++;
+
+        if (curr->is_end) {
+          hit = 0;
+        }
+
+      } else {
+        curr = root;
+        // now checking in the root
+        if (curr->children.count(c)) {
+          curr = curr->children[c];
+
+          if (hit != 0) {
+            extras += hit;
+          }
+
+          // hit++;  // or hit = 1;
+          hit = 1;
+        } else {
+          // extras += hit;
+          extras++;
+        }
       }
     }
 
-    return matches;
+    cout << "hit : " << hit << endl;
+
+    return extras + hit;
   }
 };
 
@@ -85,21 +107,19 @@ int main() {
 
   Solution sol;
 
-  string str;
-  getline(cin, str);
+  string s, line;
+  getline(cin, s);
 
-  string line;
   getline(cin, line);
 
-  vector<string> words = parseVector<string>(line);
+  vector<string> dictionary = parseVector<string>(line);
 
-  bug(str);
-  printVector(words);
+  printVect(dictionary);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.numMatchingSubseq(str, words);
+  int extras = sol.minExtraChar(s, dictionary);
 
-  cout << "ans : " << ans << endl;
+  cout << "extras : " << extras << endl;
 
   return 0;
 }

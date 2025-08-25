@@ -4,32 +4,47 @@
 
 using namespace std;
 
-// 1277. Count Square Submatrices with All Ones
-
 class Solution {
  public:
-  int countSquares(vector<vector<int>>& mat) {
-    int n = mat.size();
-    int m = mat[0].size();
+  int countDistinct(vector<int>& nums, int k, int p) {
+    int res = 0;
+    int n = nums.size();
 
-    int ans = 0;
+    set<vector<int>> st;
 
-    for (int i = 1; i < n; i++) {
-      for (int j = 1; j < m; j++) {
-        if (mat[i][j]) {
-          mat[i][j] = 1 + min({mat[i - 1][j], mat[i - 1][j - 1],
-                               mat[i][j - 1]});
+    unordered_set<long long> seen;
+
+    long long base = 200003;
+    long long MOD = 1e9 + 7;
+
+    cout << "Printing the subarrays \n";
+    for (int i = 0; i < n; i++) {
+      int cnt = 0;
+      // vector<int> vect;
+      long long hash = 0;
+      for (int j = i; j < n; j++) {
+        // vect.push_back(nums[j]);
+        if (nums[j] % p == 0) {
+          cnt++;
+        }
+        if (cnt <= k) {
+          res++;
+          // sort(vect.begin(), vect.end());
+
+          // polynomial rolling hash
+
+          hash = (hash * base + nums[j]) % MOD;
+
+          seen.insert(hash);
+        } else {
+          break;
         }
       }
     }
 
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        ans += mat[i][j];
-      }
-    }
+    bug(seen.size());
 
-    return ans;
+    return res;
   }
 };
 
@@ -45,12 +60,17 @@ int main() {
   string line;
   getline(cin, line);
 
-  vector<vector<int>> mat = parse2DVector<int>(line);
+  vector<int> nums = parseVector<int>(line);
 
-  print2DVector(mat);
+  printVect(nums);
+
+  int k, p;
+  cin >> k >> p;
+
+  bug(k, p);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.countSquares(mat);
+  int ans = sol.countDistinct(nums, k, p);
 
   cout << "ans : " << ans << endl;
 
