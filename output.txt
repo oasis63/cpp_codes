@@ -1,7 +1,16 @@
---------------left to right subarrays ---------------: 
-a ab abc abcd abcde b bc bcd bcde c cd cde d de e 
-a ab abc abcd abcde b bc bcd bcde c cd cde d de e 
+temp :  |  temp.length() : 0
+temp : 0 |  temp.length() : 1
+temp : 00 |  temp.length() : 2
+temp : 000 |  temp.length() : 3
+temp : 001 |  temp.length() : 3
+temp : 01 |  temp.length() : 2
+temp : 010 |  temp.length() : 3
+temp : 011 |  temp.length() : 3
+temp : 1 |  temp.length() : 1
+temp : 10 |  temp.length() : 2
+temp : 100 |  temp.length() : 3
+temp : 101 |  temp.length() : 3
+temp : 11 |  temp.length() : 2
+temp : 110 |  temp.length() : 3
+temp : 111 |  temp.length() : 3
 
---------------right to left subarrays ---------------: 
-e d de c cd cde b bc bcd bcde a ab abc abcd abcde 
-a ab abc abcd abcde b bc bcd bcde c cd cde d de e 
