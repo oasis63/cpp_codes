@@ -1,64 +1,82 @@
+#include <bits/stdc++.h>
+
+#include "UTILS/helper.h"
+
+using namespace std;
+
 class Solution {
  public:
-  vector<string> shortestSubstrings(vector<string>& arr) {
-    // using brute force
-    vector<string> answer;
+  bool point = false;
+  int zeroAdded = 0;
+  string ans;
 
-    // generate all the substrings
-    // substring, count
-    unordered_map<string, int> hash;  // string, count
+  int counter = 15;
 
-    for (string& str : arr) {
-      // generating all the substrings
-      int n = str.length();
-      for (int i = n - 1; i >= 0; i--) {
-        string tmp;
-        for (int j = i; j < n; j++) {
-          tmp.push_back(str[j]);
-          hash[tmp]++;
-        }
-      }
+  void solve(int num, int deno) {
+    counter--;
+    if (counter < 0) {
+      return;
     }
 
-    // for (auto& [u, v] : hash) {
-    //     cout << u << "  " << v << endl;
-    // }
-
-    for (string& str : arr) {
-      // generating all the substrings
-      int n = str.length();
-      string ans;
-      unordered_map<string, int> ref = hash;
-
-      for (int i = n - 1; i >= 0; i--) {
-        string tmp;
-        for (int j = i; j < n; j++) {
-          tmp.push_back(str[j]);
-
-          ref[tmp]--;
-
-          if (ref[tmp] <= 0) {
-            if (ans.empty()) {
-              ans = tmp;
-            } else if (tmp.length() < ans.length()) {
-              ans = tmp;
-            } else if (tmp.length() == ans.length()) {
-              if (tmp < ans)
-                ans = tmp;
-            }
-          }
-        }
-      }
-      answer.push_back(ans);
+    if (num == 0) {
+      return;
     }
 
-    return answer;
+    bug(ans);
+
+    if (num < deno) {
+      if (!point) {
+        if (ans.length() == 0) {
+          ans += "0.";
+        } else {
+          ans.push_back('.');
+        }
+        point = true;
+      }
+
+      if (zeroAdded > 0) {
+        ans.push_back('0');
+      }
+
+      num *= 10;
+      zeroAdded++;
+    } else {
+      int rem = num % deno;
+      int q = num / deno;
+      ans += to_string(q);
+
+      zeroAdded = 0;
+      num = rem;
+    }
+
+    solve(num, deno);
+  }
+
+  string fractionToDecimal(int num, int deno) {
+    ans = "";
+    solve(num, deno);
+    return ans;
   }
 };
 
-auto init = []() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  cout.tie(nullptr);
-  return 'c';
-}();
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
+  set_io_files("input.txt", "output.txt");
+
+  Solution sol;
+
+  int num, deno;
+  cin >> num >> deno;
+
+  bug(num, deno);
+
+  cout << "Solution started ...." << endl;
+  string ans = sol.fractionToDecimal(num, deno);
+
+  cout << "ans : " << ans << endl;
+
+  return 0;
+}

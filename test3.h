@@ -1,0 +1,2 @@
+void greet();
+void farewell();
