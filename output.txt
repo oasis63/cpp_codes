@@ -1,18 +1,10 @@
-num : 4 |  deno : 333
-Solution started ....
-ans : 
-ans : 0.
-ans : 0.0
-ans : 0.01
-ans : 0.01
-ans : 0.012
-ans : 0.012
-ans : 0.0120
-ans : 0.01201
-ans : 0.01201
-ans : 0.012012
-ans : 0.012012
-ans : 0.0120120
-ans : 0.01201201
-ans : 0.01201201
-ans : 0.012012012
+KiTe kite hare Hare 
+kite Kite KiTe Hare HARE Hear hear keti keet keto 
+
+printing the map 
+key : hara
+hare Hare 
+key : kata
+KiTe kite 
+
+kite kite kite Hare Hare   KiTe  KiTe 
