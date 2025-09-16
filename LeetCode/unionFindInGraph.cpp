@@ -83,7 +83,5 @@ int main() {
 
   cout << "ans : " << ans << endl;
 
-  // nums.emplace
-
   return 0;
 }
