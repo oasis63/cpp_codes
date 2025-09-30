@@ -4,61 +4,62 @@
 
 using namespace std;
 
-// 1971. Find if Path Exists in Graph
-
-class UnionFind {
- public:
-  vector<int> parent;
-  vector<int> rank;
-
-  UnionFind(int n) {
-    parent.resize(n);
-    rank.resize(n, 0);
-
-    for (int i = 0; i < n; i++) {
-      this->parent[i] = i;
-    }
-  }
-
-  int find(int x) {
-    if (parent[x] != x) {
-      parent[x] = find(parent[x]);
-    }
-    return parent[x];
-  }
-
-  void unionSet(int x, int y) {
-    int rootX = find(x);
-    int rootY = find(y);
-
-    if (rootX != rootY) {
-      if (rank[rootX] < rank[rootY]) {
-        parent[rootX] = rootY;
-      } else {
-        parent[rootY] = rootX;
-        rank[rootX]++;
-      }
-    }
-  }
-
-  bool isConnected(int x, int y) {
-    return find(x) == find(y);
-  }
-};
-
 class Solution {
  public:
-  bool validPath(int n, vector<vector<int>>& edges, int src, int dest) {
-    UnionFind uf(n);
+  int calculate(string s) {
+    int res = 0;
+    int n = s.length();
+    stack<string> stk;
 
-    for (auto& e : edges) {
-      int src = e[0];
-      int dest = e[1];
+    for (int i = 0; i < n; i++) {
+      if (s[i] == ' ') {
+        cout << "found space \n";
+        continue;
+      }
 
-      uf.unionSet(src, dest);
+      string curr;
+      curr.push_back(s[i]);
+      bug(curr);
+      if (stk.empty()) {
+        stk.push(curr);
+      } else {
+        if (curr == "+" || curr == "-") {  // operator
+          stk.push(curr);
+        } else if (curr == "(") {  // opening bracket
+          stk.push(curr);
+        } else if (curr == ")") {  // closing bracket
+          // todo: complete the code
+          stk.push(curr);
+        } else {  // digits
+          int digit = stoi(curr);
+          // stk.push(curr);
+          string tp = stk.top();
+
+          if (tp == "+" || tp == "-") {
+            stk.pop();
+            string v1 = stk.top();
+            stk.pop();
+
+            int value1 = stoi(v1);
+
+            if (tp == "+") {
+              value1 += digit;
+            } else {
+              value1 -= digit;
+            }
+
+            stk.push(to_string(value1));
+          }
+        }
+      }
     }
 
-    return uf.isConnected(src, dest);
+    while (!stk.empty()) {
+      cout << stk.top() << " ";
+      stk.pop();
+    }
+
+    return res;
   }
 };
 
@@ -74,16 +75,12 @@ int main() {
   string line;
   getline(cin, line);
 
-  vector<int> nums = parseVector<int>(line);
-
-  printVect(nums);
+  bug(line);
 
   cout << "Solution started ...." << endl;
-  int ans = sol.solve(nums);
+  int ans = sol.calculate(line);
 
   cout << "ans : " << ans << endl;
-
-  // nums.emplace
 
   return 0;
 }

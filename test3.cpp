@@ -4,21 +4,17 @@
 using namespace std;
 
 int main() {
-  string b = "cdabcdab";
-  string a = "abcdabcdabcd";  // "abcd";  // 3
+  vector<vector<int>> steps = {
+      {-1, -1}, {+1, +1}, {-1, 1}, {1, -1}, {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-  int ind = a.find(b);
+  int x = 0, y = 1;
 
-  bug(ind);
+  for (vector<int> &step : steps) {
+    int i = step[0];
+    int j = step[1];
 
-  string str1 = "ab";
-  string str2 = "cdaadab";
-
-  int i = str2.find(str1);
-
-  bug(i);
-
-  bug(string::npos);
+    cout << (x + i) << "  " << (y + j) << endl;
+  }
 
   return 0;
 }

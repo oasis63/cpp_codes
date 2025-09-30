@@ -1,43 +1,71 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-using namespace std;
 
-// 820. Short Encoding of Words
+using namespace std;
 
 class Solution {
  public:
-  int minimumLengthEncoding(vector<string> &words) {
-    // remove the duplicates
-    set<string> st;
+  bool check(int i, int j, int m, int n) {
+    if (i < 0 || i >= m)
+      return false;
+    if (j < 0 || j >= n)
+      return false;
 
-    for (string &word : words) {
-      st.insert(word);
-    }
+    return true;
+  }
 
-    for (string &word : words) {
-      for (int i = 1; i < (int)word.length(); i++) {
-        string suffix = word.substr(i);
-        // removing all the possible suffixes from the set
-        st.erase(suffix);
+  int countNeighbours(vector<vector<int>>& board, int x, int y) {
+    int m = board.size();
+    int n = board[0].size();
+
+    int count = 0;
+
+    vector<vector<int>> steps = {{-1, -1}, {+1, +1}, {-1, 1}, {1, -1}, {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    for (vector<int>& step : steps) {
+      int i = x + step[0];
+      int j = y + step[1];
+
+      if (check(i, j, m, n) && board[i][j]) {
+        count++;
       }
     }
 
-    int ans = 0;
-    string temp_str = "";
+    return count;
+  }
 
-    for (auto &word : st) {
-      temp_str += word + "#";
-      ans += word.length() + 1;
+  void gameOfLife(vector<vector<int>>& board) {
+    int m = board.size();
+    int n = board[0].size();
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        int neighbours = countNeighbours(board, i, j);
+
+        // cout << neighbours << "  ";
+
+        if (board[i][j]) {
+          if (neighbours < 2 || neighbours > 3) {
+            board[i][j] = 0;
+          } else {
+            board[i][j] = 1;
+          }
+
+        } else if (neighbours == 3) {
+          board[i][j] = 1;
+        }
+      }
+      // cout << endl;
     }
-
-    cout << temp_str << endl;
-
-    return ans;
   }
 };
 
 int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+
   set_io_files("input.txt", "output.txt");
 
   Solution sol;
@@ -45,11 +73,16 @@ int main() {
   string line;
   getline(cin, line);
 
-  vector<string> words = parseVector<string>(line);
+  vector<vector<int>> nums = parse2DVector<int>(line);
 
-  int res = sol.minimumLengthEncoding(words);
+  print2DVector(nums);
 
-  bug(res);
+  cout << "Solution started ...." << endl;
+  sol.gameOfLife(nums);
+
+  cout << "\n updated nums " << endl;
+
+  print2DVector(nums);
 
   return 0;
 }

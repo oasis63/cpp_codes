@@ -1,10 +1,8 @@
-KiTe kite hare Hare 
-kite Kite KiTe Hare HARE Hear hear keti keet keto 
-
-printing the map 
-key : hara
-hare Hare 
-key : kata
-KiTe kite 
-
-kite kite kite Hare Hare   KiTe  KiTe 
+line : 1 + 1
+Solution started ....
+curr : 1
+found space 
+curr : +
+found space 
+curr : 1
+ ans : 0
