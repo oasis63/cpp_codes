@@ -1,86 +1,62 @@
 #include <bits/stdc++.h>
 
 #include "UTILS/helper.h"
-
 using namespace std;
 
-class Solution {
- public:
-  int calculate(string s) {
-    int res = 0;
-    int n = s.length();
-    stack<string> stk;
+#define fast ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+#define ll long long
 
-    for (int i = 0; i < n; i++) {
-      if (s[i] == ' ') {
-        cout << "found space \n";
-        continue;
-      }
+vector<string> str_split(string str, char delim) {
+  vector<string> tokens;
+  stringstream ss(str);
+  string token;
 
-      string curr;
-      curr.push_back(s[i]);
-      bug(curr);
-      if (stk.empty()) {
-        stk.push(curr);
-      } else {
-        if (curr == "+" || curr == "-") {  // operator
-          stk.push(curr);
-        } else if (curr == "(") {  // opening bracket
-          stk.push(curr);
-        } else if (curr == ")") {  // closing bracket
-          // todo: complete the code
-          stk.push(curr);
-        } else {  // digits
-          int digit = stoi(curr);
-          // stk.push(curr);
-          string tp = stk.top();
-
-          if (tp == "+" || tp == "-") {
-            stk.pop();
-            string v1 = stk.top();
-            stk.pop();
-
-            int value1 = stoi(v1);
-
-            if (tp == "+") {
-              value1 += digit;
-            } else {
-              value1 -= digit;
-            }
-
-            stk.push(to_string(value1));
-          }
-        }
-      }
-    }
-
-    while (!stk.empty()) {
-      cout << stk.top() << " ";
-      stk.pop();
-    }
-
-    return res;
+  while (getline(ss, token, delim)) {
+    tokens.push_back(token);
   }
-};
+
+  return tokens;
+}
 
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
 
-  set_io_files("input.txt", "output.txt");
+  string str = "Data Science is funs";
+  // cin >> str;
 
-  Solution sol;
+  vector<string> tokens = str_split(str, ' ');
 
-  string line;
-  getline(cin, line);
+  for (string st : tokens) {
+    cout << "st : " << st << endl;
+  }
 
-  bug(line);
+  cout << str << endl;
 
-  cout << "Solution started ...." << endl;
-  int ans = sol.calculate(line);
+  int n = (int)tokens.size();
 
-  cout << "ans : " << ans << endl;
+  for (int i = 0; i < n / 2; i++) {
+    swap(tokens[i], tokens[n - i - 1]);
+  }
+
+  // cout << "Final string : " << str << endl;
+
+  // reverse(tokens.begin(), tokens.end());
+
+  string ans;
+
+  for (int i = 0; i < n; i++) {
+    ans += tokens[i];
+    if (i != n - 1) {
+      ans += " ";
+    }
+  }
+
+  // for (string& st : tokens) {
+  //   cout << st << " ";
+  // }
+
+  cout << ans << endl;
 
   return 0;
 }

@@ -4,80 +4,17 @@
 
 using namespace std;
 
-// 966. Vowel Spellchecker
-
 class Solution {
  public:
-  const string vowels = "aeiou";
+  vector<string> findWords(vector<string>& words) {
+    vector<string> mp = {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
 
-  void generalizeVowels(string& key) {
-    for (char& c : key) {
-      if (vowels.find(c) != string::npos) {
-        c = 'a';
-      }
-    }
-  }
+    vector<string> ans;
 
-  bool check(string word1, string word2) {
-    transform(word1.begin(), word1.end(), word1.begin(), ::tolower);
-    transform(word2.begin(), word2.end(), word2.begin(), ::tolower);
-
-    return word1 == word2;
-  }
-
-  vector<string> spellchecker(vector<string>& wordlist,
-                              vector<string>& queries) {
-    vector<string> result;
-
-    unordered_map<string, vector<string>> mp;
-    unordered_set<string> exact;
-
-    for (string& word : wordlist) {
-      string key = word;
-
-      exact.insert(word);
-
-      transform(key.begin(), key.end(), key.begin(), ::tolower);
-
-      generalizeVowels(key);
-
-      mp[key].push_back(word);
+    for (string& s : mp) {
     }
 
-    for (string& q : queries) {
-      if (exact.count(q)) {
-        result.push_back(q);
-      } else {
-        string q_k = q;
-        transform(q_k.begin(), q_k.end(), q_k.begin(), ::tolower);
-
-        generalizeVowels(q_k);
-
-        if (mp.count(q_k)) {
-          auto& v = mp[q_k];
-
-          string qs = "";
-
-          for (string& rv : v) {
-            if (check(q, rv)) {
-              if (rv == q) {
-                qs = rv;
-              } else if (qs == "") {
-                qs = rv;
-              }
-            }
-          }
-          if (qs == "") {
-            qs = v[0];
-          }
-          result.push_back(qs);
-        } else {
-          result.push_back("");
-        }
-      }
-    }
-
-    return result;
+    return ans;
   }
 };
 
@@ -86,25 +23,26 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
-  set_io_files("input.txt", "output.txt");
+  freopen("input.txt", "r", stdin);
+  freopen("output.txt", "w", stdout);
 
   Solution sol;
 
-  string line;
-  getline(cin, line);
+  int n;
+  cin >> n;
+  cin.ignore();
 
-  vector<string> wordlist = parseVector<string>(line);
+  vector<string> nums(n);
+  for (auto& elem : nums) {
+    cin >> elem;
+  }
 
-  getline(cin, line);
+  printVect(nums);
 
-  vector<string> queries = parseVector<string>(line);
+  cout << "Solution started ...." << endl;
+  vector<string> ans = sol.findWords(nums);
 
-  printVect(wordlist);
-  printVect(queries);
-
-  vector<string> result = sol.spellchecker(wordlist, queries);
-
-  printVect(result);
+  printVect(ans);
 
   return 0;
 }
