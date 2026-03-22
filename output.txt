@@ -1,3 +1,9 @@
-Hello Alaska Dad Peace 
-Solution started ....
+1 -2 3 
+2 3 5 
+---------------------
+k : 2
 
+Solution started ---- 
+"ans" : ans
+1 2 
+---------------------
