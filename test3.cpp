@@ -1,97 +1,78 @@
-class Solution {
+#include <bits/stdc++.h>
+using namespace std;
+
+class SegementTree {
  public:
-  stack<int> stk;
+  int n;
+  vector<int> st;
 
-  bool hasCycle(int n, vector<vector<int>>& adj) {
-    vector<int> indegree(n, 0);
-
-    for (int i = 0; i < n; i++) {
-      for (int& v : adj[i]) {
-        indegree[v]++;
-      }
-    }
-
-    queue<int> q;
-
-    for (int i = 0; i < n; i++) {
-      if (indegree[i] == 0) {
-        q.push(i);
-      }
-    }
-
-    // number of successfull processed nodes
-    int count = 0;
-
-    while (!q.empty()) {
-      int t = q.front();
-      q.pop();
-
-      count++;
-      for (int& v : adj[t]) {
-        indegree[v]--;
-        if (indegree[v] == 0) {
-          q.push(v);
-        }
-      }
-    }
-
-    cout << "count : " << count << "  n : " << n << endl;
-
-    return count != n;
+  SegementTree(int n) {
+    this->n = n;
+    st.resize(4 * n, 0);
   }
 
-  void dfs(int src, vector<bool>& visited, vector<vector<int>>& adj) {
-    visited[src] = true;
-
-    for (int& neigh : adj[src]) {
-      if (!visited[neigh]) {
-        dfs(neigh, visited, adj);
-      }
+  void buildUtil(int start, int end, int node, vector<int>& vect) {
+    if (start == end) {
+      st[node] = vect[start];
+      return;
     }
 
-    stk.push(src);
+    int mid = (start + end) / 2;
+
+    buildUtil(start, mid, 2 * node + 1, vect);
+    buildUtil(mid + 1, end, 2 * node + 2, vect);
+
+    st[node] = st[2 * node + 1] + st[2 * node + 2];
   }
 
-  vector<int> findOrder(int n, vector<vector<int>>& prerequisites) {
-    vector<vector<int>> adj(n);
-    for (auto& p : prerequisites) {
-      int u = p[0];
-      int v = p[1];
-      adj[v].push_back(u);
+  void build(vector<int>& vect) {
+    buildUtil(0, n - 1, 0, vect);
+  }
+
+  int queryUtil(int start, int end, int node, int l, int r) {
+    if (start > r || end < l)
+      return 0;
+    if (start >= l && end <= r)
+      return st[node];
+
+    int mid = (start + end) / 2;
+
+    int q1 = queryUtil(start, mid, 2 * node + 1, l, r);
+    int q2 = queryUtil(mid + 1, end, 2 * node + 2, l, r);
+
+    return q1 + q2;
+  }
+
+  void query(int l, int r) {
+    return queryUtil(0, n - 1, 0, l, r);
+  }
+
+  void updateUtil(int start, int end, int node, int index, int value) {
+    // base case
+    if (start == ending) {
+      st[node] = value;
+      return;
     }
 
-    //
-
-    bool cyclic = hasCycle(n, adj);
-
-    cout << "cyclic : " << cyclic << endl;
-
-    if (cyclic)
-      return {};
-
-    vector<bool> visited(n, false);
-
-    for (int i = 0; i < n; i++) {
-      if (!visited[i]) {
-        dfs(i, visited, adj);
-      }
+    int mid = (start + ending) / 2;
+    if (index <= mid) {
+      // left subtree
+      updateUtil(start, mid, 2 * node + 1, index, value);
+    } else {
+      // right
+      updateUtil(mid + 1, ending, 2 * node + 2, index, value);
     }
 
-    int stkSize = stk.size();
+    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
 
-    vector<int> elems;
+    return;
+  }
 
-    while (!stk.empty()) {
-      elems.push_back(stk.top());
-      stk.pop();
-    }
-
-    // cout << "" << endl;
-    // for (int& elem : elems) {
-    //     cout << elem << " ";
-    // }
-    // cout << endl;
-
-    return elems;
+  void update(int index, int value) {
+    updateUtil(0, n - 1, 0, index, value);
   }
 };
+
+int main() {
+  return 0;
+}

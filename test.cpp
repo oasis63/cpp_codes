@@ -66,28 +66,32 @@ int main() {
   cin.tie(0);
   cout.tie(0);
 
-  set_io_files("input.txt", "output.txt");
-
-  Solution sol;
-
-  string line;
-  getline(cin, line);
-
-  vector<vector<int>> nums = parse2DVector<int>(line);
-
-  print2DVector(nums);
-
-  getline(cin, line);
-
-  int k = stoi(line);
-
-  bug(k);
-
   cout << "\nSolution started ---- " << endl;
-  vector<vector<int>> ans = sol.minAbsDiff(nums, k);
 
-  bug("ans");
-  print2DVector(ans);
+  vector<int> vect;
+
+  // set_io_files("input.txt", "output.txt");
+
+  // Solution sol;
+
+  // string line;
+  // getline(cin, line);
+
+  // vector<vector<int>> nums = parse2DVector<int>(line);
+
+  // print2DVector(nums);
+
+  // getline(cin, line);
+
+  // int k = stoi(line);
+
+  // bug(k);
+
+  // cout << "\nSolution started ---- " << endl;
+  // vector<vector<int>> ans = sol.minAbsDiff(nums, k);
+
+  // bug("ans");
+  // print2DVector(ans);
 
   return 0;
 }
