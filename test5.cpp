@@ -6,7 +6,7 @@ using namespace std;
 
 class Solution {
  public:
-  int solve(vector<int> &vect) {
+  int solve(vector<int>& vect) {
     int ans = 0;
 
     return ans;
@@ -21,6 +21,8 @@ int main() {
   set_io_files("input.txt", "output.txt");
 
   Solution sol;
+
+  set<int> st;
 
   string line;
   getline(cin, line);

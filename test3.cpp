@@ -1,78 +1,86 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class SegementTree {
+class Solution {
  public:
-  int n;
-  vector<int> st;
-
-  SegementTree(int n) {
-    this->n = n;
-    st.resize(4 * n, 0);
+  bool isPossible(string str, int k) {
+    int count1 = 0;
+    for (char& c : str) {
+      if (c == '1')
+        count1++;
+    }
+    return count1 == k;
   }
 
-  void buildUtil(int start, int end, int node, vector<int>& vect) {
-    if (start == end) {
-      st[node] = vect[start];
-      return;
+  string shortestBeautifulSubstring(string s, int k) {
+    string ans = "";
+
+    int n = s.length();
+
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = i; j < n; j++) {
+    //         string sub = s.substr(i, j - i + 1); // Correct
+    //         if (isPossible(sub, k)) {
+    //             if (ans == "")
+    //                 ans = sub;
+
+    //             if (sub.length() < ans.length()) {
+    //                 ans = sub;
+    //             } else if (sub.length() == ans.length()) {
+    //                 ans = min(ans, sub);
+    //             }
+    //         }
+    //     }
+    // }
+
+    // try using sliding window
+
+    // string window = "";
+    int cnt1 = 0;
+
+    int l = 0, r = 0;
+
+    while (l <= r && l < n && r < n) {
+      cout << " r : " << r << endl;
+
+      if (s[r] == '1') {
+        cnt1++;
+      }
+
+      while (cnt1 > k && l < r) {
+        if (s[l] == '1')
+          cnt1--;
+        l++;
+      }
+
+      if (cnt1 == k) {
+        string sub = s.substr(l, r - l + 1);
+        cout << "sub : " << sub << endl;
+        if (ans == "") {
+          ans = sub;
+        }
+        if (sub.length() < ans.length()) {
+          ans = sub;
+        } else if (sub.length() == ans.length()) {
+          ans = min(ans, sub);
+        }
+      }
+      r++;
     }
 
-    int mid = (start + end) / 2;
-
-    buildUtil(start, mid, 2 * node + 1, vect);
-    buildUtil(mid + 1, end, 2 * node + 2, vect);
-
-    st[node] = st[2 * node + 1] + st[2 * node + 2];
-  }
-
-  void build(vector<int>& vect) {
-    buildUtil(0, n - 1, 0, vect);
-  }
-
-  int queryUtil(int start, int end, int node, int l, int r) {
-    if (start > r || end < l)
-      return 0;
-    if (start >= l && end <= r)
-      return st[node];
-
-    int mid = (start + end) / 2;
-
-    int q1 = queryUtil(start, mid, 2 * node + 1, l, r);
-    int q2 = queryUtil(mid + 1, end, 2 * node + 2, l, r);
-
-    return q1 + q2;
-  }
-
-  void query(int l, int r) {
-    return queryUtil(0, n - 1, 0, l, r);
-  }
-
-  void updateUtil(int start, int end, int node, int index, int value) {
-    // base case
-    if (start == ending) {
-      st[node] = value;
-      return;
-    }
-
-    int mid = (start + ending) / 2;
-    if (index <= mid) {
-      // left subtree
-      updateUtil(start, mid, 2 * node + 1, index, value);
-    } else {
-      // right
-      updateUtil(mid + 1, ending, 2 * node + 2, index, value);
-    }
-
-    st[node] = st[node * 2 + 1] + st[node * 2 + 2];
-
-    return;
-  }
-
-  void update(int index, int value) {
-    updateUtil(0, n - 1, 0, index, value);
+    return ans;
   }
 };
 
 int main() {
+  Solution sol;
+
+  string str = "100011001";
+  int k = 3;
+
+  string res = sol.shortestBeautifulSubstring(str, k);
+
+  cout << "res : " << res << endl;
+
   return 0;
 }
