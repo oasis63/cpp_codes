@@ -1,1 +1,13 @@
- 3+5 / 2 
+4
+2
+ab
+aa
+3
+abb
+baa
+4
+aabb
+baba
+4
+abba
+aaab

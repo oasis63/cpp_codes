@@ -1,4 +1,4 @@
-3
-3+5
-3----3+5
-result : 8
+n : 2 |  a : ab |  b : aa
+n : 3 |  a : abb |  b : baa
+n : 4 |  a : aabb |  b : baba
+n : 4 |  a : abba |  b : aaab
