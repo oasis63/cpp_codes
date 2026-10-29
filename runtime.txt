@@ -1,4 +1,5 @@
-real	0:00.00
+Command terminated by signal 11
+real	0:00.16
 user	0.00 sec
 sys	0.00 sec
-mem	3736 KB
+mem	3600 KB
